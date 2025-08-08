@@ -1,0 +1,132 @@
+/* styles.css */
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+}
+
+header {
+  background: linear-gradient(to right, #ffffff, #e0e0e0);
+  padding: 15px 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: auto;
+}
+
+nav h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px;
+  color: #222;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #444;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+section {
+  padding: 50px 20px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+#hero {
+  background: #e3f2fd;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.hero-container h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 60px;
+}
+
+.hero-container p {
+  font-size: 24px;
+}
+
+.about-container {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.about-container img {
+  width: 300px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.about-text h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 60px;
+  margin-bottom: 10px;
+}
+
+.about-text p {
+  font-size: 20px;
+}
+
+#skills h2,
+#projects h2,
+#contact h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 150px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.skill-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+  font-size: 45px;
+  margin-top: 20px;
+}
+
+.skill-icons i {
+  transition: transform 0.3s ease;
+}
+
+.skill-icons i:hover {
+  transform: scale(1.2);
+  color: #007acc;
+}
+
+#projects ul {
+  font-size: 22px;
+  padding-left: 20px;
+}
+
+#contact p {
+  font-size: 42px;
+  text-align: center;
+}
+
+footer {
+  background: #222;
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 50px;
+}
