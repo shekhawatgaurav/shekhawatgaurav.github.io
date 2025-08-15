@@ -1,293 +1,445 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gaurav Shekhawat – Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#ffffff;
-      --text:#0f172a; /* slate-900 */
-      --muted:#475569; /* slate-600 */
-      --accent:#bfead0; /* minty card */
-      --accent-strong:#34c38f; /* green highlight */
-      --card:#f8fafc; /* slate-50 */
-      --border:#e2e8f0; /* slate-200 */
-      --maxw:1100px;
-      --radius:16px;
-      --shadow:0 10px 30px rgba(2,6,23,.08);
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
-    img{max-width:100%;display:block}
-    a{color:inherit;text-decoration:none}
-    .container{max-width:var(--maxw);margin:auto;padding:0 20px}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gaurav Shekhawat – Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --bg:#ffffff;
+            --text:#0f172a; /* slate-900 */
+            --muted:#475569; /* slate-600 */
+            --accent:#bfead0; /* minty card */
+            --accent-strong:#34c38f; /* green highlight */
+            --card:#f8fafc; /* slate-50 */
+            --border:#e2e8f0; /* slate-200 */
+            --maxw:1100px;
+            --radius:16px;
+            --shadow:0 10px 30px rgba(2,6,23,.08);
+        }
+        *{box-sizing:border-box}
+        html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
+        img{max-width:100%;display:block}
+        a{color:inherit;text-decoration:none}
+        .container{max-width:var(--maxw);margin:auto;padding:0 20px}
 
-    /* Header */
-    header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);z-index:50}
-    .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
-    .brand{font-weight:800;letter-spacing:.6px}
-    .brand .fname{font-weight:800}
-    .brand .lname{font-weight:600;opacity:.85}
-    nav ul{display:flex;gap:20px;list-style:none;margin:0;padding:0}
-    nav a{font-weight:500;opacity:.9}
-    nav a:hover{opacity:1}
+        /* Header */
+        header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);z-index:150}
+        .nav{display:flex;align-items:center;justify-content:space-between;height:72px;}
+        .brand{
+            font-weight:800;
+            letter-spacing:.6px;
+            font-size: 24px;
+        }
+        .brand .fname{font-weight:800}
+        .brand .lname{font-weight:600;opacity:.85}
+        nav ul{display:flex;gap:24px;list-style:none;margin:0;padding:0}
+        nav a{
+            font-weight:500;
+            opacity:.9;
+            font-size: 18px;
+        }
+        nav a:hover{opacity:1}
 
-    /* Mobile nav */
-    .burger{display:none;border:1px solid var(--border);width:40px;height:40px;border-radius:10px;align-items:center;justify-content:center;background:#fff}
-    .burger span{display:block;width:20px;height:2px;background:#111;position:relative}
-    .burger span:before,.burger span:after{content:"";position:absolute;left:0;width:20px;height:2px;background:#111}
-    .burger span:before{top:-6px}.burger span:after{top:6px}
-    .mobile-menu{display:none;flex-direction:column;gap:14px;padding:14px 0}
+        /* Mobile nav */
+        .burger{display:none;border:1px solid var(--border);width:40px;height:40px;border-radius:10px;align-items:center;justify-content:center;background:#fff}
+        .burger span{display:block;width:20px;height:2px;background:#111;position:relative}
+        .burger span:before,.burger span:after{content:"";position:absolute;left:0;width:20px;height:2px;background:#111}
+        .burger span:before{top:-6px}.burger span:after{top:6px}
+        .mobile-menu{display:none;flex-direction:column;gap:16px;padding:16px 0}
+        .mobile-menu a {
+            font-size: 18px;
+        }
 
-    /* Hero */
-    .hero{padding:56px 0}
-    .hero-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
-    .eyebrow{font-size:14px;letter-spacing:.08em;color:var(--muted)}
-    .title{font-size:44px;line-height:1.05;margin:8px 0 10px;font-weight:800}
-    .title .em{color:var(--accent-strong)}
-    .lead{color:var(--muted);max-width:52ch}
-    .cta-row{display:flex;gap:12px;margin-top:18px}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:14px;border:1px solid var(--border);background:#fff;font-weight:600}
-    .btn.primary{background:var(--text);color:#fff;border-color:var(--text)}
-    .hero-art{background:linear-gradient(180deg,#ffffff, #ecfeff);border:1px solid var(--border);border-radius:24px;padding:10px}
+        /* Hero */
+        .hero{padding:80px 0}
+        .hero-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
+        .eyebrow{font-size:14px;letter-spacing:.08em;color:var(--muted)}
+        .title{font-size:44px;line-height:1.05;margin:8px 0 10px;font-weight:800}
+        .title .em{color:var(--accent-strong)}
+        .lead{color:var(--muted);max-width:52ch}
+        .cta-row{display:flex;gap:12px;margin-top:18px}
+        .btn{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:12px 16px;
+            border-radius:14px;
+            border:1px solid var(--border);
+            background:#fff;
+            font-weight:600;
+            transition: all 0.2s ease;
+        }
+        .btn.primary{
+            background:var(--text);
+            color:#fff;
+            border-color:var(--text);
+        }
+        
+        /* Updated CSS for Hover Effect with color change */
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: var(--accent-strong);
+            color: #fff;
+            border-color: var(--accent-strong);
+        }
+        .btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background-color: #0c1426;
+        }
+        
+        /* Hero art with no icons or special styling */
+        .hero-art {
+            position: relative;
+            padding: 0;
+            overflow: hidden;
+        }
+        .hero-art-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* -- New CSS for Animations -- */
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Apply animation to Hero content */
+        .hero-wrap > * {
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        /* Apply staggered animation to children elements */
+        .hero-wrap div:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+        .hero-wrap div:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+        
+        /* Typing animation styles */
+        #typed-text {
+            display: inline-block;
+        }
+        .cursor {
+            display: inline-block;
+            background-color: var(--text);
+            margin-left: 4px;
+            width: 2px;
+            animation: blink 1s infinite step-end;
+        }
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+        
+        /* Section wrappers - Adjusted for visual balance */
+        .projects, .skills, .contact { padding: 52px 0; }
+        .about { padding: 72px 0; }
+        .section-hdr{display:flex;flex-direction:column;align-items:center;margin-bottom:20px}
+        .kicker{font-size:12px;letter-spacing:.2em;color:var(--muted)}
+        .h2{font-size:28px;font-weight:800;margin-top:6px}
 
-    /* Section wrappers */
-    section{padding:52px 0}
-    .section-hdr{display:flex;flex-direction:column;align-items:center;margin-bottom:20px}
-    .kicker{font-size:12px;letter-spacing:.2em;color:var(--muted)}
-    .h2{font-size:28px;font-weight:800;margin-top:6px}
+        /* Projects */
+        .projects{background:var(--accent);}
+        .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+        .card{
+            grid-column:span 6;
+            background:#fff;
+            border:1px solid var(--border);
+            border-radius:18px;
+            overflow:hidden;
+            box-shadow:var(--shadow);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            cursor: default;
+        }
+        .card-media{aspect-ratio:16/9;background:#eef2ff;border-bottom:1px solid var(--border);object-fit:cover}
+        .card-body{padding:14px; flex-grow: 1;}
+        .card-title{font-weight:700;margin:0 0 4px}
+        .chip{display:inline-block;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted)}
 
-    /* Projects */
-    .projects{background:var(--accent)}
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-    .card{grid-column:span 6;background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
-    .card-media{aspect-ratio:16/9;background:#eef2ff;border-bottom:1px solid var(--border);object-fit:cover}
-    .card-body{padding:14px}
-    .card-title{font-weight:700;margin:0 0 4px}
-    .chip{display:inline-block;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted)}
+        /* New CSS for Project Link Icon */
+        .project-link {
+            position: absolute;
+            bottom: 14px;
+            right: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent-strong);
+            color: white;
+            font-size: 16px;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+            cursor: pointer;
+        }
 
-    /* About */
-    .about{background:#fff;text-align:center}
-    .about p{max-width:70ch;margin:0 auto;color:var(--muted)}
-    .about .btn{margin-top:14px}
+        .card:hover .project-link {
+            opacity: 1;
+            transform: scale(1.1);
+        }
 
-    /* Skills */
-    .skills{background:var(--accent)}
-    .skill-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-    .skill{grid-column:span 4;background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow);display:flex;align-items:flex-start;gap:12px}
-    .skill-icon{width:32px;height:32px;flex:0 0 32px;object-fit:contain}
-    .skill h4{margin:0 0 6px;font-size:16px}
-    .skill p{margin:0;color:var(--muted);font-size:14px}
+        .project-link svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* About */
+        .about{background:#fff;text-align:center;}
+        .about p{max-width:70ch;margin:0 auto;color:var(--muted)}
+        .about .btn{margin-top:14px}
 
-    /* Contact */
-    .contact .email{display:block;text-align:center;font-weight:800;font-size:18px;color:#1e40af;margin-bottom:16px}
-    form{max-width:720px;margin:0 auto;border:1px solid var(--border);border-radius:16px;padding:16px;background:#fff;box-shadow:var(--shadow)}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .row .full{grid-column:1 / -1}
-    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-    input,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:12px;font:inherit}
-    textarea{min-height:120px;resize:vertical}
-    .submit{margin-top:12px;display:flex;justify-content:flex-end}
-    .submit button{padding:12px 16px;border-radius:12px;border:1px solid var(--text);background:var(--text);color:#fff;font-weight:700}
+        /* Skills */
+        .skills{background:var(--accent);}
+        .skill-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+        .skill{grid-column:span 4;background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow);display:flex;align-items:flex-start;gap:12px}
+        .skill-icon{width:32px;height:32px;flex:0 0 32px;object-fit:contain}
+        .skill h4{margin:0 0 6px;font-size:16px}
+        .skill p{margin:0;color:var(--muted);font-size:14px}
 
-    /* Footer */
-    footer{padding:22px 0;text-align:center;color:var(--muted);font-size:14px;border-top:1px solid var(--border)}
+        /* New CSS for fade-in on scroll */
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
 
-    /* Responsive */
-    @media (max-width: 900px){
-      .hero-wrap{grid-template-columns:1fr}
-      .title{font-size:36px}
-      .grid .card{grid-column:span 12}
-      .skill-grid .skill{grid-column:span 6}
-    }
-    @media (max-width: 640px){
-      nav ul{display:none}
-      .burger{display:flex}
-      .mobile-menu{border-top:1px solid var(--border)}
-      .skill-grid .skill{grid-column:span 12}
-      .row{grid-template-columns:1fr}
-      .title{font-size:32px}
-    }
-  </style>
+        .fade-in-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Contact */
+        .contact .email{display:block;text-align:center;font-weight:800;font-size:18px;color:var(--muted);margin-bottom:16px}
+        .contact .email a{text-decoration: underline;}
+        .contact .email a:hover{color: var(--text);}
+        form{max-width:720px;margin:0 auto;border:1px solid var(--border);border-radius:16px;padding:16px;background:#fff;box-shadow:var(--shadow)}
+        .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        .row .full{grid-column:1 / -1}
+        label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+        input,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:12px;font:inherit}
+        textarea{min-height:120px;resize:vertical}
+        .submit{margin-top:12px;display:flex;justify-content:flex-end}
+        .submit button{padding:12px 16px;border-radius:12px;border:1px solid var(--text);background:var(--text);color:#fff;font-weight:700}
+
+        /* Footer */
+        footer{padding:22px 0;text-align:center;color:var(--muted);font-size:14px;border-top:1px solid var(--border)}
+
+        /* Responsive */
+        @media (max-width: 900px){
+            .hero-wrap{grid-template-columns:1fr}
+            .title{font-size:36px}
+            .grid .card{grid-column:span 12}
+            .skill-grid .skill{grid-column:span 6}
+            .about p{max-width:90%}
+        }
+        @media (max-width: 640px){
+            nav ul{display:none}
+            .burger{display:flex}
+            .mobile-menu{border-top:1px solid var(--border)}
+            .skill-grid .skill{grid-column:span 12}
+            .row{grid-template-columns:1fr}
+            
+            /* -- Font size and padding adjustments for small screens -- */
+            .title{font-size:32px}
+            .h2{font-size:24px;}
+            .hero {padding: 60px 0;}
+            .about {padding: 50px 0;}
+        }
+    </style>
 </head>
 <body>
-  <!-- Header -->
-  <header>
+    <header>
     <div class="container nav">
-      <div class="brand" aria-label="Site Title">
-        <span class="fname">GAURAV</span> <span class="lname">SHEKHAWAT</span>
-      </div>
-      <nav>
-        <ul>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </nav>
-      <button class="burger" aria-label="Open Menu" id="burger"><span></span></button>
+        <div class="brand" aria-label="Site Title">
+            <span class="fname">GAURAV</span> <span class="lname">SHEKHAWAT</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <button class="burger" aria-label="Open Menu" id="burger"><span></span></button>
     </div>
     <div class="container mobile-menu" id="mobileMenu">
-      <a href="#projects">Projects</a>
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#contact">Contact</a>
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
     </div>
-  </header>
+    </header>
 
-  <!-- Hero -->
-  <section class="hero">
+    <section class="hero">
     <div class="container hero-wrap">
-      <div>
+        <div>
         <div class="eyebrow">Hello, I'm a</div>
-        <h1 class="title">WEB/APP <span class="em">DEVELOPER</span>.</h1>
-        <p class="lead">I build clean, responsive websites and Android apps with a focus on performance and usability. Based in India, available for freelance work and collaborations.</p>
+        <h1 class="title">
+            WEB/APP <span class="em" id="typed-text"></span><span class="cursor">|</span>
+        </h1>
+        <p class="lead">I am a web developer with a passion for building clean and responsive websites. My experience also includes creating Android apps and digital designs.</p>
         <div class="cta-row">
-          <a class="btn primary" href="#projects">View Projects</a>
-          <a class="btn" href="#contact">Hire Me</a>
+            <a class="btn primary" href="#projects">View Projects</a>
+            <a class="btn" href="#contact">Hire Me</a>
         </div>
-      </div>
-      <div class="hero-art">
-        <!-- Replace src with your final illustration -->
-        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop" alt="Developer Illustration" />
-      </div>
+        </div>
+        <div class="hero-art">
+            <div class="hero-art-content">
+                <img src="images/2.png" alt="Developer Illustration" />
+            </div>
+        </div>
     </div>
-  </section>
+    </section>
 
-  <!-- Projects -->
-  <section id="projects" class="projects">
+    <section id="projects" class="projects">
     <div class="container">
-      <div class="section-hdr">
+        <div class="section-hdr">
         <div class="kicker">FEATURED WORK</div>
         <div class="h2">Projects</div>
-      </div>
-      <div class="grid">
-        <!-- Project 1 -->
-        <article class="card">
-          <img class="card-media" src="https://via.placeholder.com/800x450.png?text=Quotes+App+Screenshot" alt="Quotes App Screenshot" />
-          <div class="card-body">
+        </div>
+        <div class="grid">
+        <div class="card fade-in-on-scroll">
+            <img class="card-media" src="images/Quotesapp.png" alt="Quotes App" />
+            <div class="card-body">
             <h3 class="card-title">Quotes App</h3>
             <div class="chip">Android / Kotlin</div>
-          </div>
-        </article>
-        <!-- Project 2 -->
-        <article class="card">
-          <img class="card-media" src="https://via.placeholder.com/800x450.png?text=CyberWit+Website" alt="Cyberwit Website Screenshot" />
-          <div class="card-body">
+            </div>
+            <a href="https://drive.google.com/drive/folders/1U5bdQbgDuHbzCKMY0LDEWGzYG02R6evW?usp=sharing" class="project-link" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </div>
+        <div class="card fade-in-on-scroll">
+            <img class="card-media" src="images/Cyberswit.png" alt="Cyberwit Website" />
+            <div class="card-body">
             <h3 class="card-title">Cyberwit</h3>
             <div class="chip">Web Design</div>
-          </div>
-        </article>
-      </div>
+            </div>
+            <a href="http://cyberswit.blogspot.com/" class="project-link" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </div>
+        </div>
     </div>
-  </section>
+    </section>
 
-  <!-- About -->
-  <section id="about" class="about">
+    <section id="about" class="about">
     <div class="container">
-      <div class="section-hdr">
+        <div class="section-hdr">
         <div class="kicker">GET TO KNOW ME</div>
         <div class="h2">About Me</div>
-      </div>
-      <p>
-        I'm Gaurav, a web & Android developer with a strong focus on UI/UX. I enjoy turning complex problems into simple, beautiful and intuitive designs. When I'm not building, I explore new tools and contribute to personal projects.
-      </p>
-      <a class="btn" href="#contact">Download CV</a>
+        </div>
+        <p>
+        I'm Gaurav, a multifaceted developer with a solid foundation in web and app development. My expertise spans HTML, CSS, and JavaScript for web, and Android Studio for mobile. I also have a keen interest in UI/UX design, using tools like Figma and Adobe XD to create intuitive and appealing interfaces. I'm a quick learner and am always eager to expand my skill set by exploring new technologies and tools like Photoshop and Adobe Illustrator to create comprehensive digital solutions.
+        </p>
+        <a class="btn" href="GauravShekhawat_Resume.pdf" download>Download Resume</a>
     </div>
-  </section>
+    </section>
 
-  <!-- Skills -->
-  <section id="skills" class="skills">
+    <section id="skills" class="skills">
     <div class="container">
-      <div class="section-hdr">
+        <div class="section-hdr">
         <div class="kicker">WHAT I DO</div>
         <div class="h2">Skills</div>
-      </div>
-      <div class="skill-grid">
-        <div class="skill">
-          <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma"/>
-          <div>
+        </div>
+        <div class="skill-grid">
+        <div class="skill fade-in-on-scroll">
+            <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/xd/xd-plain.svg" alt="Adobe XD"/>
+            <div>
             <h4>UI/UX Design</h4>
-            <p>Wireframes, prototypes & clean, modern interfaces.</p>
-          </div>
+            <p>I design user-friendly interfaces for websites and apps.</p>
+            </div>
         </div>
-        <div class="skill">
-          <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="Web"/>
-          <div>
-            <h4>Web Design</h4>
-            <p>HTML, CSS, JavaScript – responsive & accessible.</p>
-          </div>
+        <div class="skill fade-in-on-scroll">
+            <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="Web"/>
+            <div>
+            <h4>Web Development</h4>
+            <p>I build responsive websites using HTML, CSS, and JS.</p>
+            </div>
         </div>
-        <div class="skill">
-          <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/photoshop/photoshop-plain.svg" alt="Graphics"/>
-          <div>
+        <div class="skill fade-in-on-scroll">
+            <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/illustrator/illustrator-plain.svg" alt="Adobe Illustrator"/>
+            <div>
             <h4>Graphic Designing</h4>
-            <p>Logos, posters, social assets with brand consistency.</p>
-          </div>
+            <p>I create digital graphics and illustrations using Adobe Illustrator.</p></div>
         </div>
-        <div class="skill">
-          <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="Tools"/>
-          <div>
+        <div class="skill fade-in-on-scroll">
+            <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="Tools"/>
+            <div>
             <h4>Tools</h4>
-            <p>VS Code, Git, WordPress, Firebase basics.</p>
-          </div>
+            <p>I use tools like VS Code and WordPress for my projects.</p>
+            </div>
         </div>
-        <div class="skill">
-          <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/androidstudio/androidstudio-original.svg" alt="Android"/>
-          <div>
+        <div class="skill fade-in-on-scroll">
+            <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/androidstudio/androidstudio-original.svg" alt="Android"/>
+            <div>
             <h4>App Development</h4>
-            <p>Android Studio, Kotlin – clean MVVM patterns.</p>
-          </div>
+            <p>I build Android apps with Kotlin and Android Studio.</p>p>
+            </div>
         </div>
-        <div class="skill">
-          <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="Programming"/>
-          <div>
+        <div class="skill fade-in-on-scroll">
+            <img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="Programming"/>
+            <div>
             <h4>Programming</h4>
-            <p>C++, C, Python – DSA & problem solving.</p>
-          </div>
+            <p>I am familiar with C, C++, and Python.</p>
+            </div>
         </div>
-      </div>
+        </div>
     </div>
-  </section>
+    </section>
 
-  <!-- Contact -->
-  <section id="contact" class="contact">
+    <section id="contact" class="contact">
     <div class="container">
-      <div class="section-hdr">
+        <div class="section-hdr">
         <div class="kicker">SAY HELLO</div>
         <div class="h2">Contact Me</div>
-      </div>
-      <a class="email" href="mailto:Shekhawatgauravv@gmail.com">Shekhawatgauravv@gmail.com</a>
-
-      <form onsubmit="event.preventDefault(); alert('Form will be connected later.');">
-        <div class="row">
-          <div>
-            <label for="name">Name</label>
-            <input id="name" type="text" placeholder="Your name" />
-          </div>
-          <div>
-            <label for="email">Email</label>
-            <input id="email" type="email" placeholder="Your email" />
-          </div>
-          <div class="full">
-            <label for="message">Message</label>
-            <textarea id="message" placeholder="Write your message..."></textarea>
-          </div>
         </div>
-        <div class="submit"><button type="submit">Submit</button></div>
-      </form>
+        <p style="text-align: center; max-width: 60ch; margin: 0 auto 20px; color: var(--muted);">
+            Feel free to reach out to me directly for projects or opportunities.
+        </p>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+            <a class="btn primary" href="mailto:Shekhawatgauravv@gmail.com">
+                Email Me
+            </a>
+            <div style="text-align:center; color:var(--muted); font-size:14px;">
+                or email me directly at: <a href="mailto:Shekhawatgauravv@gmail.com">Shekhawatgauravv@gmail.com</a>
+            </div>
+        </div>
     </div>
-  </section>
+    </section>
 
-  <footer>
+    <footer>
     <div class="container">© <span id="year"></span> Gaurav Shekhawat. All rights reserved.</div>
-  </footer>
+    </footer>
 
-  <script>
+    <script>
     // Year in footer
     document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -295,22 +447,59 @@
     const burger = document.getElementById('burger');
     const mobileMenu = document.getElementById('mobileMenu');
     burger.addEventListener('click', ()=>{
-      const show = mobileMenu.style.display === 'flex';
-      mobileMenu.style.display = show ? 'none' : 'flex';
+        const show = mobileMenu.style.display === 'flex';
+        mobileMenu.style.display = show ? 'none' : 'flex';
     });
 
     // Smooth anchor scroll (native behavior is fine; keep minimal JS for broader support)
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', e=>{
+        a.addEventListener('click', e=>{
         const id = a.getAttribute('href').slice(1);
         const el = document.getElementById(id);
         if(el){
-          e.preventDefault();
-          el.scrollIntoView({behavior:'smooth', block:'start'});
-          mobileMenu.style.display = 'none';
+            e.preventDefault();
+            el.scrollIntoView({behavior:'smooth', block:'start'});
+            mobileMenu.style.display = 'none';
         }
-      });
+        });
     });
-  </script>
+
+    // Typing animation for hero title
+    const typedTextSpan = document.getElementById("typed-text");
+    const textToType = "DEVELOPER";
+    let index = 0;
+    
+    // Function to start the typing animation
+    function typeText() {
+        if (index < textToType.length) {
+            typedTextSpan.textContent += textToType.charAt(index);
+            index++;
+            setTimeout(typeText, 100); // Adjust typing speed here
+        } else {
+            document.querySelector('.cursor').style.display = 'none';
+        }
+    }
+    
+    // Start typing after a short delay to match hero fade-in
+    setTimeout(typeText, 1000);
+
+    // Fade-in on scroll animation for cards
+    document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target); // Stop observing once visible
+                }
+            });
+        }, {
+            threshold: 0.2 // Trigger when 20% of the element is visible
+        });
+
+        document.querySelectorAll('.fade-in-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    });
+    </script>
 </body>
 </html>
