@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UPI Payment - Shekhawat Market</title>
+    <title>Complete Payment - Shekhawat Market</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -12,74 +12,159 @@
             font-family: 'Inter', sans-serif;
             background-color: #f0f2f5;
         }
-        .spinner {
-            border-top-color: #4f46e5;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .progress-bar {
+            transition: width 1s linear;
         }
     </style>
 </head>
-<body class="text-gray-800">
-    <div class="p-4 lg:p-8">
-        <!-- Top Navigation -->
-        <header class="bg-white rounded-2xl p-4 flex justify-between items-center shadow-sm mb-8">
-            <div class="flex items-center space-x-8">
-                <div class="flex items-center space-x-2">
-                    <div class="p-2 bg-indigo-600 rounded-lg text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    </div>
-                    <h1 class="text-2xl font-bold text-gray-800">Shekhawat Market</h1>
-                </div>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <!-- View 1: Initial Payment Screen -->
+    <div id="initial-view" class="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg text-center">
+        <div class="mx-auto flex items-center justify-center space-x-3">
+            <div class="p-3 bg-indigo-600 rounded-lg text-white">
+                <i data-lucide="landmark" class="w-6 h-6"></i>
             </div>
-            <div class="flex items-center space-x-4">
-                <div class="text-right">
-                    <p class="font-semibold">Ram Meena</p>
-                    <p class="text-xs text-gray-500">Tenant ID: 125</p>
-                </div>
-                <img src="https://placehold.co/40x40/312e81/ffffff?text=RM" alt="Tenant" class="w-10 h-10 rounded-full">
-            </div>
-        </header>
+            <h1 class="text-2xl font-bold text-gray-800">Shekhawat Market</h1>
+        </div>
 
-        <!-- Main Content -->
-        <main class="flex items-center justify-center">
-            <div id="payment-container" class="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg text-center">
-                <!-- Payment State -->
-                <div id="payment-initial">
-                    <p class="text-gray-500">You are paying</p>
-                    <h2 class="text-4xl font-bold my-2">Shekhawat Market</h2>
-                    <p class="text-6xl font-extrabold text-indigo-600 my-4">₹7,850</p>
-                    <img src="https://placehold.co/200x200/e0e7ff/3730a3?text=Scan+QR+to+Pay" alt="QR Code" class="mx-auto rounded-lg my-6">
-                    <p class="text-sm text-gray-400">Scan this QR with any UPI app</p>
-                    <div class="my-6 text-center"><span class="text-gray-400">OR</span></div>
-                    
-                    <!-- UPDATED: This is now a link that opens UPI apps on mobile -->
-                   <a id="pay-link" 
-   href="upi://pay?pa=gauravshekhawat2222-2@oksbi&pn=Gaurav%20Shekhawat&am=1.00&cu=INR&tn=RentPaymentForSept2025" 
-   target="_blank"
-   class="w-full bg-indigo-600 text-white font-semibold py-3 px-5 rounded-lg hover:bg-indigo-700 transition-colors flex items-center justify-center space-x-2">
-   <i data-lucide="send" class="w-5 h-5"></i>
-   <span>Pay using UPI App</span>
-</a>
-                    
-                    <p class="text-xs text-gray-400 mt-4">Clicking the button will open your UPI app.</p>
-                </div>
-            </div>
-        </main>
+        <p class="text-gray-500 mt-4">You are paying rent for <strong>Shop 1</strong>.</p>
+        
+        <div class="my-6">
+            <p class="text-lg text-gray-600">Total Amount</p>
+            <p class="text-6xl font-extrabold text-indigo-600">₹7,850</p>
+        </div>
+
+        <div class="space-y-3">
+            <a id="upi-link" href="#" class="w-full bg-indigo-600 text-white font-semibold py-4 px-5 rounded-lg hover:bg-indigo-700 flex items-center justify-center text-lg">
+                <i data-lucide="smartphone" class="w-6 h-6 mr-2"></i>
+                <span>Pay using UPI App</span>
+            </a>
+        </div>
+        <a href="tenant-dashboard.html" class="w-full inline-block mt-6 text-sm text-gray-500 hover:text-gray-700 text-center">Cancel and Go Back</a>
+    </div>
+
+    <!-- View 2: Timer/Loading Screen -->
+    <div id="timer-view" class="hidden w-full max-w-md bg-white p-8 rounded-2xl shadow-lg text-center">
+        <div class="animate-spin w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full mx-auto"></div>
+        <h1 class="text-2xl font-bold text-gray-800 mt-6">Processing Payment</h1>
+        <p class="text-gray-500 mt-2">Please complete the payment in your UPI app.</p>
+        <p class="text-4xl font-bold text-indigo-600 mt-4" id="timer-text">15</p>
+        <div class="w-full bg-gray-200 rounded-full h-2.5 mt-4">
+            <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full" style="width: 100%"></div>
+        </div>
+    </div>
+
+    <!-- View 3: Decision Screen -->
+    <div id="decision-view" class="hidden w-full max-w-md bg-white p-8 rounded-2xl shadow-lg text-center">
+        <i data-lucide="help-circle" class="w-16 h-16 text-gray-400 mx-auto"></i>
+        <h1 class="text-2xl font-bold text-gray-800 mt-6">Did you complete the payment?</h1>
+        <p class="text-gray-500 mt-2">Please confirm if you have successfully paid.</p>
+        <div class="mt-8 flex space-x-4">
+            <button id="cancel-btn" class="w-full bg-gray-200 text-gray-800 font-semibold py-3 px-5 rounded-lg hover:bg-gray-300">Cancel</button>
+            <button id="paid-btn" class="w-full bg-green-600 text-white font-semibold py-3 px-5 rounded-lg hover:bg-green-700">Yes, I Paid</button>
+        </div>
+    </div>
+
+    <!-- View 4: Proof Upload Screen -->
+    <div id="proof-view" class="hidden w-full max-w-md bg-white p-8 rounded-2xl shadow-lg text-center">
+        <i data-lucide="check-circle" class="w-16 h-16 text-green-500 mx-auto"></i>
+        <h1 class="text-2xl font-bold text-gray-800 mt-6">Payment Confirmed</h1>
+        <p class="text-gray-500 mt-2">You can optionally upload proof for faster verification.</p>
+        <div class="mt-6 pt-6 border-t">
+            <input type="file" id="proof-file" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"/>
+        </div>
+        <button id="done-btn" class="mt-6 w-full bg-indigo-600 text-white font-semibold py-3 px-5 rounded-lg hover:bg-indigo-700">Done</button>
+    </div>
+    
+    <!-- View 5: Cancelled Screen -->
+    <div id="cancelled-view" class="hidden w-full max-w-md bg-white p-8 rounded-2xl shadow-lg text-center">
+        <div class="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto"><i data-lucide="x-circle" class="w-12 h-12 text-red-600"></i></div>
+        <h1 class="text-3xl font-bold text-gray-800 mt-6">Payment Cancelled</h1>
+        <p class="text-gray-600 mt-2">Please pay before the due date to avoid late fees.</p>
+        <div class="mt-8 text-center"><div class="animate-spin w-8 h-8 border-4 border-indigo-200 border-t-indigo-500 rounded-full mx-auto"></div><p class="text-sm text-gray-500 mt-2">Redirecting to dashboard...</p></div>
+    </div>
+    
+    <!-- View 6: Pending Screen -->
+    <div id="pending-view" class="hidden w-full max-w-md bg-white p-8 rounded-2xl shadow-lg text-center">
+        <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto"><i data-lucide="send" class="w-12 h-12 text-blue-600"></i></div>
+        <h1 class="text-3xl font-bold text-gray-800 mt-6">Payment Submitted!</h1>
+        <p class="text-gray-600 mt-2">Thank you. Your payment is pending verification and will be approved by the manager within 2 days.</p>
+        <div class="mt-8 text-center"><div class="animate-spin w-8 h-8 border-4 border-indigo-200 border-t-indigo-500 rounded-full mx-auto"></div><p class="text-sm text-gray-500 mt-2">Redirecting to dashboard...</p></div>
     </div>
 
     <script>
         lucide.createIcons();
 
-        // The old simulation script is removed as the UPI link now handles the payment flow.
-        // When a user clicks the link on a mobile device, the operating system
-        // will automatically prompt them to open one of their installed UPI apps.
+        // --- All Views ---
+        const views = {
+            initial: document.getElementById('initial-view'),
+            timer: document.getElementById('timer-view'),
+            decision: document.getElementById('decision-view'),
+            proof: document.getElementById('proof-view'),
+            cancelled: document.getElementById('cancelled-view'),
+            pending: document.getElementById('pending-view'),
+        };
+        
+        let timerInterval;
+
+        // --- Helper Functions ---
+        const showView = (viewName) => {
+            Object.values(views).forEach(view => view.classList.add('hidden'));
+            if(views[viewName]) {
+                views[viewName].classList.remove('hidden');
+                lucide.createIcons();
+            }
+        };
+        
+        const redirectToDashboard = (delay) => {
+            setTimeout(() => { window.location.href = 'tenant-dashboard.html'; }, delay);
+        };
+
+        const startTimer = () => {
+            showView('timer');
+            let timeLeft = 15;
+            const timerText = document.getElementById('timer-text');
+            const progressBar = document.getElementById('progress-bar');
+            
+            timerText.textContent = timeLeft;
+            progressBar.style.width = '100%';
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerText.textContent = timeLeft;
+                progressBar.style.width = `${(timeLeft / 15) * 100}%`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showView('decision');
+                }
+            }, 1000);
+        };
+        
+        // --- UPI and QR Code setup ---
+        const upiId = "gauravshekhawat2222-2@oksbi";
+        const amount = "2.00";
+        const receiverName = "Gaurav Shekhawat";
+        const transactionNote = "Rent Payment - September 2025";
+        const upiString = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(receiverName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(transactionNote)}`;
+        document.getElementById('upi-link').href = upiString;
+
+        // --- Event Listeners ---
+        document.getElementById('upi-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = upiString; // Open UPI app
+            setTimeout(startTimer, 500); // Start timer after a delay
+        });
+
+        document.getElementById('paid-btn').addEventListener('click', () => showView('proof'));
+        document.getElementById('cancel-btn').addEventListener('click', () => {
+            showView('cancelled');
+            redirectToDashboard(4000);
+        });
+        document.getElementById('done-btn').addEventListener('click', () => {
+            showView('pending');
+            redirectToDashboard(4000);
+        });
     </script>
 </body>
 </html>
-
-
-
-
 
