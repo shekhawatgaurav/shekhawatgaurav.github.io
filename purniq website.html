@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Purniq - Premium Cold Pressed Oils (Kachi Ghani) and Authentic Spices. 100% Pure, Lab Tested, and delivered to your doorstep.">
+    <title>Purniq | Premium Cold Pressed Oils</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['DM Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            200: '#fde68a',
+                            300: '#fcd34d',
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                            800: '#92400e',
+                            900: '#78350f',
+                            950: '#451a03', // Deep Brown for Brand Section
+                        },
+                        stone: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            800: '#292524',
+                            900: '#1c1917',
+                        }
+                    },
+                    animation: {
+                        'scroll': 'scroll 30s linear infinite',
+                    },
+                    keyframes: {
+                        scroll: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.5);
+        }
+
+        body {
+            background-color: #fffbf7;
+            color: #1c1917;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Animations */
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scale-in {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes float-reverse {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        .animate-fade-in-up { animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-scale-in { animation: scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-reverse { animation: float-reverse 7s ease-in-out infinite; }
+        
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+
+        /* Utilities */
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .glass-card {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s ease;
+        }
+        .glass-card:hover {
+            background: rgba(255,255,255,0.9);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #d97706 0%, #92400e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-card-bg {
+            background: linear-gradient(135deg, #1c1917 0%, #292524 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .gold-card-bg::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,215,0,0.1) 50%, transparent 60%);
+            background-size: 200% 100%;
+            animation: shimmer 5s infinite linear;
+        }
+
+        .custom-shape-divider-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            transform: rotate(180deg);
+        }
+        .custom-shape-divider-bottom svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 50px;
+        }
+        @media (min-width: 768px) {
+            .custom-shape-divider-bottom svg { height: 80px; }
+        }
+        .shape-fill { fill: #FFFBF7; }
+
+        /* --- Flip Card Styles from DFN --- */
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400;700&display=swap');
+        :root {
+            --color-dfn-primary: #D4A33B;
+            --color-dfn-light: #FFFAF0;
+            --color-dfn-sale: #10B981;
+        }
+        .product-image-container { height: 160px; display: flex; justify-content: center; align-items: center; margin-bottom: 0.5rem; }
+        .product-image-bottle { height: 100%; width: auto; object-fit: contain; border-radius: 8px; max-width: 100%; }
+        .flip-card-container { width: 100%; max-width: 320px; height: 500px; perspective: 1000px; margin: 0 auto; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); }
+        .product-card-wrapper.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 12px; padding: 20px; box-sizing: border-box; overflow: hidden; }
+        .flip-card-front { background: var(--color-dfn-light); z-index: 2; }
+        .flip-card-back { background: var(--color-dfn-light); transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: space-between; }
+        .product-name-shadow { font-family: 'Bebas Neue', sans-serif; text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="selection:bg-amber-100 flex flex-col min-h-screen font-sans">
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="fixed top-4 right-4 z-[9999] space-y-2"></div>
+
+    <!-- Top Bar with Animation -->
+    <div class="bg-stone-900 text-stone-400 text-[10px] md:text-xs py-2.5 overflow-hidden relative z-50">
+        <div class="flex animate-scroll w-[200%] gap-16 md:gap-32">
+            <!-- Content Duplicated for seamless loop -->
+            <div class="flex items-center gap-16 md:gap-32 shrink-0">
+                <span class="flex items-center gap-2"><i data-lucide="building-2" width="14" height="14"></i> Bulk/Wholesale Available</span>
+                <span class="flex items-center gap-2"><i data-lucide="truck" width="14" height="14"></i> Free Shipping above ₹999</span>
+                <span class="flex items-center gap-3">
+                    <span class="uppercase tracking-widest font-bold text-amber-500">Quick Delivery:</span>
+                    <span class="font-medium text-stone-300">Amazon • Blinkit • Zepto</span>
+                </span>
+                <span class="flex items-center gap-2 text-amber-500 font-bold"><i data-lucide="star" width="14" height="14"></i> 4.9/5 Rated by 50k+ Families</span>
+            </div>
+            <div class="flex items-center gap-16 md:gap-32 shrink-0">
+                <span class="flex items-center gap-2"><i data-lucide="building-2" width="14" height="14"></i> Bulk/Wholesale Available</span>
+                <span class="flex items-center gap-2"><i data-lucide="truck" width="14" height="14"></i> Free Shipping above ₹999</span>
+                <span class="flex items-center gap-3">
+                    <span class="uppercase tracking-widest font-bold text-amber-500">Quick Delivery:</span>
+                    <span class="font-medium text-stone-300">Amazon • Blinkit • Zepto</span>
+                </span>
+                <span class="flex items-center gap-2 text-amber-500 font-bold"><i data-lucide="star" width="14" height="14"></i> 4.9/5 Rated by 50k+ Families</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar (Sticky Top - No Gap) -->
+    <nav id="navbar" class="sticky top-0 z-40 h-20 bg-white/95 backdrop-blur-md shadow-sm border-b border-stone-100">
+        <div class="container mx-auto px-4 md:px-6 2xl:px-12 h-full flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button class="md:hidden p-2 text-stone-800" onclick="toggleMobileMenu()">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div class="flex items-center gap-2 cursor-pointer group" onclick="renderPage('home'); window.scrollTo(0,0);">
+                    <!-- Logo Only - No Text -->
+                    <img src="purniq logo.png" alt="Purniq Logo" class="h-10 md:h-12 w-auto object-contain group-hover:scale-105 transition-transform">
+                </div>
+            </div>
+
+            <div class="hidden md:flex gap-8 2xl:gap-12" id="desktop-nav">
+                <!-- Nav items injected by JS -->
+            </div>
+
+            <div class="flex items-center gap-3 md:gap-5">
+                <button class="hidden md:block text-stone-600 hover:text-amber-700 transition-colors" title="Search">
+                    <i data-lucide="search" width="20" height="20"></i>
+                </button>
+                <button class="hidden md:block text-stone-600 hover:text-amber-700 transition-colors" title="Login / Profile" onclick="state.user ? renderPage('profile') : renderPage('login')">
+                    <i data-lucide="user" width="20" height="20"></i>
+                </button>
+                <button class="relative p-2 text-stone-600 hover:text-amber-700 transition-colors" onclick="toggleCart()">
+                    <i data-lucide="shopping-bag" width="20" height="20" class="md:w-6 md:h-6"></i>
+                    <span id="cart-count" class="absolute -top-1 -right-1 bg-amber-600 text-white text-[10px] w-4 h-4 md:w-5 md:h-5 flex items-center justify-center rounded-full font-bold shadow-md animate-scale-in hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="app-content" class="flex-grow pt-0">
+        <!-- Content injected by JS -->
+    </main>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/919876543210" target="_blank" class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-3 md:p-4 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+    </a>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 pt-16 md:pt-24 pb-12 relative overflow-hidden mt-auto">
+        <div class="custom-shape-divider-bottom top-0 -translate-y-full">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+            </svg>
+        </div>
+
+        <div class="container mx-auto px-6 2xl:px-12">
+            <div class="grid md:grid-cols-4 gap-8 md:gap-12 mb-12 md:mb-16 border-b border-stone-800 pb-12 md:pb-16">
+                <div class="md:col-span-1">
+                    <div class="flex items-center gap-2 text-white mb-4 md:mb-6">
+                        <!-- Footer Logo Only -->
+                        <img src="purniq logo.png" alt="Purniq" class="h-10 w-auto object-contain brightness-0 invert opacity-80">
+                    </div>
+                    <p class="text-sm leading-relaxed mb-6 opacity-80">
+                        Bringing the timeless tradition of cold-pressed oils back to modern homes. Pure, potent, and ethically sourced.
+                    </p>
+                    <div class="flex gap-4">
+                        <button class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-600 hover:text-white transition-all"><i data-lucide="instagram" width="18" height="18"></i></button>
+                        <button class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-600 hover:text-white transition-all"><i data-lucide="facebook" width="18" height="18"></i></button>
+                        <button class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-600 hover:text-white transition-all"><i data-lucide="twitter" width="18" height="18"></i></button>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4 md:mb-6">Shop</h4>
+                    <ul class="space-y-3 md:space-y-4 text-sm">
+                        <li class="hover:text-amber-500 cursor-pointer" onclick="renderPage('shop')">Cold Pressed Oils</li>
+                        <li class="hover:text-amber-500 cursor-pointer" onclick="renderPage('shop')">Authentic Spices</li>
+                        <li class="hover:text-amber-500 cursor-pointer">Gift Bundles</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4 md:mb-6">Support</h4>
+                    <ul class="space-y-3 md:space-y-4 text-sm">
+                        <li class="hover:text-amber-500 cursor-pointer">Track Order</li>
+                        <li class="hover:text-amber-500 cursor-pointer">Shipping Policy</li>
+                        <li class="hover:text-amber-500 cursor-pointer" onclick="renderPage('wholesale')">Wholesale Inquiry</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4 md:mb-6">Quick Commerce</h4>
+                    <p class="text-xs mb-4">Available for 10-min delivery on:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-stone-800 border border-stone-700 text-stone-300 px-3 py-1.5 rounded-lg text-xs font-bold hover:border-amber-500 hover:text-white cursor-pointer transition-colors">Blinkit</span>
+                        <span class="bg-stone-800 border border-stone-700 text-stone-300 px-3 py-1.5 rounded-lg text-xs font-bold hover:border-amber-500 hover:text-white cursor-pointer transition-colors">Zepto</span>
+                        <span class="bg-stone-800 border border-stone-700 text-stone-300 px-3 py-1.5 rounded-lg text-xs font-bold hover:border-amber-500 hover:text-white cursor-pointer transition-colors">Instamart</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center text-xs opacity-40 gap-4 md:gap-0">
+                <p>&copy; 2025 Purniq Pvt Ltd. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <span>Privacy</span>
+                    <span>Terms</span>
+                    <span>Sitemap</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals & Overlays -->
+    <div id="cart-sidebar" class="fixed inset-0 z-50 flex justify-end hidden">
+        <div class="absolute inset-0 bg-stone-900/40 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+        <div class="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-fade-in-up">
+            <div class="p-6 border-b border-stone-100 flex justify-between items-center bg-white">
+                <h2 class="font-serif font-bold text-2xl text-stone-900">Your Cart</h2>
+                <button onclick="toggleCart()" class="p-2 hover:bg-stone-100 rounded-full transition-colors"><i data-lucide="x"></i></button>
+            </div>
+            <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-6">
+                <!-- Cart items injected here -->
+            </div>
+            <div id="cart-footer" class="p-6 bg-stone-50 border-t border-stone-100 hidden">
+                <div class="flex justify-between font-bold text-xl mb-6 text-stone-900">
+                    <span>Total</span>
+                    <span id="cart-total">₹0</span>
+                </div>
+                <button onclick="alert('Redirecting to Payment Gateway...')" class="w-full text-lg bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-lg hover:shadow-amber-600/30 hover:-translate-y-0.5 px-6 py-4 rounded-xl font-medium transition-all duration-300">Checkout Securely</button>
+            </div>
+            <div id="cart-empty" class="h-full flex flex-col items-center justify-center text-center space-y-4 opacity-50">
+                <i data-lucide="shopping-bag" width="48" height="48"></i>
+                <p>Your cart feels a bit light.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-50 bg-stone-900 text-white p-6 animate-fade-in-up overflow-y-auto hidden">
+        <div class="flex justify-between items-center mb-12">
+            <div class="flex items-center gap-2">
+                <i data-lucide="droplet" class="text-amber-500" fill="currentColor"></i>
+                <span class="text-xl font-serif font-bold">Menu</span>
+            </div>
+            <button onclick="toggleMobileMenu()" class="p-2 bg-white/10 rounded-full"><i data-lucide="x"></i></button>
+        </div>
+        
+        <!-- Mobile Login Action -->
+        <div class="mb-8 p-4 bg-white/10 rounded-xl flex items-center gap-4 cursor-pointer hover:bg-white/20 transition-colors" onclick="state.user ? renderPage('profile') : renderPage('login'); toggleMobileMenu()">
+            <div class="w-10 h-10 bg-amber-600 rounded-full flex items-center justify-center text-white">
+                <i data-lucide="user" width="20" height="20"></i>
+            </div>
+            <div>
+                <p class="font-bold">Welcome Guest</p>
+                <p class="text-xs text-stone-400">Login / Signup</p>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-6 text-2xl font-serif" id="mobile-nav-links">
+            <!-- Mobile Links -->
+        </div>
+    </div>
+
+    <!-- Product Quick View Modal Container -->
+    <div id="product-modal-container"></div>
+
+    <!-- Logic -->
+    <script>
+        // --- Data ---
+        const DEFAULT_PRODUCTS = [
+            {
+                id: 101,
+                name: "Premium Cold Pressed Yellow Mustard",
+                subName: "Kachi Ghani Cold Pressed",
+                category: "Oils",
+                image: "yellow mustard.png",
+                rating: 4.9,
+                basePrice: 160,
+                description: "Extracted from the finest yellow mustard seeds using traditional cold-press machines. Retains pungency and natural antioxidants.",
+                tag: "Bestseller",
+                variants: [
+                    { size: "1L", packaging: "PET Bottle", multiplier: 1 },
+                    { size: "2L", packaging: "Spout Pouch", multiplier: 1.95 },
+                    { size: "5L", packaging: "Jerry Can", multiplier: 4.8 },
+                    { size: "15L", packaging: "Tin", multiplier: 13.5 }
+                ]
+            },
+            {
+                id: 102,
+                name: "Premium Cold Pressed Groundnut",
+                subName: "Virgin Cold Pressed",
+                category: "Oils",
+                image: "mockup.png",
+                rating: 4.8,
+                basePrice: 190,
+                description: "Unrefined, unfiltered, and pure. High smoke point groundnut oil perfect for deep frying and daily Indian cooking.",
+                tag: "High Heat",
+                variants: [
+                    { size: "1L", packaging: "PET Bottle", multiplier: 1 },
+                    { size: "5L", packaging: "Jerry Can", multiplier: 4.8 },
+                    { size: "15L", packaging: "Tin", multiplier: 13.5 }
+                ]
+            },
+            {
+                id: 103,
+                name: "Premium Cold Pressed white Sesame",
+                subName: "Heritage Edition",
+                category: "Oils",
+                image: "white sesame.png",
+                rating: 4.9,
+                basePrice: 350,
+                description: "Rich, nutty, and dense. Extracted from black sesame seeds, prized in Ayurveda for bone and skin health.",
+                tag: "Ayurvedic",
+                variants: [
+                    { size: "1L", packaging: "PET Bottle", multiplier: 1 },
+                    { size: "5L", packaging: "Jerry Can", multiplier: 4.8 }
+                ]
+            },
+            {
+                id: 201,
+                name: "Guntur Red Chilli",
+                subName: "Stemless Powder",
+                category: "Spices",
+                image: "https://images.unsplash.com/photo-1599909631249-113e6d6b63d9?auto=format&fit=crop&q=80&w=600",
+                rating: 4.9,
+                basePrice: 380,
+                description: "Fiery heat and vibrant color. Ground at low temperatures (LTG) to preserve volatile oils.",
+                tag: "Spicy",
+                variants: [
+                    { size: "200g", packaging: "Zip Pouch", multiplier: 0.22 },
+                    { size: "500g", packaging: "Zip Pouch", multiplier: 0.52 },
+                    { size: "1 Kg", packaging: "Zip Pouch", multiplier: 1 },
+                    { size: "5 Kg", packaging: "Bulk Pack", multiplier: 4.5 }
+                ]
+            },
+            {
+                id: 202,
+                name: "Salem Turmeric",
+                subName: "High Curcumin",
+                category: "Spices",
+                image: "https://images.unsplash.com/photo-1615485500704-8e99099928b3?auto=format&fit=crop&q=80&w=600",
+                rating: 4.8,
+                basePrice: 250,
+                description: "Golden-yellow powder with high curcumin content (5%+). Powerful anti-inflammatory properties.",
+                tag: "Immunity",
+                variants: [
+                    { size: "200g", packaging: "Zip Pouch", multiplier: 0.22 },
+                    { size: "500g", packaging: "Zip Pouch", multiplier: 0.52 },
+                    { size: "1 Kg", packaging: "Zip Pouch", multiplier: 1 }
+                ]
+            },
+            {
+                id: 203,
+                name: "Green Coriander",
+                subName: "Aromatic Powder",
+                category: "Spices",
+                image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&q=80&w=600",
+                rating: 4.5,
+                basePrice: 220,
+                description: "Freshly roasted and ground coriander seeds. Adds a citrusy, nutty flavor to curries.",
+                tag: "Aromatic",
+                variants: [
+                    { size: "500g", packaging: "Zip Pouch", multiplier: 0.52 },
+                    { size: "1 Kg", packaging: "Zip Pouch", multiplier: 1 }
+                ]
+            }
+        ];
+
+        // Load from LocalStorage or use Defaults
+        let PRODUCTS = JSON.parse(localStorage.getItem('purniq-products')) || DEFAULT_PRODUCTS;
+        if (!localStorage.getItem('purniq-products')) {
+            localStorage.setItem('purniq-products', JSON.stringify(PRODUCTS));
+        }
+
+        // --- State ---
+        let state = {
+            page: 'home',
+            cart: JSON.parse(localStorage.getItem('purniq-cart')) || [],
+            activeCategory: 'All',
+            user: JSON.parse(localStorage.getItem('purniq-user')) || null, // Auth State
+            ordersCount: 5
+        };
+
+        // --- Render Functions ---
+
+        function init() {
+            renderNav();
+            renderPage('home');
+            updateCartCount(); // Update badge on load
+            lucide.createIcons();
+            
+            // Only update shadow on scroll
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('navbar');
+                if (window.scrollY > 20) {
+                    nav.classList.add('shadow-md');
+                } else {
+                    nav.classList.remove('shadow-md');
+                }
+            });
+        }
+
+        function renderNav() {
+            const links = ['Home', 'Shop', 'Trace', 'About', 'Rewards'];
+            const isLoggedIn = state.user !== null;
+            
+            // Desktop
+            const desktopNav = document.getElementById('desktop-nav');
+            desktopNav.innerHTML = links.map(link => `
+                <button 
+                    onclick="renderPage('${link.toLowerCase()}')"
+                    class="text-sm 2xl:text-base font-bold uppercase tracking-widest transition-all hover:text-amber-600 relative group py-2 ${state.page === link.toLowerCase() ? 'text-amber-700' : 'text-stone-600'}"
+                >
+                    ${link}
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-amber-600 transform scale-x-0 group-hover:scale-x-100 transition-transform ${state.page === link.toLowerCase() ? 'scale-x-100' : ''}"></span>
+                </button>
+            `).join('');
+
+            // Mobile
+            const mobileNav = document.getElementById('mobile-nav-links');
+            mobileNav.innerHTML = links.map(link => `
+                <button onclick="renderPage('${link.toLowerCase()}'); toggleMobileMenu()" class="text-left py-2 border-b border-white/10 hover:text-amber-400 transition-colors">${link}</button>
+            `).join('') + `
+                <div class="mt-12 pt-12 border-t border-white/10">
+                    <p class="text-sm text-stone-400 mb-4 font-sans">Quick Links</p>
+                    <button onclick="renderPage('profile'); toggleMobileMenu()" class="block text-sm font-sans mb-2">My Profile</button>
+                    <button onclick="renderPage('shop'); toggleMobileMenu()" class="block text-sm font-sans mb-2">Track Order</button>
+                    ${isLoggedIn 
+                        ? `<button onclick="logout(); toggleMobileMenu()" class="block text-sm font-sans text-red-400">Logout</button>` 
+                        : `<button onclick="renderPage('login'); toggleMobileMenu()" class="block text-sm font-sans text-amber-400">Login</button>`}
+                </div>
+            `;
+        }
+
+        function renderPage(pageName) {
+            window.scrollTo(0,0);
+            state.page = pageName;
+            renderNav(); 
+            const content = document.getElementById('app-content');
+            
+            if (pageName === 'home') {
+                content.innerHTML = `
+                    <section class="relative min-h-[75vh] flex items-center bg-[#FFFBF7] overflow-hidden pt-32 md:pt-40 lg:pt-20">
+                        <div class="absolute top-0 right-0 w-2/3 h-full bg-[#FAEED6] rounded-l-[100px] hidden md:block"></div>
+                        <div class="absolute top-1/4 left-10 w-20 h-20 border-4 border-amber-200 rounded-full animate-float opacity-50 hidden md:block"></div>
+                        
+                        <div class="container mx-auto px-6 2xl:px-12 relative z-10 flex flex-col md:flex-row items-center h-full gap-8 md:gap-0">
+                            <!-- Text Content -->
+                            <!-- Added mt-10 md:mt-20 to push text further down -->
+                            <div class="w-full md:w-1/2 space-y-6 md:space-y-8 animate-fade-in-up md:pr-12 order-2 md:order-1 pb-10 md:pb-0 2xl:pl-8 mt-4 md:mt-8">
+                                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl 2xl:text-8xl font-serif text-stone-900 leading-[1.1] md:leading-[0.95] 2xl:leading-[0.9]">
+                                    Pure.<br/>
+                                    <span class="text-gradient italic">UNIQUE.</span><br/>
+                                    Purniq.
+                                </h1>
+                                <p class="text-base md:text-lg 2xl:text-xl text-stone-600 max-w-md 2xl:max-w-xl leading-relaxed">
+                                    Experience the richness of authentic cold-pressed oils and hand-ground spices. Crafted for the modern kitchen, rooted in tradition.
+                                </p>
+                                <div class="flex flex-col sm:flex-row gap-4 pt-2 md:pt-4">
+                                    <button onclick="renderPage('shop')" class="bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-lg hover:shadow-amber-600/30 hover:-translate-y-0.5 px-6 py-3 2xl:px-8 2xl:py-4 rounded-xl font-medium transition-all duration-300">Shop Collection</button>
+                                    <button onclick="renderPage('wholesale')" class="bg-white text-stone-800 border border-stone-200 hover:bg-stone-50 hover:border-amber-300 px-6 py-3 2xl:px-8 2xl:py-4 rounded-xl font-medium transition-all duration-300">For Business</button>
+                                </div>
+                                <div class="flex items-center gap-8 pt-6 md:pt-8 border-t border-stone-200/50">
+                                    <div><p class="text-2xl md:text-3xl font-serif font-bold text-stone-900">50k+</p><p class="text-[10px] md:text-xs text-stone-500 uppercase tracking-wide">Happy Families</p></div>
+                                    <div class="h-10 w-px bg-stone-200"></div>
+                                    <div><p class="text-2xl md:text-3xl font-serif font-bold text-stone-900">100%</p><p class="text-[10px] md:text-xs text-stone-500 uppercase tracking-wide">Lab Tested</p></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Hero Image & 4 Floating Badges -->
+                            <div class="w-full md:w-1/2 mt-4 md:mt-0 relative h-[40vh] md:h-[50vh] 2xl:h-[60vh] order-1 md:order-2 flex items-center justify-center">
+                                <div class="relative w-full aspect-square max-w-xs md:max-w-lg 2xl:max-w-2xl mx-auto">
+                                    <div class="absolute inset-0 bg-gradient-to-tr from-amber-200 to-orange-100 rounded-full blur-3xl opacity-60 animate-pulse"></div>
+                                    <img src="mockup.png" class="relative w-full h-full object-contain mix-blend-multiply drop-shadow-2xl animate-float" alt="Oil Bottle" />
+                                    
+                                    <!-- Badge 1: Top Right (Vegan) -->
+                                    <div class="absolute top-10 right-0 md:top-20 md:right-0 bg-white/90 backdrop-blur p-3 md:p-4 rounded-xl md:rounded-2xl shadow-xl animate-float delay-100 border border-white z-20 hover:scale-105 transition-transform cursor-default">
+                                        <div class="flex items-center gap-2 md:gap-3">
+                                            <div class="bg-green-100 p-1.5 md:p-2 rounded-full text-green-700"><i data-lucide="leaf" width="16" height="16" class="md:w-5 md:h-5"></i></div>
+                                            <div><p class="font-bold text-stone-800 text-xs md:text-sm">100% Vegan</p><p class="text-[9px] md:text-[10px] text-stone-500">Plant Based</p></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Badge 2: Bottom Left (Cold Pressed) -->
+                                    <div class="absolute bottom-10 left-0 md:bottom-20 md:left-0 bg-white/90 backdrop-blur p-3 md:p-4 rounded-xl md:rounded-2xl shadow-xl animate-float-reverse delay-200 border border-white z-20 hover:scale-105 transition-transform cursor-default">
+                                        <div class="flex items-center gap-2 md:gap-3">
+                                            <div class="bg-amber-100 p-1.5 md:p-2 rounded-full text-amber-700"><i data-lucide="snowflake" width="16" height="16" class="md:w-5 md:h-5"></i></div>
+                                            <div><p class="font-bold text-stone-800 text-xs md:text-sm">Cold Pressed</p><p class="text-[9px] md:text-[10px] text-stone-500">Nutrient Rich</p></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Badge 3: Top Left (Chemical Free) -->
+                                    <div class="absolute top-20 left-0 md:top-32 md:-left-8 bg-white/90 backdrop-blur p-3 md:p-4 rounded-xl md:rounded-2xl shadow-xl animate-float delay-300 border border-white z-20 hover:scale-105 transition-transform cursor-default">
+                                        <div class="flex items-center gap-2 md:gap-3">
+                                            <div class="bg-blue-100 p-1.5 md:p-2 rounded-full text-blue-700"><i data-lucide="shield-check" width="16" height="16" class="md:w-5 md:h-5"></i></div>
+                                            <div><p class="font-bold text-stone-800 text-xs md:text-sm">Zero Chemicals</p><p class="text-[9px] md:text-[10px] text-stone-500">Pure Extract</p></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Badge 4: Bottom Right (Lab Tested) -->
+                                    <div class="absolute bottom-20 right-0 md:bottom-32 md:-right-8 bg-white/90 backdrop-blur p-3 md:p-4 rounded-xl md:rounded-2xl shadow-xl animate-float-reverse delay-100 border border-white z-20 hover:scale-105 transition-transform cursor-default">
+                                        <div class="flex items-center gap-2 md:gap-3">
+                                            <div class="bg-purple-100 p-1.5 md:p-2 rounded-full text-purple-700"><i data-lucide="flask-conical" width="16" height="16" class="md:w-5 md:h-5"></i></div>
+                                            <div><p class="font-bold text-stone-800 text-xs md:text-sm">Lab Tested</p><p class="text-[9px] md:text-[10px] text-stone-500">Quality Assured</p></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Trust Strip (New Feature) -->
+                    <section class="bg-white border-b border-stone-100 py-8">
+                        <div class="container mx-auto px-6 flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                            <!-- Placeholder Logos using Text for Demo -->
+                            <div class="flex items-center gap-2 font-bold text-lg"><i data-lucide="award" class="text-amber-600"></i> FSSAI Certified</div>
+                            <div class="flex items-center gap-2 font-bold text-lg"><i data-lucide="globe" class="text-amber-600"></i> ISO 9001:2015</div>
+                            <div class="flex items-center gap-2 font-bold text-lg"><i data-lucide="flag" class="text-amber-600"></i> Make in India</div>
+                            <div class="flex items-center gap-2 font-bold text-lg"><i data-lucide="sprout" class="text-amber-600"></i> 100% Organic</div>
+                        </div>
+                    </section>
+
+                    <section class="py-12 md:py-20 bg-stone-50 relative overflow-hidden">
+                        <div class="container mx-auto px-6 2xl:px-12">
+                             <div class="text-center mb-10 md:mb-16 animate-fade-in-up">
+                                <h2 class="text-2xl md:text-4xl 2xl:text-5xl font-serif font-bold mb-2 md:mb-4">Sizes For Every Need</h2>
+                                <p class="text-sm md:text-base 2xl:text-lg text-stone-500">From your kitchen counter to your restaurant pantry.</p>
+                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 2xl:gap-12">
+                                ${['1L Bottle:Daily Use:bottle icon.png', 'Pouch:Easy Refill:pouch icon.png', '5L Can:Family Pack:5ltr tin can.png', '15L Tin:Bulk & B2B:15ltr tin can.png'].map(i => {
+                                    const [label, sub, icon] = i.split(':');
+                                    return `
+                                    <div class="group p-4 md:p-8 rounded-2xl md:rounded-3xl bg-white border border-stone-100 hover:border-amber-200 hover:bg-white transition-all duration-300 hover:shadow-xl text-center cursor-default">
+                                        <div class="w-20 h-20 md:w-28 md:h-28 mx-auto flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300">
+                                            <img src="${icon}" alt="${label}" class="w-full h-full object-contain drop-shadow-md">
+                                        </div>
+                                        <h3 class="font-bold text-stone-900 text-sm md:text-lg 2xl:text-xl">${label}</h3>
+                                        <p class="text-xs md:text-sm 2xl:text-base text-stone-500 mt-1">${sub}</p>
+                                    </div>`
+                                }).join('')}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="py-16 md:py-24 bg-[#FDF6E9] relative">
+                         <div class="container mx-auto px-6 2xl:px-12">
+                            <div class="flex flex-col md:flex-row md:justify-between md:items-end mb-8 md:mb-12 gap-4 md:gap-0">
+                                <div><span class="text-amber-600 font-bold uppercase tracking-widest text-xs 2xl:text-sm">Curated Selection</span><h2 class="text-3xl md:text-4xl 2xl:text-5xl font-serif font-bold text-stone-900 mt-2">Bestselling Essentials</h2></div>
+                                <button onclick="renderPage('shop')" class="flex items-center gap-2 text-stone-600 font-bold hover:text-amber-700 transition-colors text-sm md:text-base">View All <i data-lucide="arrow-right" class="md:w-[18px]"></i></button>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 2xl:gap-10">
+                                ${PRODUCTS.slice(0, 3).map(p => createProductCard(p)).join('')}
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Testimonials (New Feature) -->
+                    <section class="py-20 bg-white">
+                        <div class="container mx-auto px-6 2xl:px-12">
+                            <h2 class="text-3xl md:text-4xl font-serif font-bold text-center mb-12">Loved by Home Chefs</h2>
+                            <div class="grid md:grid-cols-3 gap-8">
+                                <div class="bg-stone-50 p-8 rounded-2xl border border-stone-100">
+                                    <div class="flex text-amber-500 mb-4"><i data-lucide="star" width="16" fill="currentColor"></i><i data-lucide="star" width="16" fill="currentColor"></i><i data-lucide="star" width="16" fill="currentColor"></i><i data-lucide="star" width="16" fill="currentColor"></i><i data-lucide="star" width="16" fill="currentColor"></i></div>
+                                    <p class="text-stone-600 mb-6 italic">"The mustard oil pungency is exactly like what my grandmother used to use. Pure and strong!"</p>
+                                    <div class="font-bold text-stone-900">- Priya Sharma, Delhi</div>
+                                </div>
+                                <div class="bg-stone-50 p-8 rounded-2xl border border-stone-100">
+                                    <div class="flex text-amber-500 mb-4"><i data-lucide="star" width="16" fill="currentColor"></i><i data-lucide="star" width="16" fill="currentColor"></i><i data-lucide="star" width="16" fill="currentColor"></i><i data-lucide="star" width="16" fill="currentColor"></i><i data-lucide="star" width="16" fill="currentColor"></i></div>
+                                    <p class="text-stone-600 mb-6 italic">"Switched to their Groundnut oil for frying. It feels so light and doesn't smell oily at all."</p>
+                                    <div class="font-bold text-stone-900">- Rahul Verma, Mumbai</div>
+                                </div>
+                                <div class="bg-stone-50 p-8 rounded-2xl border border-stone-100">
+                                    <div class="flex text-amber-500 mb-4"><i data-lucide="star" width="16" fill="currentColor"></i><i data-lucide="star" width="16" fill="currentColor"></i><i data-lucide="star" width="16" fill="currentColor"></i><i data-lucide="star" width="16" fill="currentColor"></i><i data-lucide="star" width="16" fill="currentColor"></i></div>
+                                    <p class="text-stone-600 mb-6 italic">"The 15L Tin packaging is excellent for my catering business. Consistent quality every time."</p>
+                                    <div class="font-bold text-stone-900">- Chef Ankit, Jaipur</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- FAQ Section (New Feature) -->
+                    <section class="py-20 bg-stone-900 text-stone-300">
+                        <div class="container mx-auto px-6 2xl:px-12 max-w-4xl">
+                            <h2 class="text-3xl md:text-4xl font-serif font-bold text-center text-white mb-12">Frequently Asked Questions</h2>
+                            <div class="space-y-4">
+                                <div class="border-b border-stone-700 pb-4">
+                                    <h3 class="text-xl font-bold text-white mb-2">Is the oil truly Cold Pressed?</h3>
+                                    <p>Yes, we use traditional wooden/steel ghani machines that rotate slowly, keeping the temperature below 50°C to retain all nutrients.</p>
+                                </div>
+                                <div class="border-b border-stone-700 pb-4">
+                                    <h3 class="text-xl font-bold text-white mb-2">What is the shelf life?</h3>
+                                    <p>Since we don't add preservatives, our oils are best used within 9-12 months of manufacturing.</p>
+                                </div>
+                                <div class="border-b border-stone-700 pb-4">
+                                    <h3 class="text-xl font-bold text-white mb-2">Do you ship all over India?</h3>
+                                    <p>Yes, we partner with major courier services to deliver across 25,000+ pincodes in India.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            } else if (pageName === 'shop') {
+                content.innerHTML = `
+                   <div class="container mx-auto px-4 md:px-6 2xl:px-12 py-8 md:py-12 animate-fade-in-up">
+                        <div class="text-center max-w-2xl mx-auto mb-10 md:mb-16">
+                            <h1 class="text-4xl md:text-5xl 2xl:text-6xl font-serif font-bold text-stone-900 mb-2 md:mb-4">The Collection</h1>
+                            <p class="text-stone-500 text-sm md:text-lg 2xl:text-xl">Pure oils and spices, sourced directly from farmers and processed with care.</p>
+                        </div>
+                        <div class="flex justify-center gap-2 md:gap-4 mb-8 md:mb-12 overflow-x-auto pb-4 md:pb-0 no-scrollbar">
+                            ${['All', 'Oils', 'Spices'].map(cat => `
+                                <button onclick="state.activeCategory = '${cat}'; renderPage('shop')" class="px-6 py-2 md:px-8 md:py-3 rounded-full font-bold transition-all duration-300 text-sm md:text-base whitespace-nowrap ${state.activeCategory === cat ? 'bg-stone-900 text-white shadow-lg scale-105' : 'bg-white text-stone-500 border border-stone-200 hover:border-stone-400'}">${cat}</button>
+                            `).join('')}
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 2xl:gap-10">
+                            ${PRODUCTS.filter(p => state.activeCategory === 'All' || p.category === state.activeCategory).map(p => createProductCard(p)).join('')}
+                        </div>
+                   </div>
+                `;
+            } else if (pageName === 'about') {
+                content.innerHTML = `
+                    <!-- Hero Section -->
+                    <div class="relative py-24 md:py-40 bg-[#FDF6E9] overflow-hidden animate-fade-in-up">
+                        <div class="container mx-auto px-6 relative z-10 text-center">
+                            <span class="text-amber-600 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">Est. 2020</span>
+                            <h1 class="text-5xl md:text-7xl font-serif font-bold text-stone-900 mb-8 leading-tight">The Purniq Story</h1>
+                            <p class="text-lg md:text-2xl text-stone-600 max-w-3xl mx-auto leading-relaxed font-serif italic">
+                                "We didn't just want to sell oil. We wanted to bring back the forgotten taste of our grandmother's kitchen."
+                            </p>
+                        </div>
+                        <div class="absolute top-0 left-0 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+                        <div class="absolute bottom-0 right-0 w-96 h-96 bg-orange-200/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+                    </div>
+
+                    <!-- The Origin Story (New Detailed Section) -->
+                    <section class="py-20 md:py-32 bg-white">
+                        <div class="container mx-auto px-6 2xl:px-12">
+                            <div class="grid md:grid-cols-2 gap-16 items-center">
+                                <div class="relative">
+                                    <div class="absolute -top-4 -left-4 w-24 h-24 bg-amber-100 rounded-full -z-10"></div>
+                                    <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&q=80&w=800" alt="Farmers in field" class="rounded-[2rem] shadow-2xl w-full object-cover h-[500px] grayscale hover:grayscale-0 transition-all duration-700">
+                                    <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-xl max-w-xs hidden md:block">
+                                        <p class="text-stone-500 text-sm italic">"Every bottle starts here, in the hands of our partner farmers."</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-8">
+                                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-stone-900">It Started With a Question.</h2>
+                                    <div class="space-y-6 text-lg text-stone-600 leading-relaxed">
+                                        <p>
+                                            A few years ago, we stood in a supermarket aisle, reading the back of a "healthy" oil bottle. The label listed ingredients we couldn't pronounce and processes that sounded more like a chemistry lab than a kitchen. 
+                                            <span class="text-stone-900 font-bold">Where did the real food go?</span>
+                                        </p>
+                                        <p>
+                                            That question took us on a journey across India, back to the villages where the wooden <em>Ghani</em> (press) still turned slowly. We watched as fresh seeds were crushed—without heat, without chemicals—releasing an oil that smelled like the earth and tasted like pure gold.
+                                        </p>
+                                        <p>
+                                            We realized that in the race for quantity, the world had sacrificed quality. Purniq was born to reverse that. To bring the ancient wisdom of <strong>slow living</strong> back into your fast-paced life.
+                                        </p>
+                                    </div>
+                                    <div class="pt-4">
+                                        <img src="purniq logo.png" alt="Signature" class="h-12 opacity-50 grayscale">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- PURNIQ Definition Section -->
+                    <section class="py-20 bg-amber-950 text-white text-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+                        <div class="container mx-auto px-6 relative z-10">
+                            <div class="flex flex-col items-center justify-center space-y-8">
+                                <div class="flex flex-col md:flex-row items-center gap-4 text-4xl md:text-6xl font-serif">
+                                    <div><span class="font-bold">PUR</span>ity</div>
+                                    <div class="text-amber-500 font-light text-2xl md:text-4xl">+</div>
+                                    <div>u<span class="font-bold">NIQ</span>ue</div>
+                                </div>
+                                
+                                <div class="grid md:grid-cols-2 gap-12 max-w-5xl text-left md:text-center text-amber-100/80 text-lg md:text-xl leading-relaxed mt-8">
+                                    <div class="p-6 border border-amber-900/50 rounded-2xl bg-amber-900/20 backdrop-blur-sm">
+                                        <p class="font-bold text-white mb-2 text-2xl font-serif">Purity</p>
+                                        <p>It's not just about what we put in (100% seeds), but what we keep out. No fillers, no mineral oils, no artificial essences. Just the honest, raw nectar of nature.</p>
+                                    </div>
+                                    <div class="p-6 border border-amber-900/50 rounded-2xl bg-amber-900/20 backdrop-blur-sm">
+                                        <p class="font-bold text-white mb-2 text-2xl font-serif">Unique</p>
+                                        <p>Every batch has a slightly different character, just like nature intended. We don't standardize flavor with chemicals; we celebrate the unique profile of each harvest.</p>
+                                    </div>
+                                </div>
+
+                                <div class="text-4xl md:text-6xl text-amber-500 font-serif my-6">=</div>
+
+                                <img src="purniq logo.png" alt="Purniq" class="h-20 md:h-24 object-contain brightness-0 invert opacity-90" /> 
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Educational Section: The Process -->
+                    <section class="py-24 bg-stone-50">
+                        <div class="container mx-auto px-6 2xl:px-12">
+                            <div class="text-center max-w-3xl mx-auto mb-16">
+                                <span class="text-amber-600 font-bold uppercase tracking-widest text-sm">The Method</span>
+                                <h2 class="text-4xl md:text-5xl font-serif font-bold text-stone-900 mt-3 mb-6">The Art of Cold Pressing</h2>
+                                <p class="text-stone-600 text-lg">We don't manufacture oil; we simply extract it. It's a slow, patient process that respects the ingredient.</p>
+                            </div>
+
+                            <div class="grid md:grid-cols-3 gap-8">
+                                <div class="bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl transition-shadow duration-300 relative overflow-hidden group">
+                                    <div class="absolute top-0 right-0 bg-stone-100 w-24 h-24 rounded-bl-full -mr-4 -mt-4 transition-colors group-hover:bg-amber-100"></div>
+                                    <div class="relative z-10">
+                                        <span class="text-5xl font-serif font-bold text-stone-200 group-hover:text-amber-200 transition-colors">01</span>
+                                        <h3 class="text-xl font-bold text-stone-900 mt-4 mb-3">Sourcing</h3>
+                                        <p class="text-stone-600 leading-relaxed">We partner directly with farmers in Rajasthan and Gujarat. Only the highest grade, sun-dried seeds make the cut. No GMOs, ever.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl transition-shadow duration-300 relative overflow-hidden group">
+                                    <div class="absolute top-0 right-0 bg-stone-100 w-24 h-24 rounded-bl-full -mr-4 -mt-4 transition-colors group-hover:bg-amber-100"></div>
+                                    <div class="relative z-10">
+                                        <span class="text-5xl font-serif font-bold text-stone-200 group-hover:text-amber-200 transition-colors">02</span>
+                                        <h3 class="text-xl font-bold text-stone-900 mt-4 mb-3">Pressing</h3>
+                                        <p class="text-stone-600 leading-relaxed">Seeds are crushed in a wooden Ghani at slow speeds. The temperature never exceeds 40°C, preserving the vital nutrients and natural aroma.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl transition-shadow duration-300 relative overflow-hidden group">
+                                    <div class="absolute top-0 right-0 bg-stone-100 w-24 h-24 rounded-bl-full -mr-4 -mt-4 transition-colors group-hover:bg-amber-100"></div>
+                                    <div class="relative z-10">
+                                        <span class="text-5xl font-serif font-bold text-stone-200 group-hover:text-amber-200 transition-colors">03</span>
+                                        <h3 class="text-xl font-bold text-stone-900 mt-4 mb-3">Settling</h3>
+                                        <p class="text-stone-600 leading-relaxed">We don't filter with machines. The oil sits in tanks for days, letting sediments settle naturally. What you get is pure, cloudy, nutrient-dense oil.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Values Grid -->
+                    <section class="py-20 bg-white border-t border-stone-100">
+                        <div class="container mx-auto px-6">
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+                                <div class="space-y-4 group">
+                                    <div class="w-24 h-24 mx-auto bg-stone-50 rounded-full flex items-center justify-center text-amber-600 group-hover:scale-110 group-hover:bg-amber-50 transition-all duration-300">
+                                        <i data-lucide="sprout" width="40" height="40"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-xl text-stone-900">100% Natural</h3>
+                                        <p class="text-sm text-stone-500 mt-1">Straight from the farm</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-4 group">
+                                    <div class="w-24 h-24 mx-auto bg-stone-50 rounded-full flex items-center justify-center text-amber-600 group-hover:scale-110 group-hover:bg-amber-50 transition-all duration-300">
+                                        <i data-lucide="thermometer" width="40" height="40"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-xl text-stone-900">Low Temp</h3>
+                                        <p class="text-sm text-stone-500 mt-1">Nutrients preserved</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-4 group">
+                                    <div class="w-24 h-24 mx-auto bg-stone-50 rounded-full flex items-center justify-center text-amber-600 group-hover:scale-110 group-hover:bg-amber-50 transition-all duration-300">
+                                        <i data-lucide="flask-conical" width="40" height="40"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-xl text-stone-900">Lab Tested</h3>
+                                        <p class="text-sm text-stone-500 mt-1">Certified for purity</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-4 group">
+                                    <div class="w-24 h-24 mx-auto bg-stone-50 rounded-full flex items-center justify-center text-amber-600 group-hover:scale-110 group-hover:bg-amber-50 transition-all duration-300">
+                                        <i data-lucide="heart" width="40" height="40"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-xl text-stone-900">Heart Healthy</h3>
+                                        <p class="text-sm text-stone-500 mt-1">Zero Cholesterol</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Contact Section (New) -->
+                    <section class="py-24 bg-[#FDF6E9]">
+                        <div class="container mx-auto px-6 2xl:px-12">
+                            <div class="max-w-4xl mx-auto bg-white rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row">
+                                <div class="md:w-1/2 bg-stone-900 p-12 text-white flex flex-col justify-between relative overflow-hidden">
+                                    <div class="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+                                    <div class="relative z-10">
+                                        <h3 class="text-3xl font-serif font-bold mb-6">Get in Touch</h3>
+                                        <p class="text-stone-400 mb-8 leading-relaxed">Have a question about our process? Want to visit our facility? We'd love to hear from you.</p>
+                                        <div class="space-y-4">
+                                            <div class="flex items-center gap-4">
+                                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"><i data-lucide="mail" width="18"></i></div>
+                                                <p>hello@purniq.com</p>
+                                            </div>
+                                            <div class="flex items-center gap-4">
+                                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"><i data-lucide="phone" width="18"></i></div>
+                                                <p>+91 98765 43210</p>
+                                            </div>
+                                            <div class="flex items-center gap-4">
+                                                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"><i data-lucide="map-pin" width="18"></i></div>
+                                                <p>Jaipur, Rajasthan, India</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-12 relative z-10">
+                                        <p class="text-sm text-stone-500">Follow our journey</p>
+                                        <div class="flex gap-4 mt-4">
+                                            <a href="#" class="hover:text-amber-400 transition-colors"><i data-lucide="instagram"></i></a>
+                                            <a href="#" class="hover:text-amber-400 transition-colors"><i data-lucide="facebook"></i></a>
+                                            <a href="#" class="hover:text-amber-400 transition-colors"><i data-lucide="twitter"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md:w-1/2 p-12">
+                                    <form onsubmit="event.preventDefault(); alert('Message Sent!');" class="space-y-6">
+                                        <div>
+                                            <label class="block text-xs font-bold uppercase text-stone-400 mb-2">Your Name</label>
+                                            <input type="text" class="w-full bg-stone-50 border-b-2 border-stone-200 p-3 focus:border-amber-500 outline-none transition-colors" placeholder="John Doe" />
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold uppercase text-stone-400 mb-2">Email Address</label>
+                                            <input type="email" class="w-full bg-stone-50 border-b-2 border-stone-200 p-3 focus:border-amber-500 outline-none transition-colors" placeholder="john@example.com" />
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold uppercase text-stone-400 mb-2">Message</label>
+                                            <textarea rows="4" class="w-full bg-stone-50 border-b-2 border-stone-200 p-3 focus:border-amber-500 outline-none transition-colors" placeholder="Tell us what's on your mind..."></textarea>
+                                        </div>
+                                        <button class="w-full bg-stone-900 text-white py-4 rounded-xl font-bold hover:bg-amber-600 transition-colors shadow-lg">Send Message</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            } else if (pageName === 'wholesale') {
+                content.innerHTML = `
+                    <div class="container mx-auto px-4 md:px-6 2xl:px-12 py-8 md:py-12 max-w-5xl 2xl:max-w-6xl animate-fade-in-up">
+                        <div class="bg-stone-900 text-white rounded-3xl md:rounded-[3rem] p-6 md:p-20 relative overflow-hidden">
+                             <div class="absolute top-0 right-0 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+                             <div class="relative z-10 grid md:grid-cols-2 gap-10 md:gap-16">
+                                <div>
+                                    <span class="bg-amber-500 text-stone-900 px-3 py-1 rounded text-xs font-bold uppercase tracking-wider mb-4 md:mb-6 inline-block">B2B Partner Program</span>
+                                    <h1 class="text-3xl md:text-5xl font-serif font-bold mb-4 md:mb-6 leading-tight">Scale Your Business with Pure Ingredients.</h1>
+                                    <p class="text-stone-400 text-base md:text-lg mb-6 md:mb-8 leading-relaxed">Get the best prices on 15L Tins and Bulk Sacks. Perfect for Restaurants, Hotels, and Retail Chains.</p>
+                                    <div class="mt-8 md:mt-12 p-6 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm">
+                                        <p class="text-xs md:text-sm text-stone-400 uppercase tracking-widest mb-1">Direct Sales Line</p>
+                                        <p class="text-2xl md:text-3xl font-serif font-bold text-amber-400">+91 98765 43210</p>
+                                    </div>
+                                </div>
+                                <form class="bg-white text-stone-900 p-6 md:p-8 rounded-2xl md:rounded-3xl shadow-2xl space-y-4 md:space-y-5" onsubmit="event.preventDefault(); alert('Request Sent! We will contact you soon.')">
+                                    <h3 class="text-xl md:text-2xl font-serif font-bold mb-2">Request a Quote</h3>
+                                    <input class="w-full bg-stone-50 border border-stone-200 p-3 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none text-sm" placeholder="Full Name" required />
+                                    <input class="w-full bg-stone-50 border border-stone-200 p-3 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none text-sm" placeholder="Business Email" required />
+                                    <select class="w-full bg-stone-50 border border-stone-200 p-3 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none text-sm">
+                                        <option>15L Oil Tins (Bulk)</option><option>Spices (5Kg+)</option><option>Reselling</option>
+                                    </select>
+                                    <button class="w-full py-3 md:py-4 mt-4 text-base md:text-lg bg-stone-900 text-white rounded-xl font-bold hover:bg-amber-600 transition-colors">Submit Request</button>
+                                </form>
+                             </div>
+                        </div>
+                    </div>
+                `;
+            } else if (pageName === 'rewards') {
+                content.innerHTML = `
+                    <div class="container mx-auto px-6 2xl:px-12 py-12 md:py-16 text-center max-w-3xl animate-fade-in-up">
+                        <h1 class="text-4xl md:text-5xl font-serif font-bold mb-4">Your Stamp Card</h1>
+                        <p class="text-stone-500 text-lg mb-12">Track your journey to exclusive rewards.</p>
+                        <div class="gold-card-bg rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-16 text-white shadow-2xl relative overflow-hidden mx-auto max-w-2xl transform hover:scale-[1.02] transition-transform duration-500">
+                             <div class="relative z-10">
+                                <div class="flex justify-between items-center mb-8 md:mb-12">
+                                   <div class="text-left"><h2 class="text-2xl md:text-3xl font-serif font-bold">Gold Member</h2><p class="text-white/60 text-xs md:text-sm">Valid until Dec 2025</p></div>
+                                   <i data-lucide="droplet" class="text-white opacity-90 md:w-12 md:h-12" width="32" height="32" fill="currentColor"></i>
+                                </div>
+                                <div class="grid grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+                                   ${Array(8).fill(0).map((_, i) => `
+                                     <div class="aspect-square rounded-full flex items-center justify-center border-2 border-dashed relative ${i < state.ordersCount ? 'border-amber-400 bg-amber-500/20' : 'border-white/20'}">
+                                       ${i < state.ordersCount ? '<div class="w-full h-full rounded-full bg-amber-400 flex items-center justify-center animate-scale-in text-stone-900 shadow-[0_0_15px_rgba(251,191,36,0.5)]"><i data-lucide="check" width="16" height="16" class="md:w-6 md:h-6" stroke-width="4"></i></div>' : `<span class="text-white/30 font-bold text-sm md:text-xl">${i + 1}</span>`}
+                                     </div>
+                                   `).join('')}
+                                </div>
+                                <div class="bg-black/30 backdrop-blur-md rounded-xl p-4 md:p-6 text-left border border-white/10">
+                                    <h3 class="text-lg md:text-xl font-bold text-amber-300 mb-1">Upcoming Reward</h3>
+                                    <p class="text-white/80 text-sm md:text-base">Premium Spice Selection Box (Worth ₹800)</p>
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                `;
+            } else if (pageName === 'trace') {
+                content.innerHTML = `
+                    <div class="min-h-[85vh] bg-[#FDF6E9] flex flex-col items-center justify-center px-4 py-20 animate-fade-in-up relative overflow-hidden">
+                        <!-- Background Elements -->
+                        <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+                            <div class="absolute top-20 left-20 w-64 h-64 bg-amber-300 rounded-full blur-3xl"></div>
+                            <div class="absolute bottom-20 right-20 w-80 h-80 bg-orange-300 rounded-full blur-3xl"></div>
+                        </div>
+
+                        <div class="text-center max-w-2xl mx-auto mb-12 relative z-10">
+                            <span class="text-amber-600 font-bold uppercase tracking-widest text-sm mb-3 block">Transparency First</span>
+                            <h1 class="text-4xl md:text-6xl font-serif font-bold text-stone-900 mb-6">Trace Your Bottle</h1>
+                            <p class="text-stone-600 text-lg leading-relaxed">Every drop has a story. Enter the Batch Number found on the back label of your bottle to see its journey from farm to you.</p>
+                        </div>
+
+                        <div class="w-full max-w-md bg-white p-2 rounded-2xl shadow-xl flex mb-12 relative z-20 border border-stone-100">
+                            <input type="text" id="batch-input" placeholder="Enter Batch No. (e.g. PNQ-2025-01)" class="flex-1 p-4 rounded-xl outline-none text-stone-900 font-bold uppercase placeholder:normal-case placeholder:font-normal placeholder:text-stone-400">
+                            <button onclick="traceBatch()" class="bg-stone-900 text-white px-8 rounded-xl font-bold hover:bg-amber-600 transition-colors shadow-lg">Search</button>
+                        </div>
+
+                        <!-- Result Container -->
+                        <div id="trace-result" class="w-full max-w-4xl hidden relative z-10">
+                            <!-- Injected via JS -->
+                        </div>
+                        
+                        <!-- Demo Hint -->
+                        <p class="text-xs text-stone-400 mt-8 relative z-10">Try entering: <span class="font-bold cursor-pointer hover:text-amber-600 border-b border-dashed border-stone-400" onclick="document.getElementById('batch-input').value='PNQ-2025-01'; traceBatch()">PNQ-2025-01</span></p>
+                    </div>
+                `;
+            } else if (pageName === 'login') {
+                content.innerHTML = renderAuthHTML('login');
+            } else if (pageName === 'signup') {
+                content.innerHTML = renderAuthHTML('signup');
+            } else if (pageName === 'checkout') {
+                const total = state.cart.reduce((sum, item) => sum + item.price, 0);
+                content.innerHTML = `
+                    <div class="container mx-auto px-4 md:px-6 2xl:px-12 py-12 animate-fade-in-up">
+                        <h1 class="text-3xl md:text-4xl font-serif font-bold mb-8">Secure Checkout</h1>
+                        <div class="grid lg:grid-cols-3 gap-8 md:gap-12">
+                            <div class="lg:col-span-2 space-y-8">
+                                <!-- Shipping -->
+                                <div class="bg-white p-6 md:p-8 rounded-3xl border border-stone-100 shadow-sm">
+                                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><span class="bg-stone-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span> Shipping Address</h2>
+                                    <form id="checkout-form" class="grid md:grid-cols-2 gap-4">
+                                        <input class="w-full bg-stone-50 border border-stone-200 p-3 rounded-xl outline-none" placeholder="First Name" required value="${state.user ? state.user.name.split(' ')[0] : ''}">
+                                        <input class="w-full bg-stone-50 border border-stone-200 p-3 rounded-xl outline-none" placeholder="Last Name" required>
+                                        <input class="w-full bg-stone-50 border border-stone-200 p-3 rounded-xl outline-none md:col-span-2" placeholder="Address Line 1" required>
+                                        <input class="w-full bg-stone-50 border border-stone-200 p-3 rounded-xl outline-none" placeholder="City" required>
+                                        <input class="w-full bg-stone-50 border border-stone-200 p-3 rounded-xl outline-none" placeholder="Pincode" required>
+                                        <input class="w-full bg-stone-50 border border-stone-200 p-3 rounded-xl outline-none md:col-span-2" placeholder="Phone Number" required>
+                                    </form>
+                                </div>
+                                <!-- Payment -->
+                                <div class="bg-white p-6 md:p-8 rounded-3xl border border-stone-100 shadow-sm">
+                                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><span class="bg-stone-900 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span> Payment Method</h2>
+                                    <div class="space-y-3">
+                                        <label class="flex items-center gap-4 p-4 border border-stone-200 rounded-xl cursor-pointer hover:border-amber-500 transition-colors">
+                                            <input type="radio" name="payment" checked class="accent-amber-600 w-5 h-5">
+                                            <span class="font-bold">UPI / Cards / Netbanking</span>
+                                            <span class="ml-auto text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Fastest</span>
+                                        </label>
+                                        <label class="flex items-center gap-4 p-4 border border-stone-200 rounded-xl cursor-pointer hover:border-amber-500 transition-colors">
+                                            <input type="radio" name="payment" class="accent-amber-600 w-5 h-5">
+                                            <span class="font-bold">Cash on Delivery</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Summary -->
+                            <div class="lg:col-span-1">
+                                <div class="bg-stone-50 p-6 md:p-8 rounded-3xl border border-stone-200 sticky top-24">
+                                    <h3 class="font-bold text-xl mb-6">Order Summary</h3>
+                                    <div class="space-y-4 mb-6 max-h-60 overflow-y-auto pr-2">
+                                        ${state.cart.map(item => `
+                                            <div class="flex justify-between text-sm">
+                                                <span class="text-stone-600 truncate w-2/3">${item.name} (${item.selectedVariant.size})</span>
+                                                <span class="font-bold">₹${item.price}</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                    <div class="border-t border-stone-200 pt-4 space-y-2">
+                                        <div class="flex justify-between text-stone-500"><span>Subtotal</span><span>₹${total}</span></div>
+                                        <div class="flex justify-between text-stone-500"><span>Shipping</span><span class="text-green-600">FREE</span></div>
+                                        <div class="flex justify-between font-bold text-xl text-stone-900 pt-2"><span>Total</span><span>₹${total}</span></div>
+                                    </div>
+                                    <button onclick="processOrder()" class="w-full bg-amber-600 text-white py-4 rounded-xl font-bold mt-6 hover:bg-amber-700 transition-colors shadow-lg">Place Order</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (pageName === 'profile') {
+                if (!state.user) { renderPage('login'); return; }
+                
+                const allOrders = JSON.parse(localStorage.getItem('purniq-orders')) || [];
+                const myOrders = allOrders.filter(o => o.userEmail === state.user.email);
+                
+                const allSubs = JSON.parse(localStorage.getItem('purniq-subscriptions')) || [];
+                const mySubs = allSubs.filter(s => s.email === state.user.email);
+
+                content.innerHTML = `
+                    <div class="container mx-auto px-4 md:px-6 2xl:px-12 py-12 animate-fade-in-up">
+                        <div class="flex flex-col md:flex-row gap-8">
+                            <div class="w-full md:w-1/4">
+                                <div class="bg-white p-6 rounded-3xl border border-stone-100 text-center">
+                                    <div class="w-20 h-20 bg-stone-900 text-white rounded-full flex items-center justify-center text-2xl font-serif font-bold mx-auto mb-4">${state.user.name.charAt(0)}</div>
+                                    <h2 class="font-bold text-xl">${state.user.name}</h2>
+                                    <p class="text-stone-500 text-sm mb-6">${state.user.email}</p>
+                                    <button onclick="logout()" class="text-red-500 font-bold text-sm hover:underline">Sign Out</button>
+                                </div>
+                            </div>
+                            <div class="w-full md:w-3/4">
+                                <!-- Subscriptions Section -->
+                                <div class="mb-12">
+                                    <h2 class="text-2xl font-serif font-bold mb-6 flex items-center gap-2">
+                                        <i data-lucide="calendar-clock" class="text-amber-600"></i> Active Subscriptions
+                                    </h2>
+                                    <div class="grid gap-4">
+                                        ${mySubs.length === 0 ? 
+                                            `<div class="bg-stone-50 p-6 rounded-2xl text-center text-stone-400 border border-stone-100">No active subscriptions. Save 10% by subscribing!</div>` : 
+                                            mySubs.map(sub => `
+                                            <div class="bg-white p-6 rounded-2xl border border-stone-100 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
+                                                <div>
+                                                    <p class="font-bold text-lg text-stone-900">${sub.product} <span class="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-full ml-2">Monthly Pack</span></p>
+                                                    <p class="text-stone-500 text-sm">Variant: ${sub.variant} • Next Delivery: <span class="font-bold text-stone-800">${sub.nextDelivery}</span></p>
+                                                </div>
+                                                <div class="text-right">
+                                                    <p class="font-bold text-lg text-emerald-600">₹${sub.price} <span class="text-xs text-stone-400 font-normal">/ month</span></p>
+                                                    <button class="text-xs font-bold text-red-500 hover:underline mt-1">Cancel Plan</button>
+                                                </div>
+                                            </div>
+                                            `).join('')
+                                        }
+                                    </div>
+                                </div>
+
+                                <h2 class="text-2xl font-serif font-bold mb-6">Order History</h2>
+                                <div class="space-y-4">
+                                    ${myOrders.length === 0 ? 
+                                        `<div class="bg-stone-50 p-8 rounded-2xl text-center text-stone-400">No orders found. Start shopping!</div>` : 
+                                        myOrders.map(order => {
+                                            // Status Logic
+                                            const steps = ['Processing', 'Packed', 'Shipped', 'Delivered'];
+                                            const currentStepIndex = steps.indexOf(order.status) === -1 ? 0 : steps.indexOf(order.status);
+                                            const progressWidth = (currentStepIndex / (steps.length - 1)) * 100;
+                                            
+                                            return `
+                                            <div class="bg-white p-6 rounded-2xl border border-stone-100 shadow-sm">
+                                                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                                                    <div>
+                                                        <p class="font-bold text-lg text-stone-900">${order.id}</p>
+                                                        <p class="text-stone-500 text-sm">Placed on ${order.date.split(',')[0]}</p>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <p class="font-bold text-lg text-amber-600">₹${order.total.toLocaleString()}</p>
+                                                        <p class="text-xs font-bold uppercase tracking-wider text-stone-400">${order.items.length} Items</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Tracker -->
+                                                <div class="relative py-4">
+                                                    <div class="absolute top-1/2 left-0 w-full h-1 bg-stone-100 -translate-y-1/2 rounded-full"></div>
+                                                    <div class="absolute top-1/2 left-0 h-1 bg-green-500 -translate-y-1/2 rounded-full transition-all duration-1000" style="width: ${progressWidth}%"></div>
+                                                    <div class="relative flex justify-between w-full">
+                                                        ${steps.map((step, idx) => `
+                                                            <div class="flex flex-col items-center gap-2">
+                                                                <div class="w-4 h-4 rounded-full border-2 ${idx <= currentStepIndex ? 'bg-green-500 border-green-500' : 'bg-white border-stone-300'} z-10"></div>
+                                                                <span class="text-[10px] font-bold uppercase tracking-wider ${idx <= currentStepIndex ? 'text-stone-900' : 'text-stone-400'}">${step}</span>
+                                                            </div>
+                                                        `).join('')}
+                                                    </div>
+                                                </div>
+
+                                                <div class="mt-4 pt-4 border-t border-stone-50">
+                                                    <p class="text-xs text-stone-500">Items: ${order.items.map(i => i.name).join(', ')}</p>
+                                                </div>
+                                            </div>
+                                            `;
+                                        }).join('')
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (pageName === 'order-success') {
+                content.innerHTML = `
+                    <div class="min-h-[60vh] flex items-center justify-center px-4 animate-scale-in">
+                        <div class="text-center max-w-lg">
+                            <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i data-lucide="check" width="40" height="40"></i>
+                            </div>
+                            <h1 class="text-3xl md:text-4xl font-serif font-bold mb-4">Order Confirmed!</h1>
+                            <p class="text-stone-500 text-lg mb-8">Thank you for choosing purity. Your order #PNQ-${Math.floor(Math.random()*10000)} has been placed successfully.</p>
+                            <div class="flex gap-4 justify-center">
+                                <button onclick="renderPage('shop')" class="bg-stone-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-stone-800 transition-colors">Continue Shopping</button>
+                                <button onclick="renderPage('profile')" class="bg-white border border-stone-200 text-stone-800 px-8 py-3 rounded-xl font-bold hover:bg-stone-50 transition-colors">View Order</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            lucide.createIcons();
+            attachCardEventListeners();
+        }
+
+        function createProductCard(product) {
+            const originalPrice = (product.basePrice * 1.25).toFixed(2);
+            const price = product.basePrice.toFixed(2);
+            const unit = product.variants && product.variants.length > 0 ? product.variants[0].size : '1 Unit';
+            
+            return `
+            <div class="product-card-wrapper flip-card-container" data-product-id="${product.id}" data-product-price="${product.basePrice}">
+                <div class="flip-card-inner">
+                    <!-- FRONT -->
+                    <div class="flip-card-front flex flex-col justify-between rounded-xl">
+                        <div class="flex justify-between items-center w-full">
+                            <span class="text-xl font-semibold text-gray-800">${unit}</span>
+                            <button class="bg-orange-200 text-orange-700 w-8 h-8 rounded-full flex items-center justify-center shadow-md hover:bg-orange-300 transition duration-150 flip-trigger" aria-label="Product Information">
+                                <i data-lucide="info" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        <div class="product-image-container">
+                            <img src="${product.image}" alt="${product.name}" class="product-image-bottle" onerror="this.src='https://placehold.co/70x200/D4A33B/ffffff?text=Oil'">
+                        </div>
+                        <div class="mt-0">
+                            <p class="text-sm font-bold text-yellow-700 italic tracking-wider" style="font-family: serif;">Premium</p>
+                            <h2 class="text-4xl font-regular text-gray-900 uppercase tracking-tight product-name-shadow mt-1 leading-none line-clamp-2" style="font-family: 'Bebas Neue', sans-serif; min-height: 2.5rem;">
+                                ${product.name.replace('Premium Cold Pressed ', '')}
+                            </h2>
+                            <p class="text-xs font-medium text-gray-500 mt-0 truncate">${product.subName}</p>
+                        </div>
+                        <div class="flex flex-col items-center mt-2 mb-3.5">
+                            <div class="flex items-center space-x-1.5">
+                                <p class="text-lg text-gray-500 line-through font-semibold">₹${originalPrice}</p>
+                                <span class="bg-red-500 text-xs font-bold px-2 py-0.5 rounded-full text-white">-20%</span>
+                            </div>
+                            <p class="text-3xl font-extrabold text-gray-900 mt-0">₹${price}</p>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <button class="qty-minus text-gray-800 text-xl font-bold hover:text-gray-600 transition duration-150">-</button>
+                                <span class="quantity-display font-bold text-lg text-gray-900 w-4 text-center">1</span>
+                                <button class="qty-plus text-gray-800 text-xl font-bold hover:text-gray-600 transition duration-150">+</button>
+                            </div>
+                            <button class="add-to-cart-button flex-grow ml-4 text-gray-900 text-sm font-bold py-2.5 px-5 rounded-full shadow-md" style="background-color: var(--color-dfn-primary); color: white;">ADD TO CART</button>
+                        </div>
+                    </div>
+                    <!-- BACK -->
+                    <div class="flip-card-back rounded-xl">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-lg font-extrabold text-gray-900 flex items-center">WHY YOU'LL LOVE IT <i data-lucide="heart" class="w-4 h-4 ml-2 text-red-500 fill-current"></i></h2>
+                            <button class="text-gray-600 hover:text-gray-900 transition duration-150 p-1 flip-trigger"><i data-lucide="x" class="w-5 h-5"></i></button>
+                        </div>
+                        <p class="text-xs text-gray-700 font-medium text-left mt-4">100% Cold-Pressed - Retains Natural Nutrients.</p>
+                        <div class="flex flex-col space-y-3 pt-2 pb-3 flex-grow justify-start">
+                            <div class="grid grid-cols-3 gap-3 mt-4">
+                                <div class="text-center">
+                                    <i data-lucide="heart-pulse" class="w-14 h-14 object-contain mx-auto text-red-500"></i>
+                                    <p class="text-xs mt-2 font-semibold text-gray-800 leading-tight">Heart<br>Health</p>
+                                    <p class="text-[10px] text-gray-500 leading-tight mt-1">(Omega 3 & 6)</p>
+                                </div>
+                                <div class="text-center">
+                                    <i data-lucide="chef-hat" class="w-14 h-14 object-contain mx-auto text-green-500"></i>
+                                    <p class="text-xs mt-2 font-semibold text-gray-800 leading-tight">High<br>Smoke Point</p>
+                                    <p class="text-[10px] text-gray-500 leading-tight mt-1">(Ideal for Cooking)</p>
+                                </div>
+                                <div class="text-center">
+                                    <i data-lucide="fingerprint" class="w-14 h-14 object-contain mx-auto text-blue-500"></i>
+                                    <p class="text-xs mt-2 font-semibold text-gray-800 leading-tight">Authentic<br>Flavor</p>
+                                    <p class="text-[10px] text-gray-500 leading-tight mt-1">(Unrefined)</p>
+                                </div>
+                            </div>
+                            <hr class="border-gray-200">
+                            <div class="flex flex-col">
+                                <h3 class="font-bold text-sm text-gray-800 mb-1">Nutrition Info (10g)</h3>
+                                <ul class="text-xs text-gray-600 space-y-0.5">
+                                    <li class="flex justify-between"><span>Calories:</span> <span class="font-medium">90 kcal</span></li>
+                                    <li class="flex justify-between"><span>Fat:</span> <span class="font-medium">10g</span></li>
+                                    <li class="flex justify-between"><span>Vitamin E:</span> <span class="font-medium">30% DV</span></li>
+                                    <li class="flex justify-between"><span>Source:</span> <span class="font-medium">${product.name.split(' ')[0]} Seeds</span></li>
+                                </ul>
+                            </div>
+                            <hr class="border-gray-200">
+                        </div>
+                        <div class="flex flex-col space-y-3">
+                            <div class="flex items-center justify-center bg-green-100 p-1.5 rounded-lg"><i data-lucide="truck" class="w-4 h-4 text-green-700 mr-2"></i><p class="text-xs font-semibold text-green-800">Free Delivery > ₹999</p></div>
+                            <button onclick="openProductModal(${product.id})" class="w-full block text-center bg-[#FFDB96] text-gray-900 font-bold py-2.5 text-sm rounded-full hover:bg-[#F0C070] transition duration-150 shadow-md">VIEW FULL DETAILS</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        // --- Logic: Cart & Modals ---
+
+        function toggleCart() {
+            state.isCartOpen = !state.isCartOpen;
+            const sidebar = document.getElementById('cart-sidebar');
+            if (state.isCartOpen) {
+                sidebar.classList.remove('hidden');
+                renderCart();
+            } else {
+                sidebar.classList.add('hidden');
+            }
+        }
+
+        function toggleMobileMenu() {
+            state.isMobileMenuOpen = !state.isMobileMenuOpen;
+            const menu = document.getElementById('mobile-menu');
+            state.isMobileMenuOpen ? menu.classList.remove('hidden') : menu.classList.add('hidden');
+        }
+
+        function addToCart(product, variant, price, subscribed) {
+            const newItem = {
+                ...product,
+                selectedVariant: variant,
+                price: price,
+                isSubscribed: subscribed,
+                cartId: Date.now()
+            };
+            state.cart.push(newItem);
+            localStorage.setItem('purniq-cart', JSON.stringify(state.cart)); // Save to local storage
+            updateCartCount();
+            toggleCart(); // open cart
+        }
+
+        function removeFromCart(id) {
+            state.cart = state.cart.filter(i => i.cartId !== id);
+            localStorage.setItem('purniq-cart', JSON.stringify(state.cart)); // Update local storage
+            renderCart();
+            updateCartCount();
+        }
+
+        function updateCartCount() {
+            const el = document.getElementById('cart-count');
+            el.innerText = state.cart.length;
+            state.cart.length > 0 ? el.classList.remove('hidden') : el.classList.add('hidden');
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            const footer = document.getElementById('cart-footer');
+            const empty = document.getElementById('cart-empty');
+            const totalEl = document.getElementById('cart-total');
+
+            if (state.cart.length === 0) {
+                container.innerHTML = '';
+                footer.classList.add('hidden');
+                empty.classList.remove('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            footer.classList.remove('hidden');
+
+            const total = state.cart.reduce((sum, item) => sum + item.price, 0);
+            totalEl.innerText = '₹' + total;
+
+            container.innerHTML = state.cart.map(item => `
+                <div class="flex gap-4">
+                    <div class="w-16 h-20 md:w-20 md:h-24 bg-stone-50 rounded-xl flex items-center justify-center p-2 shrink-0">
+                        <img src="${item.image}" class="max-h-full mix-blend-multiply" />
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-bold text-stone-900 text-sm md:text-base">${item.name}</h3>
+                            <button onclick="removeFromCart(${item.cartId})" class="text-stone-300 hover:text-red-500 transition-colors"><i data-lucide="trash-2" width="16" height="16"></i></button>
+                        </div>
+                        <p class="text-xs text-stone-500 mt-1">Qty: ${item.qty} • ${item.selectedVariant.size} • ${item.selectedVariant.packaging}</p>
+                        ${item.isSubscribed ? '<span class="inline-block mt-2 bg-green-100 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded">Subscription Active</span>' : ''}
+                        <div class="mt-2 font-bold text-amber-600">₹${item.price}</div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // --- Logic: Product Modal ---
+        let modalState = { product: null, variant: null, subscribed: false };
+
+        function openProductModal(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            modalState = { product, variant: product.variants[0], subscribed: false };
+            renderModal();
+            // document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal-container').innerHTML = '';
+            // document.body.style.overflow = 'auto';
+        }
+
+        function updateModalState(key, value) {
+            modalState[key] = value;
+            renderModal();
+        }
+
+        function renderModal() {
+            const { product, variant, subscribed } = modalState;
+            const finalPrice = Math.round(product.basePrice * variant.multiplier);
+            const subPrice = Math.round(finalPrice * 0.90);
+            const currentPrice = subscribed ? subPrice : finalPrice;
+
+            const container = document.getElementById('product-modal-container');
+            container.innerHTML = `
+            <div class="fixed inset-0 z-[60] flex items-end md:items-center justify-center p-0 md:p-4">
+                <div class="absolute inset-0 bg-stone-900/60 backdrop-blur-sm" onclick="closeProductModal()"></div>
+                <div class="bg-white rounded-t-3xl md:rounded-3xl w-full max-w-5xl h-[90vh] md:h-auto md:max-h-[90vh] overflow-y-auto relative z-10 flex flex-col md:flex-row shadow-2xl animate-fade-in-up">
+                    <div class="w-full md:w-1/2 bg-[#FDF6E9] relative flex items-center justify-center p-8 md:p-12 min-h-[300px] shrink-0">
+                        <div class="absolute top-0 left-0 w-48 h-48 md:w-64 md:h-64 bg-amber-200/50 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+                        <div class="absolute bottom-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-orange-200/50 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
+                        <img src="${product.image}" class="relative z-10 max-h-[250px] md:max-h-[400px] w-auto object-contain drop-shadow-2xl mix-blend-multiply" />
+                        <button onclick="closeProductModal()" class="absolute top-4 left-4 md:hidden p-2 bg-white/50 backdrop-blur rounded-full shadow-sm"><i data-lucide="x" width="20" height="20"></i></button>
+                    </div>
+                    <div class="w-full md:w-1/2 p-6 md:p-12 flex flex-col bg-white h-full overflow-y-auto">
+                        <button onclick="closeProductModal()" class="absolute top-6 right-6 hidden md:block p-2 hover:bg-stone-100 rounded-full transition-colors"><i data-lucide="x" width="24" height="24"></i></button>
+                        <div class="mb-4 md:mb-6">
+                            <span class="text-amber-600 font-bold uppercase tracking-widest text-xs mb-2 block">${product.category}</span>
+                            <h2 class="text-3xl md:text-4xl font-serif font-bold text-stone-900 mb-2">${product.name}</h2>
+                            <p class="text-lg text-stone-500 font-serif italic">${product.subName}</p>
+                        </div>
+                        <p class="text-stone-600 leading-relaxed mb-6 md:mb-8 text-sm md:text-base">${product.description}</p>
+                        <div class="mb-6 md:mb-8">
+                            <label class="text-xs font-bold uppercase text-stone-400 mb-3 block">Choose Size & Pack</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                ${product.variants.map((v, i) => `
+                                    <button onclick='updateModalState("variant", ${JSON.stringify(v)})' class="p-3 rounded-xl border text-left transition-all relative overflow-hidden group ${variant.size === v.size ? 'border-amber-600 bg-amber-50' : 'border-stone-100 hover:border-amber-200 hover:bg-stone-50'}">
+                                        <div class="relative z-10">
+                                            <span class="block font-bold text-sm md:text-base ${variant.size === v.size ? 'text-amber-900' : 'text-stone-700'}">${v.size}</span>
+                                            <span class="text-xs text-stone-500">${v.packaging}</span>
+                                        </div>
+                                        ${variant.size === v.size ? '<div class="absolute right-2 top-2 md:right-3 md:top-3 text-amber-600"><i data-lucide="check" width="14" height="14"></i></div>' : ''}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div onclick='updateModalState("subscribed", !${subscribed})' class="p-3 md:p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 mb-6 md:mb-8 flex items-center gap-4 ${subscribed ? 'border-amber-500 bg-amber-50/50' : 'border-stone-100 hover:border-stone-200'}">
+                            <div class="w-5 h-5 md:w-6 md:h-6 rounded-full border-2 flex items-center justify-center transition-colors ${subscribed ? 'border-amber-600 bg-amber-600' : 'border-stone-300'}">
+                                ${subscribed ? '<i data-lucide="check" width="12" height="12" class="text-white"></i>' : ''}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex flex-col md:flex-row md:justify-between md:items-center">
+                                    <span class="font-bold text-stone-800 text-sm md:text-base">Monthly Oil Pack (Save 10%)</span>
+                                    <div class="flex items-center gap-2 mt-1 md:mt-0">
+                                        ${subscribed ? '<span class="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-bold">Free Shipping</span>' : ''}
+                                        <span class="text-[10px] w-fit bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">Best Value</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-auto flex flex-col md:flex-row items-center gap-4 md:gap-6 pt-6 border-t border-stone-100 pb-6 md:pb-0">
+                            <div class="flex items-center justify-between w-full md:w-auto md:block">
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-2xl md:text-3xl font-bold text-stone-900">₹${currentPrice}</span>
+                                    ${subscribed ? `<span class="text-sm text-stone-400 line-through">₹${finalPrice}</span>` : ''}
+                                </div>
+                            </div>
+                            <button onclick='addToCart(${JSON.stringify(product)}, ${JSON.stringify(variant)}, ${currentPrice}, ${subscribed}, 1); closeProductModal()' class="w-full md:flex-1 py-4 text-lg bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-lg hover:shadow-amber-600/30 hover:-translate-y-0.5 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2">
+                                Add to Cart <i data-lucide="arrow-right" width="18" height="18"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            lucide.createIcons();
+        }
+        
+        // --- Auth & Checkout Logic ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            // Dummy Auth
+            state.user = { name: "Demo User", email: email };
+            localStorage.setItem('purniq-user', JSON.stringify(state.user));
+            showNotification("Successfully Logged In", "success");
+            renderPage('home');
+        }
+
+        function handleSignup(e) {
+            e.preventDefault();
+            const name = document.getElementById('auth-name').value;
+            const email = document.getElementById('auth-email').value;
+            state.user = { name: name, email: email };
+            localStorage.setItem('purniq-user', JSON.stringify(state.user));
+            showNotification("Account Created Successfully", "success");
+            renderPage('home');
+        }
+
+        function logout() {
+            state.user = null;
+            localStorage.removeItem('purniq-user');
+            showNotification("Logged Out", "info");
+            renderPage('home');
+        }
+
+        function togglePasswordVisibility(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === "password" ? "text" : "password";
+        }
+
+        function renderAuthHTML(mode) {
+            const isLogin = mode === 'login';
+            return `
+            <div class="min-h-[calc(100vh-5rem)] flex flex-col lg:flex-row animate-fade-in-up">
+                <!-- Left Side: Brand & Story -->
+                <div class="lg:w-1/2 bg-stone-900 relative overflow-hidden flex flex-col justify-center p-12 text-white">
+                    <div class="absolute inset-0 opacity-30">
+                        <img src="https://images.unsplash.com/photo-1474979266404-7cadd259c308?auto=format&fit=crop&q=80&w=1920" class="w-full h-full object-cover" alt="Oil Background">
+                        <div class="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/80 to-transparent"></div>
+                    </div>
+                    
+                    <div class="relative z-10 max-w-lg mx-auto lg:mx-0">
+                        <div class="mb-8">
+                            <img src="purniq logo.png" alt="Purniq" class="h-16 w-auto brightness-0 invert mb-6 opacity-90">
+                            <h1 class="text-5xl font-serif font-bold mb-4 leading-tight">Pure. <span class="text-amber-500 italic">Unique.</span><br>Purniq.</h1>
+                            <p class="text-stone-400 text-lg">Login to track orders, rewards & subscriptions.</p>
+                        </div>
+
+                        <!-- Why Login Benefits -->
+                        <div class="space-y-6 border-t border-white/10 pt-8">
+                            <h3 class="text-amber-500 font-bold uppercase tracking-widest text-xs mb-4">Why Join Purniq?</h3>
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-amber-400 shrink-0 border border-white/10">
+                                    <i data-lucide="package-search" width="18"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Track Your Batches</h4>
+                                    <p class="text-sm text-stone-400">Trace the origin of every bottle back to the farm.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-amber-400 shrink-0 border border-white/10">
+                                    <i data-lucide="crown" width="18"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Earn Reward Points</h4>
+                                    <p class="text-sm text-stone-400">Get 5% back on every purchase as Purniq Coins.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-amber-400 shrink-0 border border-white/10">
+                                    <i data-lucide="calendar-clock" width="18"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Monthly Subscriptions</h4>
+                                    <p class="text-sm text-stone-400">Automate your kitchen essentials & save 10%.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Form -->
+                <div class="lg:w-1/2 bg-[#fffbf7] flex items-center justify-center p-6 lg:p-12 relative">
+                    <!-- Decorative Elements -->
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-amber-200/20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+                    
+                    <div class="w-full max-w-md bg-white/80 backdrop-blur-xl p-8 md:p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white relative z-10">
+                        
+                        <!-- Toggle -->
+                        <div class="flex bg-stone-100 p-1 rounded-xl mb-8 relative">
+                            <div class="w-1/2 h-full absolute top-0 left-0 bg-white rounded-lg shadow-sm m-1 transition-transform duration-300 ${isLogin ? 'translate-x-0' : 'translate-x-full'}"></div>
+                            <button onclick="renderPage('login')" class="flex-1 py-3 text-sm font-bold relative z-10 transition-colors ${isLogin ? 'text-stone-900' : 'text-stone-500'}">Login</button>
+                            <button onclick="renderPage('signup')" class="flex-1 py-3 text-sm font-bold relative z-10 transition-colors ${!isLogin ? 'text-stone-900' : 'text-stone-500'}">Sign Up</button>
+                        </div>
+
+                        <div class="text-center mb-8">
+                            <h2 class="text-3xl font-serif font-bold text-stone-900 mb-2">${isLogin ? 'Welcome Back' : 'Join the Family'}</h2>
+                            <p class="text-stone-500 text-sm">${isLogin ? 'Enter your details to access your account.' : 'Start your journey towards pure living.'}</p>
+                        </div>
+
+                        <form onsubmit="${isLogin ? 'handleLogin(event)' : 'handleSignup(event)'}" class="space-y-5">
+                            ${!isLogin ? `
+                            <div class="space-y-1">
+                                <label class="text-xs font-bold uppercase text-stone-400 tracking-wider">Full Name</label>
+                                <input type="text" id="auth-name" class="w-full bg-stone-50 border border-stone-200 p-4 rounded-xl focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 outline-none transition-all font-medium" placeholder="e.g. Anjali Sharma" required>
+                            </div>` : ''}
+                            
+                            <div class="space-y-1">
+                                <label class="text-xs font-bold uppercase text-stone-400 tracking-wider">Email or Phone</label>
+                                <input type="text" id="auth-email" class="w-full bg-stone-50 border border-stone-200 p-4 rounded-xl focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 outline-none transition-all font-medium" placeholder="you@example.com" required>
+                            </div>
+
+                            <div class="space-y-1">
+                                <div class="flex justify-between">
+                                    <label class="text-xs font-bold uppercase text-stone-400 tracking-wider">Password</label>
+                                    ${isLogin ? '<a href="#" class="text-xs font-bold text-amber-600 hover:text-amber-700">Forgot?</a>' : ''}
+                                </div>
+                                <div class="relative">
+                                    <input type="password" id="auth-pass" class="w-full bg-stone-50 border border-stone-200 p-4 rounded-xl focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 outline-none transition-all font-medium" placeholder="••••••••" required>
+                                    <button type="button" onclick="togglePasswordVisibility('auth-pass')" class="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600">
+                                        <i data-lucide="eye" width="18"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full bg-gradient-to-r from-stone-900 to-stone-800 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group">
+                                <span class="relative z-10">${isLogin ? 'Sign In' : 'Create Account'}</span>
+                                <div class="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            </button>
+                        </form>
+
+                        <div class="relative my-8">
+                            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-stone-200"></div></div>
+                            <div class="relative flex justify-center text-xs uppercase"><span class="bg-white px-4 text-stone-400 font-bold tracking-widest">Or continue with</span></div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <button class="flex items-center justify-center gap-2 p-3 border border-stone-200 rounded-xl hover:bg-stone-50 hover:border-stone-300 transition-all group">
+                                <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5 group-hover:scale-110 transition-transform" alt="Google">
+                                <span class="font-bold text-stone-600 text-sm">Google</span>
+                            </button>
+                            <button class="flex items-center justify-center gap-2 p-3 border border-stone-200 rounded-xl hover:bg-green-50 hover:border-green-200 transition-all group">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="w-5 h-5 group-hover:scale-110 transition-transform" alt="WhatsApp">
+                                <span class="font-bold text-stone-600 text-sm">WhatsApp</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+
+        function processOrder() {
+            const form = document.getElementById('checkout-form');
+            if(form.checkValidity()) {
+                // Save Order for Admin Panel
+                const order = {
+                    id: 'ORD-' + Math.floor(100000 + Math.random() * 900000),
+                    date: new Date().toLocaleString(),
+                    customer: {
+                        name: form.querySelector('input[placeholder="First Name"]').value + ' ' + form.querySelector('input[placeholder="Last Name"]').value,
+                        phone: form.querySelector('input[placeholder="Phone Number"]').value,
+                        address: form.querySelector('input[placeholder="Address Line 1"]').value + ', ' + form.querySelector('input[placeholder="City"]').value
+                    },
+                    userEmail: state.user ? state.user.email : null,
+                    items: state.cart.map(i => ({
+                        name: i.name,
+                        variant: i.selectedVariant.size,
+                        qty: i.qty, // Use actual quantity
+                        price: i.price
+                    })),
+                    total: state.cart.reduce((sum, item) => sum + item.price, 0),
+                    status: 'Processing'
+                };
+                
+                const orders = JSON.parse(localStorage.getItem('purniq-orders')) || [];
+                orders.unshift(order);
+                localStorage.setItem('purniq-orders', JSON.stringify(orders));
+
+                // Save Subscriptions
+                const newSubs = [];
+                state.cart.forEach(item => {
+                    if(item.isSubscribed) {
+                        newSubs.push({
+                            id: 'SUB-' + Math.floor(10000 + Math.random() * 90000),
+                            product: item.name,
+                            variant: item.selectedVariant.size,
+                            price: item.price,
+                            customer: form.querySelector('input[placeholder="First Name"]').value + ' ' + form.querySelector('input[placeholder="Last Name"]').value,
+                            email: state.user ? state.user.email : 'guest@purniq.com',
+                            startDate: new Date().toLocaleDateString(),
+                            nextDelivery: new Date(Date.now() + 30*24*60*60*1000).toLocaleDateString(),
+                            status: 'Active'
+                        });
+                    }
+                });
+                if(newSubs.length > 0) {
+                    const existingSubs = JSON.parse(localStorage.getItem('purniq-subscriptions')) || [];
+                    localStorage.setItem('purniq-subscriptions', JSON.stringify([...newSubs, ...existingSubs]));
+                }
+
+                state.cart = [];
+                localStorage.setItem('purniq-cart', JSON.stringify([]));
+                updateCartCount();
+                renderPage('order-success');
+            } else {
+                showNotification("Please fill all address details", "error");
+            }
+        }
+
+        function traceBatch() {
+            const batchId = document.getElementById('batch-input').value.trim().toUpperCase();
+            const container = document.getElementById('trace-result');
+            
+            // Mock Data for Demo
+            const batches = {
+                'PNQ-2025-01': {
+                    product: 'Premium Yellow Mustard Oil',
+                    date: '10 Oct 2025',
+                    source: 'Ram Lal Farms, Bharatpur (Rajasthan)',
+                    temp: '36°C (Cold Pressed)',
+                    lab: 'Passed (Acid Value: 0.45, Moisture: 0.02%)',
+                    image: 'https://images.unsplash.com/photo-1474979266404-7cadd259c308?auto=format&fit=crop&q=80&w=800'
+                },
+                'PNQ-2025-02': {
+                    product: 'Virgin Groundnut Oil',
+                    date: '12 Oct 2025',
+                    source: 'Organic Co-op, Junagadh (Gujarat)',
+                    temp: '34°C (Wood Pressed)',
+                    lab: 'Passed (Aflatoxin Free)',
+                    image: 'https://images.unsplash.com/photo-1474979266404-7cadd259c308?auto=format&fit=crop&q=80&w=800'
+                }
+            };
+
+            const data = batches[batchId];
+
+            if(data) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden animate-scale-in flex flex-col md:flex-row border border-stone-100">
+                        <div class="md:w-1/3 relative h-64 md:h-auto">
+                            <img src="${data.image}" class="absolute inset-0 w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <div class="absolute bottom-6 left-6 text-white">
+                                <p class="text-xs font-bold uppercase opacity-80 mb-1">Product</p>
+                                <h3 class="text-2xl font-serif font-bold leading-tight">${data.product}</h3>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3 p-8 md:p-12">
+                            <div class="flex items-center gap-4 mb-8 pb-8 border-b border-stone-100">
+                                <div class="w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0"><i data-lucide="check-circle" width="24"></i></div>
+                                <div>
+                                    <h3 class="font-bold text-stone-900 text-lg">Verified Authentic</h3>
+                                    <p class="text-stone-500 text-sm">Batch #${batchId}</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="space-y-1"><p class="text-xs font-bold text-stone-400 uppercase tracking-widest">Pressing Date</p><p class="text-lg font-serif font-bold text-stone-900">${data.date}</p></div>
+                                <div class="space-y-1"><p class="text-xs font-bold text-stone-400 uppercase tracking-widest">Extraction Temp</p><p class="text-lg font-serif font-bold text-stone-900">${data.temp}</p></div>
+                                <div class="space-y-1 md:col-span-2"><p class="text-xs font-bold text-stone-400 uppercase tracking-widest">Farm Source</p><p class="text-lg font-serif font-bold text-stone-900">${data.source}</p></div>
+                                <div class="space-y-1 md:col-span-2 p-4 bg-stone-50 rounded-xl border border-stone-100"><p class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Lab Report Summary</p><p class="text-base font-bold text-emerald-700 flex items-center gap-2"><i data-lucide="flask-conical" width="16"></i> ${data.lab}</p></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.classList.remove('hidden');
+                lucide.createIcons();
+            } else {
+                showNotification('Batch not found. Please check the number.', 'error');
+                container.classList.add('hidden');
+            }
+        }
+
+        // --- New Helper Functions for Flip Cards ---
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notification-container');
+            if (!container) return;
+            const baseClasses = "p-4 rounded-lg shadow-xl text-white font-semibold flex items-center space-x-2";
+            let colorClasses = "";
+            let icon = "";
+            if (type === 'success') { colorClasses = "bg-green-500"; icon = '<i data-lucide="check-circle" class="w-5 h-5"></i>'; } 
+            else if (type === 'error') { colorClasses = "bg-red-500"; icon = '<i data-lucide="x-circle" class="w-5 h-5"></i>'; } 
+            else { colorClasses = "bg-blue-500"; icon = '<i data-lucide="info" class="w-5 h-5"></i>'; }
+            const notification = document.createElement('div');
+            notification.className = `${baseClasses} ${colorClasses} animate-bounce-in`;
+            notification.innerHTML = `${icon}<span>${message}</span>`;
+            container.appendChild(notification);
+            lucide.createIcons();
+            setTimeout(() => {
+                notification.classList.add('opacity-0');
+                notification.classList.add('translate-y-4');
+                notification.addEventListener('transitionend', () => notification.remove());
+            }, 3000);
+        }
+
+        function attachCardEventListeners() {
+            document.querySelectorAll('.product-card-wrapper').forEach(card => {
+                const quantityDisplay = card.querySelector('.quantity-display');
+                let currentQuantity = parseInt(quantityDisplay?.textContent) || 1; 
+
+                card.querySelector('.qty-plus')?.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    currentQuantity = Math.min(99, currentQuantity + 1);
+                    quantityDisplay.textContent = currentQuantity;
+                });
+
+                card.querySelector('.qty-minus')?.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    currentQuantity = Math.max(1, currentQuantity - 1);
+                    quantityDisplay.textContent = currentQuantity;
+                });
+
+                card.querySelector('.add-to-cart-button')?.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const productId = parseInt(card.getAttribute('data-product-id'));
+                    const product = PRODUCTS.find(p => p.id === productId);
+                    if(product) {
+                        // Pass the currentQuantity to addToCart
+                        addToCart(product, product.variants[0], product.basePrice, false, currentQuantity);
+                        showNotification(`${currentQuantity} x ${product.name} added!`, 'success');
+                    }
+                });
+                
+                card.querySelectorAll('.flip-trigger').forEach(trigger => {
+                    trigger.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); card.classList.toggle('flipped'); });
+                });
+            });
+        }
+
+        // Update Cart Button Action
+        document.addEventListener('DOMContentLoaded', () => {
+            // Override the checkout button in the cart sidebar
+            const cartFooterBtn = document.querySelector('#cart-footer button');
+            if(cartFooterBtn) cartFooterBtn.setAttribute('onclick', "toggleCart(); renderPage('checkout')");
+        });
+
+        // Initialize App
+        init();
+
+    </script>
+</body>
+</html>
