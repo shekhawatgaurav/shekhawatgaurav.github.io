@@ -1,0 +1,321 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Flip Card</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons for better visuals -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        /* Inter font setup */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        
+        /* Custom styles for 3D flip effect */
+        .flip-card-container {
+            width: 320px; /* Card ki fixed width */
+            /* Height slightly reduced for better compactness */
+            height: 500px; 
+            perspective: 1000px; /* 3D effect ke liye */
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d; /* 3D rotation ke liye */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Jab card 'flipped' class attach ho, tab rotate karo */
+        .flip-card-container.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden; /* Hide the back side when front is visible */
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 26px; /* Padding thoda kam kiya */
+            box-sizing: border-box;
+            overflow: hidden; 
+        }
+        
+        /* Front side ka custom background aur shadow */
+        .flip-card-front {
+            background: #FFFAF0; /* Aapki image jaisa creamy background */
+            z-index: 2;
+        }
+
+        /* Back side ki styling */
+        .flip-card-back {
+            background: #FFFAF0; /* Matching front background */
+            transform: rotateY(180deg); /* Start with back rotated */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Front Product Name Shadow Effect (Aapki image jaisa) */
+        .product-name-shadow {
+            text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+        }
+        
+       
+    </style>
+    <link rel="stylesheet" href="dfn-theme.css">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4 font-['Inter']">
+
+    <!-- Main Card Container -->
+    <div id="productCardContainer" class="flip-card-container">
+        
+        <div class="flip-card-inner">
+            
+            <!-- FRONT SIDE OF THE CARD - SIZES ADJUSTED -->
+            <div class="flip-card-front flex flex-col justify-between rounded-xl">
+                
+                <!-- Top Header: Unit & Info Icon -->
+                <div class="flex justify-between items-center w-full">
+                    <!-- Left: Unit/Liters (Size reduced) -->
+                    <span class="text-xl font-semibold text-gray-800">
+                        1L
+                    </span>
+                    <!-- Right: Info Icon (Flip Trigger - Size reduced) -->
+                    <button id="infoFlipButton" class="bg-orange-200 text-orange-700 w-8 h-8 rounded-full flex items-center justify-center shadow-md hover:bg-orange-300 transition duration-150" aria-label="Product Information">
+                        <!-- Info Icon -->
+                        <i data-lucide="info" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                
+                <!-- Product Image -->
+                 <div class="mt-1 mb-1 flex justify-center items-start">
+                    <img 
+                    src="12.png" 
+                    alt="Mustard Oil Product" 
+                    class="w-[65px] h-[200px] object-cover rounded-lg"
+                    />
+                    </div>
+
+                <!-- Product Name and Subtitle -->
+                <div class="mt-0">
+                    <!-- Premium Text (Yellow) -->
+                    <p class="text-sm font-bold text-yellow-700 italic tracking-wider" style="font-family: serif;">
+                        Premium
+                    </p>
+                    <!-- Main Name with Shadow (Size reduced to 3xl) -->
+                    <h2 class="text-5xl font-regular text-gray-900 uppercase tracking-tight product-name-shadow mt-[-5px]" style="font-family: bebas neue;">
+                        MUSTARD OIL
+                    </h2>
+                    <!-- Subtitle -->
+                    <p class="text-xs font-medium text-gray-500 mt-0">
+                        Cold Pressed â€¢ Pure & Natural
+                    </p>
+                </div>
+
+                <!-- Pricing -->
+                <div class="flex flex-col items-center mt-2 mb-3.5">
+                    <!-- Strikethrough Price and Discount Tag -->
+                    <div class="flex items-center space-x-1.5">
+                        <!-- Strikethrough Price -->
+                        <p class="text-lg text-gray-500 line-through font-semibold">
+                            â‚¹250.00
+                        </p>
+                        <!-- Discount Tag -->
+                        <span class="bg-red-500 text-xs font-bold px-2 py-0.5 rounded-full text-white">
+                            -20%
+                        </span>
+                    </div>
+                    <!-- Selling Price (Size reduced to 3xl) -->
+                    <p class="text-3xl font-extrabold text-gray-900 mt-0">
+                        â‚¹200.00
+                    </p>
+                </div>
+
+                <!-- Bottom Action Bar: Quantity & Cart Button -->
+                <div class="flex items-center justify-between">
+                    
+                    <!-- Left: Quantity Adjuster (Sizes reduced) -->
+                    <div class="flex items-center space-x-3">
+                        <button id="qtyMinus" class="text-gray-800 text-xl font-bold hover:text-gray-600 transition duration-150" aria-label="Decrease quantity">
+                            -
+                        </button>
+                        <span id="quantityDisplay" class="font-bold text-lg text-gray-900 w-4">
+                            1
+                        </span>
+                        <button id="qtyPlus" class="text-gray-800 text-xl font-bold hover:text-gray-600 transition duration-150" aria-label="Increase quantity">
+                            +
+                        </button>
+                    </div>
+
+                    <!-- Right: Add to Cart Button (Compact size) -->
+                    <button id="addToCartButton" class="flex-grow ml-4 bg-[#FFDB96] text-gray-900 text-sm font-bold py-2.5 px-5 rounded-full hover:bg-[#F0C070] transition duration-150 shadow-md">
+                        ADD TO CART
+                    </button>
+                </div>
+
+            </div>
+            
+            <!-- BACK SIDE OF THE CARD (Sizes adjusted for better balance) -->
+            <div class="flip-card-back rounded-xl">
+                
+                <!-- Top Header: Heading & Close Button -->
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-extrabold text-gray-900 flex items-center">
+                        WHY YOU'LL LOVE IT <i data-lucide="heart" class="w-4 h-4 ml-2 text-red-500 fill-current"></i>
+                    </h2>
+                    <!-- Close Button (Flip Back Trigger) -->
+                    <button id="closeFlipButton" class="text-gray-600 hover:text-gray-900 transition duration-150 p-1" aria-label="Close information">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Subtitle Text -->
+                <p class="text-xs text-gray-700 font-medium text-left mt-4">
+                    100% Cold-Pressed Sunflower Oil - Retains Natural Nutrients.
+                </p>
+                
+                <!-- Main Content Area (Fixed Height) -->
+                <div class="flex flex-col space-y-3 pt-2 pb-3 flex-grow justify-start">
+                    
+                    <!-- 3 Feature Images & Descriptions -->
+                    <div class="grid grid-cols-3 gap-3 mt-4">
+                        <!-- Feature 1 -->
+                        <div class="text-center">
+                            <img src="bone.png" alt="Bone Health" class="w-14 h-14 object-contain mx-auto">
+                            <p class="text-xs mt-2 font-semibold text-gray-800 leading-tight">
+                                Strengthens<br>Bones
+                            </p>
+                            <p class="text-[10px] text-gray-500 leading-tight mt-1">(Calcium & Zinc)</p>
+                        </div>
+                        <!-- Feature 2 -->
+                        <div class="text-center">
+                            <img src="cholesterol.png" alt="Cholesterol Control" class="w-14 h-14 object-contain mx-auto">
+                            <p class="text-xs mt-2 font-semibold text-gray-800 leading-tight">
+                                Controls<br>Cholesterol
+                            </p>
+                            <p class="text-[10px] text-gray-500 leading-tight mt-1">(MUFA & PUFA<br>balance)</p>
+                        </div>
+                        <!-- Feature 3 -->
+                        <div class="text-center">
+                            <img src="cooking.png" alt="Cooking" class="w-14 h-14 object-contain mx-auto">
+                            <p class="text-xs mt-2 font-semibold text-gray-800 leading-tight">
+                                Ideal for<br>Cooking & Baking
+                            </p>
+                            <p class="text-[10px] text-gray-500 leading-tight mt-1">(Stable oil)</p>
+                        </div>
+                    </div>
+                    
+                    <hr class="border-gray-200">
+                    
+                    <!-- Nutrition Info -->
+                    <div class="flex flex-col">
+                        <h3 class="font-bold text-sm text-gray-800 mb-1">Nutrition Info</h3>
+                        <ul class="text-xs text-gray-600 space-y-0.5">
+                            <li class="flex justify-between"><span>Calories:</span> <span class="font-medium">120 kcal</span></li>
+                            <li class="flex justify-between"><span>Fat:</span> <span class="font-medium">14g</span></li>
+                            <li class="flex justify-between"><span>Saturated Fat:</span> <span class="font-medium">1.5g</span></li>
+                            <li class="flex justify-between"><span>Source:</span> <span class="font-medium">Black Seeds</span></li>
+                        </ul>
+                    </div>
+
+                    <hr class="border-gray-200">
+
+                </div>
+                
+                <!-- Bottom Action: View Full Details Button -->
+                <div class="flex flex-col space-y-3">
+                    <div class="flex items-center justify-center bg-green-100 p-1.5 rounded-lg">
+                        <i data-lucide="truck" class="w-4 h-4 text-green-700 mr-2"></i>
+                        <p class="text-xs font-semibold text-green-800">Free Delivery Above â‚¹499!</p>
+                    </div>
+                    <button class="w-full bg-[#FFDB96] text-gray-900 font-bold py-2.5 text-sm rounded-full hover:bg-[#F0C070] transition duration-150 shadow-md">
+                        VIEW FULL DETAILS
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script> 
+        // -------------------------
+        // JAVASCRIPT LOGIC
+        // -------------------------
+
+        // Lucide icons ko render karo
+        lucide.createIcons();
+
+        const cardContainer = document.getElementById('productCardContainer');
+        const infoFlipButton = document.getElementById('infoFlipButton');
+        const closeFlipButton = document.getElementById('closeFlipButton');
+        const quantityDisplay = document.getElementById('quantityDisplay');
+        const qtyMinus = document.getElementById('qtyMinus');
+        const qtyPlus = document.getElementById('qtyPlus');
+        
+        let currentQuantity = 1; // Default quantity
+
+        // Function to handle the flip action
+        function toggleFlip() {
+            // 'flipped' class add/remove karke 3D rotation trigger karte hain
+            cardContainer.classList.toggle('flipped');
+        }
+
+        // 1. Info Button par click karne par card flip hokar back side dikhega
+        infoFlipButton.addEventListener('click', toggleFlip);
+
+        // 2. Cross Button par click karne par card wapas flip hokar front side dikhega
+        closeFlipButton.addEventListener('click', toggleFlip);
+
+        // 3. Quantity Adjuster Logic
+        qtyMinus.addEventListener('click', () => {
+            if (currentQuantity > 1) {
+                currentQuantity--;
+                quantityDisplay.textContent = currentQuantity;
+            }
+        });
+
+        qtyPlus.addEventListener('click', () => {
+            currentQuantity++;
+            quantityDisplay.textContent = currentQuantity;
+        });
+
+        // 4. Add to Cart Button Logic (Optional: Simple feedback)
+        const addToCartButton = document.getElementById('addToCartButton');
+        addToCartButton.addEventListener('click', () => {
+            // Replace this with actual cart adding logic
+            const message = `${currentQuantity} item(s) of Mustard Oil added to cart!`;
+            showNotification(message, 'success');
+        });
+
+        // Simple Custom Notification/Message Box (No alert())
+        function showNotification(message, type = 'info') {
+            let bgColor = 'bg-blue-500';
+            if (type === 'success') bgColor = 'bg-green-500';
+            if (type === 'error') bgColor = 'bg-red-500';
+
+            const notification = document.createElement('div');
+            notification.className = `fixed bottom-5 left-1/2 transform -translate-x-1/2 ${bgColor} text-white px-6 py-3 rounded-lg shadow-xl transition-all duration-300 ease-out z-50`;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            // Hide after 3 seconds
+            setTimeout(() => {
+                notification.classList.add('opacity-0');
+                notification.classList.add('translate-y-4');
+                notification.addEventListener('transitionend', () => notification.remove());
+            }, 3000);
+        }
+
+    </script>
+
+</body>
+</html>

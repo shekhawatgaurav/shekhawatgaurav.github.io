@@ -1,0 +1,473 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFN | Cart & Secure Checkout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+        :root {
+            --color-dfn-primary: #D4A33B;
+            --color-dfn-light: #FFFAF0;
+            --color-dfn-sale: #10B981;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f7f7f7; overflow-x: hidden; }
+        .input-style {
+            @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-dfn-primary)] transition duration-150;
+        }
+        .qty-button {
+            @apply w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-md text-gray-700 hover:border-[var(--color-dfn-primary)] transition duration-150;
+        }
+    </style>
+    <link rel="stylesheet" href="dfn-theme.css">
+</head>
+<body>
+
+    <!-- 1. NAVIGATION BAR (Common Header) -->
+    <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-bold text-gray-800 tracking-wider flex items-center">
+                        <span class="text-[var(--color-dfn-primary)] mr-1.5">DFN</span><span class="text-gray-900"> |</span>
+                    </span>
+                    <span class="text-sm ml-1 text-gray-600 font-medium hidden sm:inline">Direct From Nature</span>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <a href="index.html" class="border-b-2 border-transparent text-sm font-medium text-gray-500 py-5 hover:border-[var(--color-dfn-primary)] transition duration-150">HOME</a>
+                    <a href="index.html#products" class="border-b-2 border-transparent text-sm font-medium text-gray-500 py-5 hover:border-[var(--color-dfn-primary)] transition duration-150">SHOP</a>
+                    <a href="about.html" class="border-b-2 border-transparent text-sm font-medium text-gray-500 py-5 hover:border-[var(--color-dfn-primary)] transition duration-150">ABOUT US</a>
+                    <a href="contact.html" class="border-b-2 border-transparent text-sm font-medium text-gray-500 py-5 hover:border-[var(--color-dfn-primary)] transition duration-150">CONTACT</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-500 hover:text-gray-900" aria-label="Search"><i data-lucide="search" class="w-5 h-5"></i></button>
+                    <button class="text-gray-500 hover:text-gray-900 hidden sm:block" aria-label="User Account"><i data-lucide="user" class="w-5 h-5"></i></button>
+                    <div class="cart-display-group flex items-center space-x-2">
+                        <button id="cartButton" class="text-gray-800 hover:text-gray-900 relative" aria-label="Shopping Cart">
+                            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                            <span id="cartItemCount" class="absolute -top-1 -right-1.5 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                        </button>
+                        <span id="cartTotalDisplay" class="nav-cart-total text-sm font-semibold text-[var(--color-dfn-primary)] ml-2">â‚¹0.00</span>
+                    </div>
+                    <button class="sm:hidden text-gray-500 hover:text-gray-900" aria-label="Menu Toggle"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 2. CHECKOUT HEADER -->
+    <header class="bg-[var(--color-dfn-light)] py-12 border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl font-extrabold text-gray-900 mb-2">Secure Checkout</h1>
+            <p class="text-lg text-gray-600">Review your order and complete your purchase.</p>
+        </div>
+    </header>
+
+    <!-- 3. CART & CHECKOUT CONTENT -->
+    <section class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="emptyCartMessage" class="hidden text-center p-12 bg-gray-100 rounded-xl shadow-inner">
+                <i data-lucide="shopping-cart" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
+                <p class="text-xl font-semibold text-gray-700 mb-4">Your cart is empty.</p>
+                <a href="index.html#products" class="bg-[var(--color-dfn-primary)] text-white text-md font-bold py-2 px-6 rounded-full hover:bg-yellow-700 transition duration-300">
+                    START SHOPPING
+                </a>
+            </div>
+
+            <div id="checkoutContent" class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                
+                <!-- Left Column: Shipping Details (2/3 width) -->
+                <div class="lg:col-span-2">
+                    <h2 class="text-3xl font-extrabold text-gray-900 mb-6 border-b border-gray-200 pb-2">1. Shipping Information</h2>
+                    <form id="checkoutForm" class="space-y-6 bg-gray-50 p-6 rounded-xl shadow-lg">
+                        
+                        <!-- Contact Info -->
+                        <h3 class="text-xl font-bold text-gray-800 border-b pb-2 mb-4">Contact Details</h3>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <input type="email" id="email" name="email" class="input-style" placeholder="you@example.com" required>
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="input-style" placeholder="+91 98765 43210" required>
+                        </div>
+
+                        <!-- Shipping Address -->
+                        <h3 class="text-xl font-bold text-gray-800 border-b pb-2 pt-4 mb-4">Delivery Address</h3>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                                <input type="text" id="firstName" name="firstName" class="input-style" required>
+                            </div>
+                            <div>
+                                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" class="input-style" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
+                            <input type="text" id="address" name="address" class="input-style" placeholder="House/Flat No., Road Name" required>
+                        </div>
+                        <div class="grid sm:grid-cols-3 gap-6">
+                            <div>
+                                <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                                <input type="text" id="city" name="city" class="input-style" required>
+                            </div>
+                            <div>
+                                <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State / Province</label>
+                                <input type="text" id="state" name="state" class="input-style" required>
+                            </div>
+                            <div>
+                                <label for="zip" class="block text-sm font-medium text-gray-700 mb-1">ZIP / Postal Code</label>
+                                <input type="text" id="zip" name="zip" class="input-style" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Payment Method Placeholder -->
+                        <h3 class="text-xl font-bold text-gray-800 border-b pb-2 pt-4 mb-4">2. Payment Method</h3>
+                        <div class="bg-white p-4 rounded-lg border border-gray-200">
+                            <label class="flex items-center space-x-3 text-gray-700">
+                                <input type="radio" name="payment" value="cod" class="text-[var(--color-dfn-primary)] focus:ring-[var(--color-dfn-primary)]" checked>
+                                <i data-lucide="package" class="w-5 h-5 text-gray-500"></i>
+                                <span>Cash on Delivery (COD)</span>
+                            </label>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border border-gray-200">
+                            <label class="flex items-center space-x-3 text-gray-700">
+                                <input type="radio" name="payment" value="online" class="text-[var(--color-dfn-primary)] focus:ring-[var(--color-dfn-primary)]">
+                                <i data-lucide="credit-card" class="w-5 h-5 text-gray-500"></i>
+                                <span>Pay Online (Card/UPI/Netbanking) - *Simulated*</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="w-full bg-gray-900 text-white text-xl font-bold py-4 rounded-lg shadow-xl hover:bg-gray-700 transition duration-300 mt-6">
+                            PLACE ORDER (â‚¹<span id="checkoutGrandTotal">0.00</span>)
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Right Column: Order Summary (1/3 width) -->
+                <div class="lg:col-span-1 space-y-8">
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-lg sticky top-20">
+                        <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Order Summary</h2>
+
+                        <!-- Product List -->
+                        <div id="cartItemsList" class="space-y-4 border-b border-gray-300 pb-4 mb-4">
+                            <!-- Items will be injected here -->
+                        </div>
+
+                        <!-- Subtotals -->
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between text-gray-700">
+                                <span>Subtotal (<span id="summaryItemCount">0</span> items)</span>
+                                <span id="summarySubtotal" class="font-semibold">â‚¹0.00</span>
+                            </div>
+                            <div class="flex justify-between text-gray-700">
+                                <span>Shipping</span>
+                                <span id="summaryShipping" class="font-semibold text-green-600">FREE</span>
+                            </div>
+                            <div class="flex justify-between text-gray-700">
+                                <span>Taxes (Included)</span>
+                                <span class="font-semibold">â‚¹0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Grand Total -->
+                        <div class="flex justify-between items-center border-t border-gray-400 pt-4">
+                            <span class="text-xl font-extrabold text-gray-900">Grand Total</span>
+                            <span id="summaryGrandTotal" class="text-3xl font-extrabold text-gray-900">â‚¹0.00</span>
+                        </div>
+                        
+                        <div class="mt-6 text-center text-sm text-gray-500">
+                            <i data-lucide="lock" class="w-4 h-4 inline mr-1"></i> Secure Checkout Guaranteed
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. FOOTER (Common Footer) -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-b border-gray-700 pb-8">
+                <div class="col-span-2 md:col-span-1">
+                    <span class="text-3xl font-bold tracking-wider flex items-center mb-3">
+                        <span class="text-[var(--color-dfn-primary)] mr-1.5">DFN</span> | <span class="text-sm ml-1 text-gray-400 font-medium">Direct From Nature</span>
+                    </span>
+                    <p class="text-gray-400 text-sm mb-4">Purity guaranteed. Your health, naturally enriched.</p>
+                    <p class="text-sm text-gray-400">
+                        <i data-lucide="mail" class="w-4 h-4 inline mr-2 text-[var(--color-dfn-primary)]"></i> support@dfnoils.com
+                    </p>
+                    <p class="text-sm text-gray-400">
+                        <i data-lucide="phone" class="w-4 h-4 inline mr-2 text-[var(--color-dfn-primary)]"></i> +91 98765 43210
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Shop & Resources</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html#products" class="text-gray-400 hover:text-white transition duration-150">Shop All Oils</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Recipes & Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Wholesale / B2B</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">My Account</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Company & Info</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="about.html" class="text-gray-400 hover:text-white transition duration-150">Our Story</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Quality Process</a></li>
+                        <li><a href="faq.html" class="text-gray-400 hover:text-white transition duration-150">FAQs</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-150">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Policies</h5>
+                    <ul class="space-y-2 text-sm mb-6">
+                        <li><a href="privacy-policy.html" class="text-gray-400 hover:text-white transition duration-150">Privacy Policy</a></li>
+                        <li><a href="shipping-returns.html" class="text-gray-400 hover:text-white transition duration-150">Shipping & Returns</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Terms of Service</a></li>
+                    </ul>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Follow Us</h5>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150" aria-label="Facebook"><i data-lucide="facebook" class="w-6 h-6"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150" aria-label="Instagram"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150" aria-label="Twitter"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 text-center text-sm text-gray-500">&copy; 2025 DFN | Direct From Nature. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script> 
+        lucide.createIcons();
+
+        // -------------------------
+        // COMMON DATA AND STATE
+        // -------------------------
+        let cartItems = {
+            // Sample items for testing: { '1': { qty: 2, price: 200.00, name: 'Mustard Oil (1L)' }, '4-1L': { qty: 1, price: 400.00, name: 'Sunflower Oil (1L)' } }
+        }; 
+        let cartTotal = 0.00;
+        const FREE_SHIPPING_THRESHOLD = 499.00;
+        const FLAT_SHIPPING_RATE = 70.00;
+
+        // Elements
+        const cartTotalDisplay = document.getElementById('cartTotalDisplay');
+        const cartItemCountNav = document.getElementById('cartItemCount');
+        const cartItemsList = document.getElementById('cartItemsList');
+        const summaryItemCount = document.getElementById('summaryItemCount');
+        const summarySubtotal = document.getElementById('summarySubtotal');
+        const summaryShipping = document.getElementById('summaryShipping');
+        const summaryGrandTotal = document.getElementById('summaryGrandTotal');
+        const checkoutGrandTotal = document.getElementById('checkoutGrandTotal');
+        const emptyCartMessage = document.getElementById('emptyCartMessage');
+        const checkoutContent = document.getElementById('checkoutContent');
+
+        const productsData = [
+            { id: 1, name: "MUSTARD OIL", price: 200.00, imageSrc: "https://placehold.co/70x200/D4A33B/ffffff?text=Mustard", unit: "1L" },
+            { id: 2, name: "SESAME OIL", price: 224.00, imageSrc: "https://placehold.co/70x200/D4A33B/ffffff?text=Sesame", unit: "1L" },
+            { id: 3, name: "GROUNDNUT OIL", price: 104.00, imageSrc: "https://placehold.co/70x200/D4A33B/ffffff?text=Groundnut", unit: "500ml" },
+            { id: 4, name: "SUNFLOWER OIL", price: 400.00, imageSrc: "https://placehold.co/70x200/D4A33B/ffffff?text=Sunflower", unit: "1L" },
+        ]; // Only keeping relevant data here for simplicity
+
+        function getProductDetails(uniqueId) {
+            // Handles both simple ID ('1') and variant ID ('4-2L')
+            const parts = uniqueId.split('-');
+            const id = parseInt(parts[0]);
+            const variant = parts.length > 1 ? parts[1] : '';
+            const baseProduct = productsData.find(p => p.id === id);
+            
+            if (baseProduct) {
+                let name = baseProduct.name;
+                let price = baseProduct.price; // Basic price logic is simplified here
+                let image = baseProduct.imageSrc;
+
+                if (variant) {
+                     // In a real app, variant would look up the exact price
+                    name = `${name} (${variant})`;
+                    // Assuming for variant, we just use the price stored in cartItems, but if it's the base ID, we use productData
+                } else {
+                    name = `${name} (${baseProduct.unit})`;
+                }
+
+                return { name, price, image };
+            }
+            return { name: 'Unknown Product', price: 0, image: 'https://placehold.co/70x70/ccc/000?text=NA' };
+        }
+
+        function calculateTotals() {
+            let subtotal = 0.00;
+            let totalItems = 0;
+
+            for (const uniqueId in cartItems) {
+                const item = cartItems[uniqueId];
+                subtotal += item.qty * item.price;
+                totalItems += item.qty;
+            }
+
+            const shipping = (subtotal >= FREE_SHIPPING_THRESHOLD && subtotal > 0) ? 0.00 : (subtotal > 0 ? FLAT_SHIPPING_RATE : 0.00);
+            const shippingText = (shipping === 0.00 && subtotal > 0) ? 'FREE' : `â‚¹${shipping.toFixed(2)}`;
+            const grandTotal = subtotal + shipping;
+
+            return { subtotal, shipping, shippingText, grandTotal, totalItems };
+        }
+
+        function renderCart() {
+            const { subtotal, shippingText, grandTotal, totalItems } = calculateTotals();
+            let cartHtml = '';
+
+            if (totalItems === 0) {
+                emptyCartMessage.classList.remove('hidden');
+                checkoutContent.classList.add('hidden');
+            } else {
+                emptyCartMessage.classList.add('hidden');
+                checkoutContent.classList.remove('hidden');
+
+                for (const uniqueId in cartItems) {
+                    const item = cartItems[uniqueId];
+                    const details = getProductDetails(uniqueId);
+                    const itemTotal = item.qty * item.price;
+
+                    cartHtml += `
+                        <div class="flex space-x-4 items-center">
+                            <img src="${details.image}" alt="${details.name}" class="w-16 h-16 object-cover rounded-lg border border-gray-200">
+                            <div class="flex-grow">
+                                <p class="font-semibold text-gray-900">${details.name}</p>
+                                <p class="text-sm text-gray-500">â‚¹${item.price.toFixed(2)} each</p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button data-id="${uniqueId}" class="qty-button qty-minus-btn">-</button>
+                                <span class="w-4 text-center text-sm font-medium">${item.qty}</span>
+                                <button data-id="${uniqueId}" class="qty-button qty-plus-btn">+</button>
+                            </div>
+                            <span class="font-bold text-gray-900 w-16 text-right">â‚¹${itemTotal.toFixed(2)}</span>
+                            <button data-id="${uniqueId}" class="text-red-500 hover:text-red-700 transition duration-150" aria-label="Remove item"><i data-lucide="x" class="w-4 h-4"></i></button>
+                        </div>
+                    `;
+                }
+            }
+
+            // Update DOM
+            cartItemsList.innerHTML = cartHtml;
+            summaryItemCount.textContent = totalItems;
+            summarySubtotal.textContent = `â‚¹${subtotal.toFixed(2)}`;
+            summaryShipping.textContent = shippingText;
+            summaryGrandTotal.textContent = `â‚¹${grandTotal.toFixed(2)}`;
+            checkoutGrandTotal.textContent = grandTotal.toFixed(2);
+            cartTotalDisplay.textContent = `â‚¹${grandTotal.toFixed(2)}`;
+            cartItemCountNav.textContent = totalItems;
+            
+            lucide.createIcons();
+            attachCartEventListeners();
+        }
+        
+        function attachCartEventListeners() {
+            // Quantity Adjusters
+            document.querySelectorAll('.qty-minus-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.getAttribute('data-id');
+                    if (cartItems[id].qty > 1) {
+                        cartItems[id].qty -= 1;
+                    } else {
+                        delete cartItems[id];
+                    }
+                    renderCart();
+                });
+            });
+
+            document.querySelectorAll('.qty-plus-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.getAttribute('data-id');
+                    cartItems[id].qty += 1;
+                    renderCart();
+                });
+            });
+
+            // Remove Item
+            document.querySelectorAll('[aria-label="Remove item"]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = e.currentTarget.getAttribute('data-id');
+                    delete cartItems[id];
+                    renderCart();
+                    showNotification('Item removed from cart.', 'error');
+                });
+            });
+        }
+        
+        function showNotification(message, type = 'info') {
+            let bgColor = (type === 'success') ? 'bg-green-500' : 'bg-blue-500';
+            const notification = document.createElement('div');
+            notification.className = `fixed bottom-5 left-1/2 transform -translate-x-1/2 ${bgColor} text-white px-6 py-3 rounded-lg shadow-xl transition-all duration-300 ease-out z-50 opacity-0 translate-y-4`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => { notification.classList.remove('opacity-0', 'translate-y-4'); }, 50);
+            setTimeout(() => {
+                notification.classList.add('opacity-0', 'translate-y-4');
+                notification.addEventListener('transitionend', () => notification.remove());
+            }, 3000);
+        }
+
+        // -------------------------
+        // INITIALIZATION AND CHECKOUT FORM
+        // -------------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load Dummy Cart Data for demonstration (Remove in production)
+            cartItems = { 
+                '1': { qty: 2, price: 200.00, name: 'Mustard Oil (1L)' }, 
+                '4-5L': { qty: 1, price: 1800.00, name: 'Sunflower Oil (5L)' } 
+            }; 
+            
+            renderCart();
+
+            const checkoutForm = document.getElementById('checkoutForm');
+            if (checkoutForm) {
+                checkoutForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const { grandTotal, totalItems } = calculateTotals();
+
+                    if (totalItems === 0) {
+                        showNotification('Your cart is empty. Please add items to place an order.', 'error');
+                        return;
+                    }
+
+                    const formData = new FormData(checkoutForm);
+                    const orderData = {};
+                    for (let [key, value] of formData.entries()) {
+                        orderData[key] = value;
+                    }
+
+                    // Simulated Order Placement
+                    const paymentMethod = orderData.payment === 'cod' ? 'Cash on Delivery' : 'Online Payment';
+                    
+                    // Display success message using a modal-like approach or large banner (no alert())
+                    checkoutContent.innerHTML = `
+                        <div class="text-center p-12 bg-green-50 border-4 border-green-300 rounded-xl shadow-2xl">
+                            <i data-lucide="check-circle" class="w-16 h-16 text-green-600 mx-auto mb-6"></i>
+                            <h2 class="text-4xl font-extrabold text-green-800 mb-4">Order Placed Successfully!</h2>
+                            <p class="text-xl text-gray-700 mb-6">Your order for **â‚¹${grandTotal.toFixed(2)}** has been confirmed.</p>
+                            <p class="text-md text-gray-600 mb-8">You chose **${paymentMethod}** and your order will be delivered to **${orderData.address}**.</p>
+                            <a href="index.html" class="bg-[var(--color-dfn-primary)] text-white text-md font-bold py-3 px-8 rounded-full hover:bg-yellow-700 transition duration-300">
+                                CONTINUE SHOPPING
+                            </a>
+                        </div>
+                    `;
+                    lucide.createIcons();
+                    
+                    // Clear cart state (simulated)
+                    cartItems = {};
+                    renderCart(); // Update nav bar items to 0
+                    
+                    // NOTE: In a real app, this data would be sent to a server/Firestore here.
+                });
+            }
+        });
+    </script>
+</body>
+</html>

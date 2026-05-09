@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFN | Our Story & Quality</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+        :root {
+            --color-dfn-primary: #D4A33B;
+            --color-dfn-light: #FFFAF0;
+            --color-dfn-sale: #10B981;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f7f7f7; overflow-x: hidden; }
+    </style>
+    <link rel="stylesheet" href="dfn-theme.css">
+</head>
+<body>
+
+    <!-- 1. NAVIGATION BAR (Common Header) -->
+    <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-bold text-gray-800 tracking-wider flex items-center">
+                        <span class="text-[var(--color-dfn-primary)] mr-1.5">DFN</span><span class="text-gray-900"> |</span>
+                    </span>
+                    <span class="text-sm ml-1 text-gray-600 font-medium hidden sm:inline">Direct From Nature</span>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <a href="index.html" class="border-b-2 border-transparent text-sm font-medium text-gray-500 py-5 hover:border-[var(--color-dfn-primary)] transition duration-150">HOME</a>
+                    <a href="index.html#products" class="border-b-2 border-transparent text-sm font-medium text-gray-500 py-5 hover:border-[var(--color-dfn-primary)] transition duration-150">SHOP</a>
+                    <a href="about.html" class="border-b-2 border-[var(--color-dfn-primary)] text-sm font-medium text-[var(--color-dfn-primary)] py-5">ABOUT US</a>
+                    <a href="contact.html" class="border-b-2 border-transparent text-sm font-medium text-gray-500 py-5 hover:border-[var(--color-dfn-primary)] transition duration-150">CONTACT</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-500 hover:text-gray-900" aria-label="Search"><i data-lucide="search" class="w-5 h-5"></i></button>
+                    <button class="text-gray-500 hover:text-gray-900 hidden sm:block" aria-label="User Account"><i data-lucide="user" class="w-5 h-5"></i></button>
+                    <div class="cart-display-group flex items-center space-x-2">
+                        <button id="cartButton" class="text-gray-800 hover:text-gray-900 relative" aria-label="Shopping Cart">
+                            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                            <span id="cartItemCount" class="absolute -top-1 -right-1.5 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                        </button>
+                        <span id="cartTotalDisplay" class="nav-cart-total text-sm font-semibold text-[var(--color-dfn-primary)] ml-2">â‚¹0.00</span>
+                    </div>
+                    <button class="sm:hidden text-gray-500 hover:text-gray-900" aria-label="Menu Toggle"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 2. ABOUT HEADER -->
+    <header class="bg-[var(--color-dfn-light)] py-20 border-b border-gray-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl font-extrabold text-gray-900 mb-4">Our Story: Direct From Nature</h1>
+            <p class="text-xl text-gray-600">The journey of purity, from the seed to your table.</p>
+        </div>
+    </header>
+
+    <!-- 3. BRAND STORY & MISSION -->
+    <section class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-6 border-b border-gray-200 pb-2">Why DFN Exists</h2>
+            <p class="text-gray-700 mb-6 leading-relaxed">
+                DFN was born out of a simple frustration: the lack of genuinely **pure, unadulterated cooking oil** in the market. Our founders, a family of organic farmers, knew that the traditional 'cold-press' methodâ€”using minimal heat and no chemical solventsâ€”yields a far superior product, rich in flavour and nutrients.
+            </p>
+            <p class="text-gray-700 mb-8 leading-relaxed">
+                Our mission is to bring this traditional wisdom back to modern kitchens. We control every step, from sourcing the finest, non-GMO seeds from local Indian farms to ensuring the oil is bottled **unfiltered and unrefined**. This isn't just oil; it's a promise of health and purity, **direct from nature** to you.
+            </p>
+
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-6 border-b border-gray-200 pb-2 mt-12">The DFN Quality Process</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="p-6 bg-gray-50 rounded-xl">
+                    <i data-lucide="check-circle" class="w-10 h-10 text-[var(--color-dfn-primary)] mx-auto mb-4"></i>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">1. Seed Selection</h4>
+                    <p class="text-sm text-gray-600">Only premium, moisture-optimized seeds are selected. Rigorous quality checks ensure no impurities.</p>
+                </div>
+                <div class="p-6 bg-gray-50 rounded-xl">
+                    <i data-lucide="sprout" class="w-10 h-10 text-[var(--color-dfn-primary)] mx-auto mb-4"></i>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">2. Cold Pressing (Below 50Â°C)</h4>
+                    <p class="text-sm text-gray-600">Slow, careful grinding keeps the temperature low, preserving natural Vitamin E and anti-oxidants.</p>
+                </div>
+                <div class="p-6 bg-gray-50 rounded-xl">
+                    <i data-lucide="flask-conical" class="w-10 h-10 text-[var(--color-dfn-primary)] mx-auto mb-4"></i>
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">3. Natural Sedimentation</h4>
+                    <p class="text-sm text-gray-600">The oil is left to rest. No chemical refining or high-heat filtration is ever used. Pure goodness only.</p>
+                </div>
+            </div>
+            
+            <a href="contact.html" class="mt-12 block text-center bg-[var(--color-dfn-primary)] text-white text-lg font-bold py-3 px-8 rounded-full shadow-lg hover:bg-yellow-700 transition duration-300 max-w-sm mx-auto">
+                ASK US ABOUT OUR PROCESS
+            </a>
+        </div>
+    </section>
+
+    <!-- 4. FOOTER (Common Footer) -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-b border-gray-700 pb-8">
+                <div class="col-span-2 md:col-span-1">
+                    <span class="text-3xl font-bold tracking-wider flex items-center mb-3">
+                        <span class="text-[var(--color-dfn-primary)] mr-1.5">DFN</span> | <span class="text-sm ml-1 text-gray-400 font-medium">Direct From Nature</span>
+                    </span>
+                    <p class="text-gray-400 text-sm mb-4">Purity guaranteed. Your health, naturally enriched.</p>
+                    <p class="text-sm text-gray-400">
+                        <i data-lucide="mail" class="w-4 h-4 inline mr-2 text-[var(--color-dfn-primary)]"></i> support@dfnoils.com
+                    </p>
+                    <p class="text-sm text-gray-400">
+                        <i data-lucide="phone" class="w-4 h-4 inline mr-2 text-[var(--color-dfn-primary)]"></i> +91 98765 43210
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Shop & Resources</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html#products" class="text-gray-400 hover:text-white transition duration-150">Shop All Oils</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Recipes & Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Wholesale / B2B</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">My Account</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Company & Info</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="about.html" class="text-gray-400 hover:text-white transition duration-150">Our Story</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Quality Process</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">FAQs</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-150">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Policies</h5>
+                    <ul class="space-y-2 text-sm mb-6">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Shipping & Returns</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Terms of Service</a></li>
+                    </ul>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Follow Us</h5>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150" aria-label="Facebook"><i data-lucide="facebook" class="w-6 h-6"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150" aria-label="Instagram"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150" aria-label="Twitter"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 text-center text-sm text-gray-500">&copy; 2025 DFN | Direct From Nature. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC (Common for all pages) -->
+    <script> 
+        lucide.createIcons();
+
+        let cartItems = {}; 
+        let cartTotal = 0.00;
+        const cartTotalDisplay = document.getElementById('cartTotalDisplay');
+        const cartItemCount = document.getElementById('cartItemCount');
+
+        function updateCartDisplay() {
+            let totalItems = 0;
+            cartTotal = 0.00;
+            for (const id in cartItems) {
+                const item = cartItems[id];
+                totalItems += item.qty;
+                cartTotal += item.qty * item.price;
+            }
+            if(cartTotalDisplay) cartTotalDisplay.textContent = `â‚¹${cartTotal.toFixed(2)}`;
+            if(cartItemCount) cartItemCount.textContent = totalItems;
+        }
+
+        // Dummy data and functions are included to prevent errors, but not fully used on this static page.
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartDisplay();
+        });
+    </script>
+</body>
+</html>

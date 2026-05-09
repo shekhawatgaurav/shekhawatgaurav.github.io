@@ -1,0 +1,297 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFN | Frequently Asked Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+        :root {
+            --color-dfn-primary: #D4A33B;
+            --color-dfn-light: #FFFAF0;
+            --color-dfn-sale: #10B981;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f7f7f7; overflow-x: hidden; }
+        
+        .faq-question {
+            cursor: pointer;
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            transition: background-color 0.2s;
+        }
+        .faq-question:hover {
+            background-color: #f9fafb;
+        }
+        .faq-answer {
+            padding: 0 20px;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+            background-color: #f9fafb;
+        }
+        .faq-answer.open {
+            max-height: 500px; /* Adjust based on expected content height */
+            padding: 15px 20px 30px 20px;
+        }
+    </style>
+    <link rel="stylesheet" href="dfn-theme.css">
+</head>
+<body>
+
+    <!-- 1. NAVIGATION BAR (Common Header) -->
+    <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-bold text-gray-800 tracking-wider flex items-center">
+                        <span class="text-[var(--color-dfn-primary)] mr-1.5">DFN</span><span class="text-gray-900"> |</span>
+                    </span>
+                    <span class="text-sm ml-1 text-gray-600 font-medium hidden sm:inline">Direct From Nature</span>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <a href="index.html" class="border-b-2 border-transparent text-sm font-medium text-gray-500 py-5 hover:border-[var(--color-dfn-primary)] transition duration-150">HOME</a>
+                    <a href="index.html#products" class="border-b-2 border-transparent text-sm font-medium text-gray-500 py-5 hover:border-[var(--color-dfn-primary)] transition duration-150">SHOP</a>
+                    <a href="about.html" class="border-b-2 border-transparent text-sm font-medium text-gray-500 py-5 hover:border-[var(--color-dfn-primary)] transition duration-150">ABOUT US</a>
+                    <a href="contact.html" class="border-b-2 border-transparent text-sm font-medium text-gray-500 py-5 hover:border-[var(--color-dfn-primary)] transition duration-150">CONTACT</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-500 hover:text-gray-900" aria-label="Search"><i data-lucide="search" class="w-5 h-5"></i></button>
+                    <button class="text-gray-500 hover:text-gray-900 hidden sm:block" aria-label="User Account"><i data-lucide="user" class="w-5 h-5"></i></button>
+                    <div class="cart-display-group flex items-center space-x-2">
+                        <button id="cartButton" class="text-gray-800 hover:text-gray-900 relative" aria-label="Shopping Cart">
+                            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                            <span id="cartItemCount" class="absolute -top-1 -right-1.5 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                        </button>
+                        <span id="cartTotalDisplay" class="nav-cart-total text-sm font-semibold text-[var(--color-dfn-primary)] ml-2">â‚¹0.00</span>
+                    </div>
+                    <button class="sm:hidden text-gray-500 hover:text-gray-900" aria-label="Menu Toggle"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- 2. FAQ HEADER -->
+    <header class="bg-[var(--color-dfn-light)] py-20 border-b border-gray-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl font-extrabold text-gray-900 mb-4">Frequently Asked Questions</h1>
+            <p class="text-xl text-gray-600">Quick answers to our most common questions about quality, orders, and delivery.</p>
+        </div>
+    </header>
+
+    <!-- 3. FAQ CONTENT (Accordion) -->
+    <section class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="faq-container" class="border border-gray-200 rounded-xl overflow-hidden shadow-lg">
+                
+                <!-- Category Tabs (Optional but good practice) -->
+                <div class="flex border-b border-gray-200 bg-gray-50">
+                    <button data-filter="all" class="category-tab active text-[var(--color-dfn-primary)] font-semibold p-3 border-b-2 border-[var(--color-dfn-primary)] hover:text-gray-900 transition duration-150">All Topics</button>
+                    <button data-filter="product" class="category-tab text-gray-600 font-semibold p-3 border-b-2 border-transparent hover:border-gray-400 hover:text-gray-900 transition duration-150">Product Purity</button>
+                    <button data-filter="order" class="category-tab text-gray-600 font-semibold p-3 border-b-2 border-transparent hover:border-gray-400 hover:text-gray-900 transition duration-150">Ordering & Delivery</button>
+                    <button data-filter="usage" class="category-tab text-gray-600 font-semibold p-3 border-b-2 border-transparent hover:border-gray-400 hover:text-gray-900 transition duration-150">Usage & Storage</button>
+                </div>
+
+                <!-- FAQ Item 1: Purity -->
+                <div class="faq-item" data-category="product">
+                    <div class="faq-question flex justify-between items-center text-lg font-semibold text-gray-900">
+                        <span>What does "Cold Pressed" truly mean at DFN?</span>
+                        <i data-lucide="chevron-down" class="w-6 h-6 text-[var(--color-dfn-primary)] transform transition duration-300"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">At DFN (Direct From Nature), 'Cold Pressed' means the oil is extracted using a slow-grinding process where the temperature never exceeds **50Â°C (122Â°F)**. This preserves the natural aroma, flavour, antioxidants, and essential fatty acids, unlike refined oils which use high heat and chemicals like Hexane.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2: Refining -->
+                <div class="faq-item" data-category="product">
+                    <div class="faq-question flex justify-between items-center text-lg font-semibold text-gray-900">
+                        <span>Are your oils filtered or refined?</span>
+                        <i data-lucide="chevron-down" class="w-6 h-6 text-[var(--color-dfn-primary)] transform transition duration-300"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">No. Our oils are **unfiltered and unrefined**. We rely on natural sedimentation over several days to remove solid particles. You may notice natural sediments at the bottom of the bottle; this is a sign of purity and natural processing.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3: Storage -->
+                <div class="faq-item" data-category="usage">
+                    <div class="faq-question flex justify-between items-center text-lg font-semibold text-gray-900">
+                        <span>What is the best way to store DFN oils?</span>
+                        <i data-lucide="chevron-down" class="w-6 h-6 text-[var(--color-dfn-primary)] transform transition duration-300"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">Store the oil in a cool, dark place away from direct sunlight and heat. Keep the cap tightly closed after use. Our oils typically have a shelf life of 12 months from the date of bottling.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4: Shipping Time -->
+                <div class="faq-item" data-category="order">
+                    <div class="faq-question flex justify-between items-center text-lg font-semibold text-gray-900">
+                        <span>How long does delivery take?</span>
+                        <i data-lucide="chevron-down" class="w-6 h-6 text-[var(--color-dfn-primary)] transform transition duration-300"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">We typically process and ship orders within 1-2 business days. Delivery usually takes **3-7 business days** depending on your location in India. You will receive a tracking link via email once your order is dispatched.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5: Returns -->
+                <div class="faq-item" data-category="order">
+                    <div class="faq-question flex justify-between items-center text-lg font-semibold text-gray-900">
+                        <span>What is your return/refund policy?</span>
+                        <i data-lucide="chevron-down" class="w-6 h-6 text-[var(--color-dfn-primary)] transform transition duration-300"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="text-gray-700">Due to the nature of our food products, we cannot accept returns once the seal is broken. However, if you receive a damaged or incorrect product, please contact us within **48 hours** of delivery with photos, and we will arrange a replacement or full refund.</p>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="mt-12 text-center">
+                <p class="text-xl font-semibold text-gray-800 mb-4">Still have questions?</p>
+                <a href="contact.html" class="bg-[var(--color-dfn-primary)] text-white text-lg font-bold py-3 px-8 rounded-full shadow-lg hover:bg-yellow-700 transition duration-300">
+                    CONTACT OUR SUPPORT TEAM
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. FOOTER (Common Footer) -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-b border-gray-700 pb-8">
+                <div class="col-span-2 md:col-span-1">
+                    <span class="text-3xl font-bold tracking-wider flex items-center mb-3">
+                        <span class="text-[var(--color-dfn-primary)] mr-1.5">DFN</span> | <span class="text-sm ml-1 text-gray-400 font-medium">Direct From Nature</span>
+                    </span>
+                    <p class="text-gray-400 text-sm mb-4">Purity guaranteed. Your health, naturally enriched.</p>
+                    <p class="text-sm text-gray-400">
+                        <i data-lucide="mail" class="w-4 h-4 inline mr-2 text-[var(--color-dfn-primary)]"></i> support@dfnoils.com
+                    </p>
+                    <p class="text-sm text-gray-400">
+                        <i data-lucide="phone" class="w-4 h-4 inline mr-2 text-[var(--color-dfn-primary)]"></i> +91 98765 43210
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Shop & Resources</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html#products" class="text-gray-400 hover:text-white transition duration-150">Shop All Oils</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Recipes & Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Wholesale / B2B</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">My Account</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Company & Info</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="about.html" class="text-gray-400 hover:text-white transition duration-150">Our Story</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Quality Process</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">FAQs</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-150">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Policies</h5>
+                    <ul class="space-y-2 text-sm mb-6">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Shipping & Returns</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Terms of Service</a></li>
+                    </ul>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Follow Us</h5>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150" aria-label="Facebook"><i data-lucide="facebook" class="w-6 h-6"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150" aria-label="Instagram"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150" aria-label="Twitter"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 text-center text-sm text-gray-500">&copy; 2025 DFN | Direct From Nature. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script> 
+        lucide.createIcons();
+
+        // Common Cart Logic (Placeholder for full integration)
+        let cartTotal = 0.00; // Placeholder value
+        const cartTotalDisplay = document.getElementById('cartTotalDisplay');
+        const cartItemCount = document.getElementById('cartItemCount');
+        
+        function updateCartDisplay() {
+             // In a real multi-page app, this would load from persistent storage (Firestore/localStorage)
+             if(cartTotalDisplay) cartTotalDisplay.textContent = `â‚¹${cartTotal.toFixed(2)}`;
+             if(cartItemCount) cartItemCount.textContent = '0'; 
+        }
+
+        // Accordion / FAQ Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartDisplay();
+            
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            const categoryTabs = document.querySelectorAll('.category-tab');
+
+            // --- Accordion Logic ---
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    const parent = question.closest('.faq-item');
+                    const answer = parent.querySelector('.faq-answer');
+                    const icon = question.querySelector('i[data-lucide]');
+
+                    // Close all other open answers
+                    document.querySelectorAll('.faq-answer.open').forEach(openAnswer => {
+                        if (openAnswer !== answer) {
+                            openAnswer.classList.remove('open');
+                            openAnswer.closest('.faq-item').querySelector('i[data-lucide]').classList.remove('rotate-180');
+                        }
+                    });
+
+                    // Toggle the clicked answer
+                    answer.classList.toggle('open');
+                    icon.classList.toggle('rotate-180');
+                });
+            });
+
+            // --- Category Filtering Logic ---
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const filter = tab.getAttribute('data-filter');
+                    const allFaqItems = document.querySelectorAll('.faq-item');
+                    
+                    // Update active tab style
+                    categoryTabs.forEach(t => {
+                        t.classList.remove('active', 'text-[var(--color-dfn-primary)]', 'border-[var(--color-dfn-primary)]');
+                        t.classList.add('text-gray-600', 'border-transparent');
+                    });
+                    tab.classList.add('active', 'text-[var(--color-dfn-primary)]', 'border-[var(--color-dfn-primary)]');
+                    tab.classList.remove('text-gray-600', 'border-transparent');
+
+
+                    // Filter FAQ items
+                    allFaqItems.forEach(item => {
+                        const itemCategory = item.getAttribute('data-category');
+                        if (filter === 'all' || itemCategory === filter) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                        
+                        // Close all answers after filtering
+                        const answer = item.querySelector('.faq-answer');
+                        const icon = item.querySelector('i[data-lucide]');
+                        if (answer.classList.contains('open')) {
+                            answer.classList.remove('open');
+                            icon.classList.remove('rotate-180');
+                        }
+                    });
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>

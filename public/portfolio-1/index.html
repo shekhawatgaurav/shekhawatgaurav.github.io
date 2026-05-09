@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaurav Shekhawat | Web Developer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Engines -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&family=Space+Mono&display=swap');
+
+        :root {
+            --primary: #ffffff;
+            --accent: #00ffcc; /* Cyber Teal */
+            --amber: #ff8c00;  /* Forge Amber */
+            --bg: #030303;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg);
+            color: var(--primary);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        canvas#bg-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            z-index: -1;
+        }
+
+        /* LIQUID ORB CURSOR */
+        #cursor {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: width 0.3s, height 0.3s, border-radius 0.3s;
+        }
+
+        #cursor-follower {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease-out;
+        }
+
+        .font-mono { font-family: 'Space Mono', monospace; }
+
+        /* SECTIONS */
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 5%;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            section { padding: 80px 10%; }
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+        }
+
+        .hero-text {
+            font-size: clamp(2.2rem, 12vw, 8rem);
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+        }
+
+        /* PROJECT CARDS */
+        .project-card {
+            perspective: 1000px;
+        }
+        .project-inner {
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+        }
+        .project-card:hover .project-inner {
+            transform: rotateY(5deg) rotateX(2deg);
+            border-color: var(--accent);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 1px;
+            bottom: -2px; left: 0;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+
+        /* LOADING SCREEN */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 20000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .progress-line {
+            width: 150px;
+            height: 2px;
+            background: rgba(255,255,255,0.05);
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-fill {
+            position: absolute;
+            width: 0%; height: 100%;
+            background: var(--accent);
+        }
+
+        .vignette {
+            position: fixed; inset: 0; pointer-events: none; z-index: 1;
+            background: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.8) 100%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #ffffff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tool-icon {
+            filter: grayscale(1) invert(1) brightness(2);
+            opacity: 0.3;
+            transition: all 0.5s ease;
+        }
+        .tool-icon:hover {
+            filter: grayscale(0) invert(0) brightness(1);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* Animation Classes */
+        .stagger-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* DIAMOND FOOTER DECORATION */
+        .footer-diamond {
+            width: 12px;
+            height: 12px;
+            background-color: var(--accent);
+            transform: rotate(45deg);
+            margin-bottom: 1rem;
+            box-shadow: 0 0 15px var(--accent);
+            animation: rotateDiamond 4s infinite linear;
+        }
+
+        @keyframes rotateDiamond {
+            0% { transform: rotate(45deg); }
+            100% { transform: rotate(405deg); }
+        }
+
+        /* MODAL STYLES */
+        .modal-open { overflow: hidden; }
+        #modal-content {
+            box-shadow: 0 0 50px rgba(0, 255, 204, 0.1);
+        }
+        .feature-list li {
+            margin-bottom: 0.5rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+        .feature-list li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="font-mono text-[10px] tracking-[0.4em] text-white uppercase" id="loader-text">Waking Up...</div>
+        <div class="progress-line"><div class="progress-fill" id="loader-fill"></div></div>
+    </div>
+
+    <!-- Background -->
+    <canvas id="bg-canvas"></canvas>
+    <div class="vignette"></div>
+
+    <!-- Cursor -->
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-[1000] p-5 md:p-8 flex justify-between items-center">
+        <div class="text-lg font-black tracking-tighter stagger-item">
+            GS<span class="text-[#00ffcc]">.</span>
+        </div>
+        <div class="flex gap-6 md:gap-12 text-[9px] font-bold tracking-[0.3em] uppercase text-gray-500">
+            <a href="#home" class="nav-link relative stagger-item">Start</a>
+            <a href="#projects" class="nav-link relative stagger-item">Works</a>
+            <a href="#contact" class="nav-link relative stagger-item">Signal</a>
+        </div>
+    </nav>
+
+    <main class="relative z-10">
+        <!-- HERO SECTION -->
+        <section id="home">
+            <div class="text-center w-full max-w-5xl relative">
+                <canvas id="text-canvas" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-full h-full"></canvas>
+                <h1 class="hero-text mb-6 opacity-0 pointer-events-none" id="hero-title">
+                    <div class="overflow-hidden pb-2">
+                        <span class="block" id="hero-text-1">Web</span>
+                    </div>
+                    <div class="overflow-hidden pb-2">
+                        <span class="block gradient-text" id="hero-text-2">Developer.</span>
+                    </div>
+                </h1>
+                <p class="mt-4 text-gray-400 max-w-2xl mx-auto text-base md:text-lg stagger-item font-light leading-relaxed px-4">
+                    I engineer robust digital solutions that bridge the gap between design and functionality. Specializing in <span class="text-white font-bold">RESPONSIVE WEBSITES</span>, Android applications, and interactive user experiences.
+                </p>
+                <div class="mt-12 flex flex-col items-center stagger-item">
+                    <div class="w-px h-16 md:h-24 bg-gradient-to-b from-[#ff8c00] to-transparent"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOOLS & SKILLS -->
+        <section id="about" class="py-20 md:py-32">
+            <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-6 tracking-tighter">Entrepreneurial <br/><span class="text-[#00ffcc]">Vision.</span></h2>
+                    <p class="text-gray-400 text-base md:text-lg leading-relaxed mb-8">
+                        I approach development with an entrepreneurial mindset. Beyond writing code, I build digital assets designed for scalability and growth. Every application I create is engineered to be efficient and secure.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="glass p-6 border-l-2 border-[#00ffcc]">
+                            <h4 class="text-xl font-bold">10+</h4>
+                            <span class="text-[9px] text-gray-500 uppercase tracking-widest">Builds</span>
+                        </div>
+                        <div class="glass p-6 border-l-2 border-[#ff8c00]">
+                            <h4 class="text-xl font-bold uppercase">Ready</h4>
+                            <span class="text-[9px] text-gray-500 uppercase tracking-widest">Business</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col justify-center">
+                    <h3 class="font-mono text-[10px] text-gray-500 tracking-[0.4em] mb-8 uppercase text-center lg:text-left">Tech Stack</h3>
+                    <div class="grid grid-cols-3 gap-6 md:gap-10">
+                        <div class="flex flex-col items-center gap-2">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg" class="w-10 h-10 md:w-14 md:h-14 tool-icon" alt="Ai">
+                            <span class="text-[7px] font-bold text-gray-600">AI</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" class="w-10 h-10 md:w-14 md:h-14 tool-icon" alt="Ps">
+                            <span class="text-[7px] font-bold text-gray-600">PS</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/Adobe_XD_CC_icon.svg" class="w-10 h-10 md:w-14 md:h-14 tool-icon" alt="Xd">
+                            <span class="text-[7px] font-bold text-gray-600">XD</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg" class="w-10 h-10 md:w-14 md:h-14 tool-icon" alt="Figma">
+                            <span class="text-[7px] font-bold text-gray-600">FIGMA</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Android_Studio_icon_%282023%29.svg" class="w-10 h-10 md:w-14 md:h-14 tool-icon" alt="Studio">
+                            <span class="text-[7px] font-bold text-gray-600">ANDROID</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" class="w-10 h-10 md:w-14 md:h-14 tool-icon" alt="VS Code">
+                            <span class="text-[7px] font-bold text-gray-600">CODE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects" class="flex-col !justify-start">
+            <div class="w-full mb-12 flex flex-col md:flex-row justify-between items-end gap-4 px-4">
+                <div>
+                    <h2 class="text-4xl md:text-6xl font-bold tracking-tighter uppercase">Featured</h2>
+                    <p class="text-gray-500 font-mono text-[10px] mt-1 uppercase tracking-widest">Innovation • Code • Design</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12 md:gap-x-10 md:gap-y-16 w-full px-4 mb-20">
+                <!-- Project 1 -->
+                <div onclick="openModal('purniq-store')" class="project-card group block cursor-pointer">
+                    <div class="project-inner glass p-5 flex flex-col h-full border border-white/5">
+                        <div class="bg-zinc-950 rounded-xl overflow-hidden mb-5 aspect-video relative">
+                            <img src="Purniq web.png" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition duration-700">
+                        </div>
+                        <h3 class="text-lg font-bold font-mono tracking-tighter uppercase">Purniq Store</h3>
+                        <p class="text-xs text-gray-500 mt-3 leading-relaxed">Premium Organic E-commerce Experience.</p>
+                        <div class="mt-auto pt-6 flex justify-between items-center">
+                            <span class="text-[8px] font-bold text-gray-600 uppercase">HTML / Tailwind / JS</span>
+                            <i data-lucide="arrow-up-right" class="w-3 h-3 text-gray-600 group-hover:text-[#00ffcc] transition"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div onclick="openModal('admin-dashboard')" class="project-card group block cursor-pointer">
+                    <div class="project-inner glass p-5 flex flex-col h-full md:translate-y-8 border border-white/5">
+                        <div class="bg-zinc-950 rounded-xl overflow-hidden mb-5 aspect-video relative">
+                            <img src="dashboard web.png" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition duration-700">
+                        </div>
+                        <h3 class="text-lg font-bold font-mono tracking-tighter uppercase">Admin Dashboard</h3>
+                        <p class="text-xs text-gray-500 mt-3 leading-relaxed">Comprehensive management dashboard.</p>
+                        <div class="mt-auto pt-6 flex justify-between items-center">
+                            <span class="text-[8px] font-bold text-gray-600 uppercase">Tailwind / JS</span>
+                            <i data-lucide="arrow-up-right" class="w-3 h-3 text-gray-600 group-hover:text-[#ff8c00] transition"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div onclick="openModal('ordering-app')" class="project-card group block cursor-pointer">
+                    <div class="project-inner glass p-5 flex flex-col h-full border border-white/5">
+                        <div class="bg-zinc-950 rounded-xl overflow-hidden mb-5 aspect-video relative">
+                            <img src="ordering web.png" class="w-full h-full object-cover opacity-20 group-hover:scale-110 transition duration-700">
+                        </div>
+                        <h3 class="text-lg font-bold font-mono tracking-tighter uppercase">Ordering Web App</h3>
+                        <p class="text-xs text-gray-500 mt-3 leading-relaxed">AI powered content generation tool.</p>
+                        <div class="mt-auto pt-6 flex justify-between items-center">
+                            <span class="text-[8px] font-bold text-gray-600 uppercase">TensorFlow / Go</span>
+                            <i data-lucide="arrow-up-right" class="w-3 h-3 text-gray-600 group-hover:text-[#00ffcc] transition"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div onclick="openModal('rent-manager')" class="project-card group block cursor-pointer">
+                    <div class="project-inner glass p-5 flex flex-col h-full border border-white/5">
+                        <div class="bg-zinc-950 rounded-xl overflow-hidden mb-5 aspect-video relative">
+                            <img src="properties.png" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition duration-700">
+                        </div>
+                        <h3 class="text-lg font-bold font-mono tracking-tighter uppercase">Rent Manager</h3>
+                        <p class="text-xs text-gray-500 mt-3 leading-relaxed">Unified dashboard for tenants and owners.</p>
+                        <div class="mt-auto pt-6 flex justify-between items-center">
+                            <span class="text-[8px] font-bold text-gray-600 uppercase">Firebase / JS</span>
+                            <i data-lucide="arrow-up-right" class="w-3 h-3 text-gray-600 group-hover:text-[#ff8c00] transition"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div onclick="openModal('dfn-store')" class="project-card group block cursor-pointer">
+                    <div class="project-inner glass p-5 flex flex-col h-full md:translate-y-8 border border-white/5">
+                        <div class="bg-zinc-950 rounded-xl overflow-hidden mb-5 aspect-video relative">
+                            <img src="dfn web.png" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition duration-700">
+                        </div>
+                        <h3 class="text-lg font-bold font-mono tracking-tighter uppercase">DFN Store</h3>
+                        <p class="text-xs text-gray-500 mt-3 leading-relaxed">E-commerce website platform.</p>
+                        <div class="mt-auto pt-6 flex justify-between items-center">
+                            <span class="text-[8px] font-bold text-gray-600 uppercase">Tailwind / JS</span>
+                            <i data-lucide="arrow-up-right" class="w-3 h-3 text-gray-600 group-hover:text-[#00ffcc] transition"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div onclick="openModal('quotes-app')" class="project-card group block cursor-pointer">
+                    <div class="project-inner glass p-5 flex flex-col h-full border border-white/5">
+                        <div class="bg-zinc-950 rounded-xl overflow-hidden mb-5 aspect-video relative">
+                            <img src="Quotesapp.png" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition duration-700">
+                        </div>
+                        <h3 class="text-lg font-bold font-mono tracking-tighter uppercase">Quotes App</h3>
+                        <p class="text-xs text-gray-500 mt-3 leading-relaxed">Daily inspiration with themes and customization.</p>
+                        <div class="mt-auto pt-6 flex justify-between items-center">
+                            <span class="text-[8px] font-bold text-gray-600 uppercase">Android / Kotlin</span>
+                            <i data-lucide="arrow-up-right" class="w-3 h-3 text-gray-600 group-hover:text-[#00ffcc] transition"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact">
+            <div class="text-center w-full relative px-4">
+                <div class="relative z-10 glass p-10 md:p-20 max-w-4xl mx-auto border border-white/5">
+                    <h3 class="text-4xl md:text-6xl font-bold mb-6 tracking-tighter uppercase">Let's <br/><span class="text-[#00ffcc]">Build.</span></h3>
+                    <p class="text-gray-400 mb-10 text-base md:text-lg">Turning ambitious concepts into digital reality. Worldwide.</p>
+                    
+                    <a href="mailto:hello@gauravshekhawat.dev" class="px-10 py-5 bg-white text-black font-black text-base hover:bg-[#00ffcc] transition-all duration-500 hover:scale-105 shadow-[0_0_40px_rgba(255,255,255,0.1)] uppercase">
+                        Send Proposal
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="py-6 text-center border-t border-white/5 flex flex-col items-center">
+        <!-- Rotating Diamond Decor -->
+        <div class="footer-diamond"></div>
+        <p class="text-[10px] tracking-[0.8em] text-[#00ffcc] uppercase font-bold">Gaurav Shekhawat</p>
+    </footer>
+
+    <!-- PROJECT MODAL -->
+    <div id="project-modal" class="fixed inset-0 z-[9999] hidden opacity-0 transition-opacity duration-300">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl p-4 md:p-0">
+            <div class="glass border border-white/10 p-6 md:p-10 relative transform transition-all duration-300 scale-95" id="modal-content">
+                <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+                
+                <h2 id="modal-title" class="text-2xl md:text-3xl font-bold mb-2 text-white uppercase tracking-tight"></h2>
+                <p id="modal-role" class="text-[#00ffcc] text-xs font-mono uppercase tracking-widest mb-6"></p>
+                
+                <div class="mb-6">
+                    <h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Tech Stack</h4>
+                    <p id="modal-tech" class="text-sm text-gray-300 font-mono"></p>
+                </div>
+                
+                <div class="mb-8">
+                    <h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Key Features</h4>
+                    <ul id="modal-desc" class="text-sm text-gray-400 leading-relaxed feature-list"></ul>
+                </div>
+                
+                <button id="modal-link" type="button" onclick="openPreviewNotice()" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-bold text-xs uppercase tracking-widest hover:bg-[#00ffcc] transition-colors">
+                    View Project <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PREVIEW NOTICE -->
+    <div id="preview-notice" class="fixed inset-0 z-[10000] hidden opacity-0 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closePreviewNotice()"></div>
+        <div class="absolute top-1/2 left-1/2 w-[min(92vw,440px)] -translate-x-1/2 -translate-y-1/2">
+            <div class="glass border border-white/10 p-8 text-center">
+                <div class="w-14 h-14 rounded-full bg-[#00ffcc] text-black flex items-center justify-center mx-auto mb-5">
+                    <i data-lucide="lock" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-black uppercase tracking-tight mb-3">Preview not connected</h3>
+                <p id="preview-notice-text" class="text-sm text-gray-400 leading-relaxed mb-6">
+                    This portfolio demo keeps project links disabled.
+                </p>
+                <button onclick="closePreviewNotice()" class="px-6 py-3 bg-white text-black font-bold text-xs uppercase tracking-widest hover:bg-[#00ffcc] transition-colors">
+                    Got it
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // 1. THREE.JS FORGE BACKGROUND (Amber Sparks + Blast)
+        const canvas = document.getElementById('bg-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        const particlesCount = 2000;
+        const posArray = new Float32Array(particlesCount * 3);
+        const velArray = new Float32Array(particlesCount * 3); // Velocity for blast
+
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 15;
+            velArray[i] = (Math.random() - 0.5) * 0.01;
+        }
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.02,
+            color: '#ff8c00', 
+            transparent: true,
+            opacity: 0.5,
+            blending: THREE.AdditiveBlending
+        });
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        camera.position.z = 5;
+
+        // Blast logic
+        let blastActive = false;
+        let blastCenter = new THREE.Vector3();
+        
+        function createBlast() {
+            blastCenter.set((Math.random()-0.5)*5, (Math.random()-0.5)*5, (Math.random()-0.5)*2);
+            blastActive = true;
+            setTimeout(() => blastActive = false, 1500);
+        }
+
+        setInterval(createBlast, 4000); // Blast every 4 seconds
+
+        // 2. CURSOR LOGIC (LIQUID)
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('cursor-follower');
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            gsap.to(cursor, { 
+                x: mouseX, y: mouseY, 
+                duration: 0.1, ease: "power2.out",
+                xPercent: -50, yPercent: -50
+            });
+            gsap.to(follower, { 
+                x: mouseX, y: mouseY, 
+                duration: 0.3,
+                xPercent: -50, yPercent: -50
+            });
+        });
+
+        // Hover Effects
+        document.querySelectorAll('a, button, .project-card, .glass, .tool-icon').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                gsap.to(cursor, { width: 80, height: 80, backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: '25%' });
+                gsap.to(follower, { scale: 1.5, backgroundColor: 'white' });
+            });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(cursor, { width: 30, height: 30, backgroundColor: 'white', borderRadius: '50%' });
+                gsap.to(follower, { scale: 1, backgroundColor: '#00ffcc' });
+            });
+        });
+
+        // 3. ANIMATION LOOP
+        const tick = () => {
+            const positions = particlesGeometry.attributes.position.array;
+            
+            for (let i = 0; i < particlesCount; i++) {
+                const i3 = i * 3;
+                
+                // Normal Drift Up
+                positions[i3 + 1] += 0.003;
+                if (positions[i3 + 1] > 7) positions[i3 + 1] = -7;
+
+                // Blast Effect
+                if (blastActive) {
+                    const px = positions[i3];
+                    const py = positions[i3 + 1];
+                    const pz = positions[i3 + 2];
+                    
+                    const dx = px - blastCenter.x;
+                    const dy = py - blastCenter.y;
+                    const dz = pz - blastCenter.z;
+                    const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                    
+                    if (dist < 2) {
+                        positions[i3] += (dx / dist) * 0.1;
+                        positions[i3+1] += (dy / dist) * 0.1;
+                        positions[i3+2] += (dz / dist) * 0.1;
+                    }
+                }
+            }
+            particlesGeometry.attributes.position.needsUpdate = true;
+            
+            gsap.to(camera.position, {
+                x: (mouseX / window.innerWidth - 0.5) * 1,
+                y: -(mouseY / window.innerHeight - 0.5) * 1,
+                duration: 2
+            });
+
+            renderer.render(scene, camera);
+            window.requestAnimationFrame(tick);
+        }
+        tick();
+
+        // 4. LOADER & GSAP REVEALS
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            tl.to("#loader-fill", { width: "100%", duration: 0.8 })
+              .to("#loader", { opacity: 0, pointerEvents: "none", duration: 0.5 })
+              // Hero Entrance Animation
+              .to(".stagger-item", { 
+                  opacity: 1, 
+                  y: 0, 
+                  duration: 1, 
+                  stagger: 0.15, 
+                  ease: "power4.out" 
+              }, "-=0.5");
+
+            gsap.registerPlugin(ScrollTrigger);
+            document.querySelectorAll('section').forEach(sec => {
+                gsap.from(sec.querySelectorAll('.project-card'), {
+                    scrollTrigger: { trigger: sec, start: "top 85%" },
+                    y: 60, opacity: 0, duration: 1, stagger: 0.2, ease: "power3.out"
+                });
+                
+                if(sec.id !== 'home') {
+                    gsap.from(sec.querySelector('.reveal'), {
+                        scrollTrigger: { trigger: sec, start: "top 85%" },
+                        y: 30, opacity: 0, duration: 1, ease: "power2.out"
+                    });
+                }
+            });
+        });
+
+        // Resize Handling
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // 5. PARTICLE TEXT ANIMATION
+        const textCanvas = document.getElementById('text-canvas');
+        const tCtx = textCanvas.getContext('2d', { willReadFrequently: true });
+        let particleArray = [];
+        let animationFrameId;
+
+        class TextParticle {
+            constructor(x, y, color) {
+                this.x = Math.random() * window.innerWidth;
+                this.y = Math.random() * window.innerHeight;
+                this.baseX = x;
+                this.baseY = y;
+                this.size = 1.2;
+                this.density = (Math.random() * 30) + 1;
+                this.color = color;
+            }
+            draw() {
+                tCtx.fillStyle = this.color;
+                tCtx.beginPath();
+                tCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                tCtx.closePath();
+                tCtx.fill();
+            }
+            update() {
+                this.x += (this.baseX - this.x) * 0.015;
+                this.y += (this.baseY - this.y) * 0.015;
+            }
+        }
+
+        function initText() {
+            // 1. Size Canvas to match container exactly
+            const canvasRect = textCanvas.getBoundingClientRect();
+            textCanvas.width = canvasRect.width;
+            textCanvas.height = canvasRect.height;
+            
+            // 2. Draw Text based on actual HTML positions
+            const el1 = document.getElementById('hero-text-1');
+            const el2 = document.getElementById('hero-text-2');
+            
+            function drawToCanvas(el, isGradient) {
+                const rect = el.getBoundingClientRect();
+                const style = window.getComputedStyle(el);
+                
+                // Calculate coordinates relative to canvas
+                const x = (rect.left - canvasRect.left) + (rect.width / 2);
+                const y = (rect.top - canvasRect.top) + (rect.height / 2);
+                
+                tCtx.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+                tCtx.textAlign = 'center';
+                tCtx.textBaseline = 'middle';
+                if (tCtx.letterSpacing !== undefined) tCtx.letterSpacing = style.letterSpacing;
+                
+                if (isGradient) {
+                    const grad = tCtx.createLinearGradient(x - rect.width/2, y, x + rect.width/2, y);
+                    grad.addColorStop(0, '#ffffff');
+                    grad.addColorStop(1, '#00ffcc');
+                    tCtx.fillStyle = grad;
+                } else {
+                    tCtx.fillStyle = 'white';
+                }
+                tCtx.fillText(el.innerText, x, y);
+            }
+            
+            drawToCanvas(el1, false);
+            drawToCanvas(el2, true);
+
+            const textCoordinates = tCtx.getImageData(0, 0, textCanvas.width, textCanvas.height);
+            particleArray = [];
+            
+            // Sample pixels
+            const step = 5; // Higher number = fewer particles (faster)
+            for (let y = 0; y < textCoordinates.height; y += step) {
+                for (let x = 0; x < textCoordinates.width; x += step) {
+                    if (textCoordinates.data[(y * 4 * textCoordinates.width) + (x * 4) + 3] > 128) {
+                        // Sample exact color from the drawn text (handles gradient perfectly)
+                        const r = textCoordinates.data[(y * 4 * textCoordinates.width) + (x * 4)];
+                        const g = textCoordinates.data[(y * 4 * textCoordinates.width) + (x * 4) + 1];
+                        const b = textCoordinates.data[(y * 4 * textCoordinates.width) + (x * 4) + 2];
+                        const color = `rgb(${r},${g},${b})`;
+                        particleArray.push(new TextParticle(x, y, color));
+                    }
+                }
+            }
+        }
+
+        function animateTextParticles() {
+            tCtx.clearRect(0, 0, textCanvas.width, textCanvas.height);
+            for (let i = 0; i < particleArray.length; i++) {
+                particleArray[i].draw();
+                particleArray[i].update();
+            }
+            animationFrameId = requestAnimationFrame(animateTextParticles);
+        }
+
+        // Initialize Particle Text
+        // Wait for fonts to load for correct sizing
+        document.fonts.ready.then(function () {
+            initText();
+            animateTextParticles();
+        });
+        
+        window.addEventListener('resize', initText);
+
+        // 6. PROJECT MODAL LOGIC
+        const projectsData = {
+            "purniq-store": {
+                title: "Purniq – Premium Organic E-commerce Experience",
+                role: "Lead Web Developer & UI Designer",
+                tech: "HTML5, Tailwind CSS, JavaScript, Lucide Icons, Framer Motion",
+                features: [
+                    "Immersive Hero Interface: Visually appealing 'Farm-to-Table' hero section with scrolling animations.",
+                    "Dynamic Product Catalog: Clean grid layout for Cold-pressed oils & spices with 'Quick Add' functionality.",
+                    "Interactive UI Elements: Custom testimonials slider, floating WhatsApp support, responsive mobile nav.",
+                    "End-to-End Solution: Developed both the E-commerce Website and Management ERP, creating a unified digital ecosystem."
+                ],
+                link: "purniqwebsite.html"
+            },
+            "admin-dashboard": {
+                title: "Purniq ERP - Unified Business Suite",
+                role: "Lead Developer & Designer",
+                tech: "HTML5, Tailwind CSS, JavaScript (ES6+), Chart.js, QRCode.js",
+                features: [
+                    "Inventory & Production Tracking: Built an automated system to track multi-size variants (500ml to 15L) and FIFO-based batch management.",
+                    "Dynamic Billing System: Developed a responsive POS terminal with GST calculation, discount handling, and instant WhatsApp invoice sharing.",
+                    "Financial Analytics: Created interactive dashboards using Chart.js for sales growth, profit margins, and expense breakdowns.",
+                    "Compliance & Security: Integrated FSSAI lab report management and a custom 'Kiosk Lock Mode' to protect sensitive data."
+                ],
+                link: "Purniq management.html"
+            },
+            "ordering-app": {
+                title: "Ordering Web App",
+                role: "Full Stack Developer",
+                tech: "TensorFlow, Go, React, PostgreSQL",
+                features: [
+                    "AI-powered content generation tool for automated suggestions.",
+                    "Utilizes TensorFlow for machine learning models to predict user preferences.",
+                    "High-concurrency backend built with Go for real-time processing.",
+                    "Streamlined ordering workflow reducing manual entry errors."
+                ],
+                link: "Ordering web.html"
+            },
+            "rent-manager": {
+                title: "Shekhawat Market - Comprehensive Rent Management System",
+                role: "Lead Developer & UI Designer",
+                tech: "HTML5, Tailwind CSS, JavaScript (ES6+), Firebase, Chart.js",
+                features: [
+                    "Admin Dashboard: A centralized hub utilizing interactive graphs (Chart.js) for properties, tenants, and collection analysis.",
+                    "Tenant Portal: Dedicated login for tenants to pay rent, download receipts, and manage documents.",
+                    "Automated Billing: System to calculate and automate electricity bills and extra charges.",
+                    "Payment Verification: Admins can verify or reject payments made by tenants to ensure accurate accounting.",
+                    "Financial Reporting: Advanced filtering options for Profit & Loss statements, income reports, and late payment tracking."
+                ],
+                link: "https://shekhawatproperties.github.io/"
+            },
+            "dfn-store": {
+                title: "DFN Store",
+                role: "Frontend Developer",
+                tech: "HTML5, Tailwind CSS, JavaScript, Lucide Icons",
+                features: [
+                    "Frameworks: Built with Tailwind CSS for rapid styling and Lucide-Dev for lightweight SVG icons.",
+                    "Frontend Architecture: Features a dynamic product grid driven by JSON data and real-time state management for the cart.",
+                    "Responsive Design: Implements a sticky header with conditional rendering for seamless mobile and desktop navigation.",
+                    "Interactive UI: Includes 3D Flip Cards, an infinite marquee, and a real-time 'Deal of the Day' countdown timer.",
+                    "Advanced Filtering: Interactive system to filter products by packaging type (Bottle, Pouch, Drum) updating the DOM instantly."
+                ],
+                link: "dfn.html"
+            },
+            "quotes-app": {
+                title: "Quotes App",
+                role: "Android Developer",
+                tech: "Kotlin, Android SDK, Room Database, Material Design",
+                features: [
+                    "Native Android application delivering daily inspiration.",
+                    "Offline access with local database storage.",
+                    "Theme customization including Dark Mode and font selection.",
+                    "Share quotes directly to social media platforms as images."
+                ],
+                link: "https://drive.google.com/drive/u/1/folders/1U5bdQbgDuHbzCKMY0LDEWGzYG02R6evW"
+            }
+        };
+
+        const modal = document.getElementById('project-modal');
+        const modalContent = document.getElementById('modal-content');
+        const previewNotice = document.getElementById('preview-notice');
+        let activeProjectTitle = '';
+
+        function openModal(projectId) {
+            const data = projectsData[projectId];
+            if(!data) return;
+
+            activeProjectTitle = data.title;
+            document.getElementById('modal-title').innerText = data.title;
+            document.getElementById('modal-role').innerText = data.role;
+            document.getElementById('modal-tech').innerText = data.tech;
+            
+            const descContainer = document.getElementById('modal-desc');
+            descContainer.innerHTML = data.features.map(f => `<li>${f}</li>`).join('');
+
+            modal.classList.remove('hidden');
+            // Small delay to allow display:block to apply before opacity transition
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+            document.body.classList.add('modal-open');
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.classList.remove('modal-open');
+            }, 300);
+        }
+
+        function openPreviewNotice() {
+            document.getElementById('preview-notice-text').innerText =
+                `${activeProjectTitle || 'This project'} is included as a case-study popup only. External preview links are intentionally disabled in this demo.`;
+            previewNotice.classList.remove('hidden');
+            setTimeout(() => previewNotice.classList.remove('opacity-0'), 10);
+        }
+
+        function closePreviewNotice() {
+            previewNotice.classList.add('opacity-0');
+            setTimeout(() => previewNotice.classList.add('hidden'), 300);
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeModal();
+                closePreviewNotice();
+            }
+        });
+    </script>
+</body>
+</html>

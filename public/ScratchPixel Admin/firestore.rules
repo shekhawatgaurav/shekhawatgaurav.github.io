@@ -1,0 +1,336 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function adminDoc() {
+      return /databases/$(database)/documents/admins/$(request.auth.uid);
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && exists(adminDoc())
+        && get(adminDoc()).data.status == "active";
+    }
+
+    function isOwner() {
+      return isAdmin()
+        && get(adminDoc()).data.role == "owner";
+    }
+
+    function isSelf(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    function onlyAllowedUserProfileFields() {
+      return request.resource.data.diff(resource.data).changedKeys().hasOnly([
+        "name",
+        "phone",
+        "gender",
+        "avatarId",
+        "upiId",
+        "updatedAt",
+        "lastLoginAt",
+        "deviceId",
+        "deviceName",
+        "appVersion",
+        "fcmToken"
+      ]);
+    }
+
+    function validWithdrawalCreate() {
+      return signedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.status == "pending"
+        && request.resource.data.amount is number
+        && request.resource.data.amount > 0
+        && request.resource.data.coins is number
+        && request.resource.data.coins > 0
+        && request.resource.data.keys().hasOnly([
+          "userId",
+          "userName",
+          "userEmail",
+          "userPhone",
+          "amount",
+          "coins",
+          "upiId",
+          "status",
+          "note",
+          "createdAt",
+          "updatedAt"
+        ]);
+    }
+
+    function validKycCreate() {
+      return signedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.status == "pending"
+        && request.resource.data.keys().hasOnly([
+          "userId",
+          "userName",
+          "userEmail",
+          "userPhone",
+          "fullName",
+          "dob",
+          "panNumber",
+          "documentType",
+          "documentUrl",
+          "documentPath",
+          "selfieUrl",
+          "selfiePath",
+          "status",
+          "note",
+          "createdAt",
+          "updatedAt"
+        ]);
+    }
+
+    function validSupportCreate() {
+      return signedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.status == "open"
+        && request.resource.data.keys().hasOnly([
+          "userId",
+          "userName",
+          "userEmail",
+          "userPhone",
+          "subject",
+          "message",
+          "category",
+          "attachmentUrl",
+          "attachmentPath",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ]);
+    }
+
+    match /admins/{adminId} {
+      allow read: if isAdmin();
+      allow create, update, delete: if isOwner();
+    }
+
+    match /settings/{settingId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /users/{userId} {
+      allow read: if isAdmin() || isSelf(userId);
+
+      allow create: if isSelf(userId)
+        && request.resource.data.keys().hasOnly([
+          "name",
+          "email",
+          "phone",
+          "gender",
+          "avatarId",
+          "referralCode",
+          "referredBy",
+          "coins",
+          "status",
+          "riskStatus",
+          "kycStatus",
+          "referralCount",
+          "createdAt",
+          "updatedAt",
+          "lastLoginAt",
+          "deviceId",
+          "deviceName",
+          "appVersion",
+          "fcmToken"
+        ])
+        && request.resource.data.coins is number
+        && request.resource.data.coins >= 0
+        && request.resource.data.status == "active"
+        && request.resource.data.riskStatus == "normal";
+
+      // User profile update only. User cannot change coins/status/risk/referralCount.
+      allow update: if isSelf(userId) && onlyAllowedUserProfileFields();
+
+      // Admin can update anything from admin panel.
+      allow update, delete: if isAdmin();
+    }
+
+    match /walletTransactions/{transactionId} {
+      allow read: if isAdmin()
+        || (signedIn() && resource.data.userId == request.auth.uid);
+
+      // Important: user app cannot create wallet transaction directly.
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /withdrawals/{withdrawalId} {
+      allow read: if isAdmin()
+        || (signedIn() && resource.data.userId == request.auth.uid);
+
+      allow create: if validWithdrawalCreate();
+
+      // Only admin can approve/reject/paid/reopen.
+      allow update, delete: if isAdmin();
+    }
+
+    match /kycRequests/{kycId} {
+      allow read: if isAdmin()
+        || (signedIn() && resource.data.userId == request.auth.uid);
+
+      allow create: if validKycCreate();
+
+      allow update, delete: if isAdmin();
+    }
+
+    match /referrals/{referralId} {
+      allow read: if isAdmin()
+        || (
+          signedIn()
+          && (
+            resource.data.referrerId == request.auth.uid
+            || resource.data.referredUserId == request.auth.uid
+          )
+        );
+
+      // Safer: referral creation from app allowed only as pending.
+      allow create: if signedIn()
+        && request.resource.data.status == "pending"
+        && request.resource.data.rewardGiven == false
+        && request.resource.data.keys().hasOnly([
+          "referrerId",
+          "referredUserId",
+          "referrerName",
+          "referredName",
+          "referralCode",
+          "rewardCoins",
+          "requiredEarnCoins",
+          "status",
+          "rewardGiven",
+          "createdAt",
+          "updatedAt"
+        ]);
+
+      // Completing reward should be admin-only.
+      allow update, delete: if isAdmin();
+    }
+
+    match /tasks/{taskId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /taskClaims/{claimId} {
+      allow read: if isAdmin()
+        || (signedIn() && resource.data.userId == request.auth.uid);
+
+      // Safer starter: app can create claim request only, not completed reward transaction.
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.status in ["pending", "claimed"]
+        && request.resource.data.keys().hasOnly([
+          "userId",
+          "taskId",
+          "taskTitle",
+          "rewardCoins",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ]);
+
+      allow update, delete: if isAdmin();
+    }
+
+    match /scratchHistory/{docId} {
+      allow read: if isAdmin()
+        || (signedIn() && resource.data.userId == request.auth.uid);
+
+      // User can create history, but cannot directly update user coins by rules.
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.coins is number
+        && request.resource.data.coins >= 0
+        && request.resource.data.keys().hasOnly([
+          "userId",
+          "coins",
+          "dateKey",
+          "source",
+          "status",
+          "createdAt"
+        ]);
+
+      allow update, delete: if isAdmin();
+    }
+
+    match /adWatchHistory/{docId} {
+      allow read: if isAdmin()
+        || (signedIn() && resource.data.userId == request.auth.uid);
+
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.coins is number
+        && request.resource.data.coins >= 0
+        && request.resource.data.keys().hasOnly([
+          "userId",
+          "adUnitId",
+          "coins",
+          "dateKey",
+          "status",
+          "createdAt"
+        ]);
+
+      allow update, delete: if isAdmin();
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /supportTickets/{ticketId} {
+      allow read: if isAdmin()
+        || (signedIn() && resource.data.userId == request.auth.uid);
+
+      allow create: if validSupportCreate();
+
+      allow update, delete: if isAdmin();
+    }
+
+    match /supportReplies/{replyId} {
+      allow read: if isAdmin()
+        || (signedIn() && resource.data.userId == request.auth.uid);
+
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /banners/{bannerId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /fraudReports/{reportId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /accountDeletionRequests/{requestId} {
+      allow read: if isAdmin()
+        || (signedIn() && resource.data.userId == request.auth.uid);
+
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.status == "pending";
+
+      allow update, delete: if isAdmin();
+    }
+
+    match /auditLogs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
