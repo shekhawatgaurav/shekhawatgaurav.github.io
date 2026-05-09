@@ -3,13 +3,13 @@ import { getDatabase } from "firebase/database";
 
 // TODO: Replace with your actual Firebase project config
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  databaseURL: "YOUR_DATABASE_URL", // Make sure this is included for Realtime DB
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDAA-h1ilQ-0iXW3EWqg1qRTTRwk_IHQls",
+  authDomain: "shekhawatgaurav-eca2b.firebaseapp.com",
+  databaseURL: "https://shekhawatgaurav-eca2b-default-rtdb.asia-southeast1.firebasedatabase.app", // Make sure this is included for Realtime DB
+  projectId: "shekhawatgaurav-eca2b",
+  storageBucket: "shekhawatgaurav-eca2b.firebasestorage.app",
+  messagingSenderId: "211877606910",
+  appId: "1:211877606910:web:97c1163c039b7026283caf"
 };
 
 export const app = initializeApp(firebaseConfig);
