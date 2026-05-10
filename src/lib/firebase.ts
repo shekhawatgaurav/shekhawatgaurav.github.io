@@ -1,15 +1,15 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 
-// TODO: Replace with your actual Firebase project config
 const firebaseConfig = {
-  apiKey: "AIzaSyDAA-h1ilQ-0iXW3EWqg1qRTTRwk_IHQls",
-  authDomain: "shekhawatgaurav-eca2b.firebaseapp.com",
-  databaseURL: "https://shekhawatgaurav-eca2b-default-rtdb.asia-southeast1.firebasedatabase.app", // Make sure this is included for Realtime DB
-  projectId: "shekhawatgaurav-eca2b",
-  storageBucket: "shekhawatgaurav-eca2b.firebasestorage.app",
-  messagingSenderId: "211877606910",
-  appId: "1:211877606910:web:97c1163c039b7026283caf"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
+
 };
 
 export const app = initializeApp(firebaseConfig);
