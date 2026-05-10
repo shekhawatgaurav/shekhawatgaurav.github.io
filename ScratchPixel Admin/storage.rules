@@ -1,0 +1,82 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+
+    function isPdf() {
+      return request.resource.contentType == 'application/pdf';
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid))
+        && firestore.get(/databases/(default)/documents/admins/$(request.auth.uid)).data.status == "active";
+    }
+
+    function isSelf(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    match /banners/{fileName} {
+      allow read: if signedIn();
+
+      allow create, update: if isAdmin()
+        && isImage()
+        && request.resource.size < 5 * 1024 * 1024;
+
+      allow delete: if isAdmin();
+    }
+
+    match /content/{fileName} {
+      allow read: if signedIn();
+
+      allow create, update: if isAdmin()
+        && isImage()
+        && request.resource.size < 5 * 1024 * 1024;
+
+      allow delete: if isAdmin();
+    }
+
+    match /kyc/{userId}/{fileName} {
+      allow read: if isAdmin() || isSelf(userId);
+
+      allow create, update: if isSelf(userId)
+        && (isImage() || isPdf())
+        && request.resource.size < 8 * 1024 * 1024;
+
+      allow delete: if isAdmin();
+    }
+
+    match /kyc/{userId}/selfies/{fileName} {
+      allow read: if isAdmin() || isSelf(userId);
+
+      allow create, update: if isSelf(userId)
+        && isImage()
+        && request.resource.size < 5 * 1024 * 1024;
+
+      allow delete: if isAdmin();
+    }
+
+    match /support/{userId}/{fileName} {
+      allow read: if isAdmin() || isSelf(userId);
+
+      allow create, update: if isSelf(userId)
+        && (isImage() || isPdf())
+        && request.resource.size < 8 * 1024 * 1024;
+
+      allow delete: if isAdmin();
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

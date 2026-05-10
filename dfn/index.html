@@ -1,0 +1,703 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFN | Direct From Nature - Cold Pressed Oils</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <style>
+        /* ------------------------- */
+        /* Custom Fonts & Colors */
+        /* ------------------------- */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue:wght@400;700&display=swap');
+        :root {
+            --color-dfn-primary: #B97820;
+            --color-dfn-accent: #2F6B4F;
+            --color-dfn-ink: #1D2B22;
+            --color-dfn-light: #FFF7E8;
+            --color-dfn-cream: #FFFDF8;
+            --color-dfn-sale: #12946C;
+            --color-dfn-background-strip: #F3E3BD;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--color-dfn-cream); color: var(--color-dfn-ink); overflow-x: hidden; }
+        
+        /* General Card Styles for Flip Effect */
+        .hero-section { background: radial-gradient(circle at 72% 34%, rgba(185, 120, 32, 0.22), transparent 30%), linear-gradient(135deg, #fff9eb 0%, #f3e2bd 52%, #cfa75c 100%); min-height: 72vh; position: relative; overflow: hidden; border-bottom: 1px solid rgba(29, 43, 34, 0.12); }
+        .hero-text-big { font-family: 'Bebas Neue', sans-serif; font-size: clamp(5rem, 16vw, 14rem); line-height: 1; color: rgba(255, 255, 255, 0.72); text-shadow: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; opacity: 1; letter-spacing: 0.05em; }
+        .product-name-shadow { font-family: 'Bebas Neue', sans-serif; text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.75); }
+        
+        /* Card Sizing and Flip Logic */
+        /* Note: Product images are now centered and sized based on new card design requirements */
+        .product-image-container { height: 200px; display: flex; justify-content: center; align-items: flex-start; }
+        .product-image-bottle { width: 82px; height: 205px; object-fit: contain; border-radius: 8px; }
+        .flip-card-container { width: 100%; max-width: 320px; height: 500px; perspective: 1000px; margin-left: auto; margin-right: auto; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; border-radius: 20px; box-shadow: 0 18px 45px rgba(44, 38, 25, 0.12); }
+        .product-card-wrapper.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 20px; padding: 26px; box-sizing: border-box; overflow: hidden; border: 1px solid rgba(185, 120, 32, 0.22); }
+        .flip-card-front { background: linear-gradient(180deg, #fffaf0 0%, #f8e9c8 100%); z-index: 2; }
+        .flip-card-back { background: linear-gradient(180deg, #fffdf8 0%, #f3f0df 100%); transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: space-between; }
+        
+        /* --- Custom Marquee Scroll Strip Styling (CSS Animation) --- */
+        @keyframes scrollMarquee { 
+            0% { transform: translate3d(0, 0, 0); } 
+            100% { transform: translate3d(-50%, 0, 0); } /* Scrolls two copies */
+        }
+        .scroll-marquee-container {
+            position: relative; z-index: 30; overflow: hidden; width: 100%; 
+            background-color: var(--color-dfn-ink);
+            padding: 1.5rem 0; 
+            transform: rotateZ(-1.5deg);
+        }
+        .scroll-marquee-strip {
+            display: flex; white-space: nowrap; will-change: transform;
+            animation: scrollMarquee 30s linear infinite; /* Fixed speed scrolling */
+        }
+        .marquee-item {
+            font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; line-height: 1.2; padding: 0 1.5rem; color: var(--color-dfn-light); text-shadow: none; display: inline-flex; align-items: center;
+        }
+        .marquee-icon { display: inline-block; margin-right: 1rem; font-size: 1.4rem; color: var(--color-dfn-primary); }
+        .marquee-group { padding-right: 6rem; }
+        /* Packaging Icons */
+        .package-icon-btn.active { background-color: var(--color-dfn-ink); border-color: var(--color-dfn-ink); color: var(--color-dfn-light); box-shadow: 0 10px 24px rgba(29, 43, 34, 0.16); }
+        .promise-icon-circle { width: 5rem; height: 5rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; background: linear-gradient(135deg, rgba(185, 120, 32, 0.14), rgba(47, 107, 79, 0.16)); border: 1px solid rgba(185, 120, 32, 0.32); color: var(--color-dfn-accent); }
+        .promise-icon-circle svg { color: currentColor; stroke-width: 1.8; }
+    </style>
+    <link rel="stylesheet" href="dfn-theme.css">
+</head>
+<body>
+
+    <!-- Notification Container (Needed for showNotification function) -->
+    <div id="notification-container" class="fixed top-4 right-4 z-[9999] space-y-2"></div>
+
+    <!-- 1. NAVIGATION BAR (Common Header) -->
+    <nav class="sticky top-0 z-50 bg-[#fffdf8]/95 shadow-sm border-b border-[#ead9b9] backdrop-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-bold tracking-wider flex items-center text-[var(--color-dfn-ink)]">
+                        <span class="text-[var(--color-dfn-primary)] mr-1.5">DFN</span><span> |</span>
+                    </span>
+                    <span class="text-sm ml-1 text-[var(--color-dfn-accent)] font-medium hidden sm:inline">Direct From Nature</span>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <a href="index.html" class="border-b-2 border-[var(--color-dfn-primary)] text-sm font-medium text-[var(--color-dfn-primary)] py-5">HOME</a>
+                    <a href="#products" class="border-b-2 border-transparent text-sm font-medium text-[#627064] py-5 hover:border-[var(--color-dfn-primary)] hover:text-[var(--color-dfn-primary)] transition duration-150">SHOP</a>
+                    <a href="about.html" class="border-b-2 border-transparent text-sm font-medium text-[#627064] py-5 hover:border-[var(--color-dfn-primary)] hover:text-[var(--color-dfn-primary)] transition duration-150">ABOUT US</a>
+                    <a href="contact.html" class="border-b-2 border-transparent text-sm font-medium text-[#627064] py-5 hover:border-[var(--color-dfn-primary)] hover:text-[var(--color-dfn-primary)] transition duration-150">CONTACT</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-[#627064] hover:text-[var(--color-dfn-ink)]" aria-label="Search"><i data-lucide="search" class="w-5 h-5"></i></button>
+                    <button class="text-[#627064] hover:text-[var(--color-dfn-ink)] hidden sm:block" aria-label="User Account"><i data-lucide="user" class="w-5 h-5"></i></button>
+                    <div class="cart-display-group flex items-center space-x-2">
+                        <button id="cartButton" onclick="window.location.href='cart.html'" class="text-[var(--color-dfn-ink)] hover:text-[var(--color-dfn-primary)] relative" aria-label="Shopping Cart">
+                            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                            <span id="cartItemCount" class="absolute -top-1 -right-1.5 bg-[var(--color-dfn-sale)] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                        </button>
+                        <span id="cartTotalDisplay" onclick="window.location.href='cart.html'" class="nav-cart-total text-sm font-semibold text-[var(--color-dfn-primary)] ml-2 cursor-pointer">₹0.00</span>
+                    </div>
+                    <button class="sm:hidden text-[#627064] hover:text-[var(--color-dfn-ink)]" aria-label="Menu Toggle"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. HERO SECTION -->
+    <header class="hero-section flex flex-col items-start justify-end px-4 sm:px-16 pb-12">
+        <h1 class="hero-text-big tracking-widest" aria-hidden="true">NATURAL</h1>
+        <div class="absolute inset-0 flex justify-center items-center z-20 pointer-events-none">
+            <img 
+                src="12.png" 
+                alt="Large Sunflower Oil Bottle" 
+                class="h-[80%] max-h-[600px] w-auto object-contain drop-shadow-xl"
+                onerror="this.src='https://placehold.co/250x450/D4A33B/ffffff?text=DFN+Oil+Bottle'"
+            >
+        </div>
+        <div class="z-30">
+            <h2 class="text-xl font-bold text-gray-800 tracking-widest mb-3">100% PURE & COLD-PRESSED</h2>
+            <p class="text-3xl font-extrabold text-gray-900 max-w-lg mb-6">Your daily dose of health, bottled <strong>Direct From Nature</strong>.</p>
+            <a href="#products" class="bg-[var(--color-dfn-ink)] text-white text-md font-bold py-3 px-8 rounded-full shadow-xl hover:bg-[var(--color-dfn-accent)] transition duration-300">SHOP ALL OILS</a>
+        </div>
+    </header>
+    
+    <!-- 3. SCROLL-CONTROLLED MARQUEE STRIP (Tilted) -->
+    <section class="scroll-marquee-container shadow-2xl z-30 mb-16">
+        <div id="scrollMarqueeStrip" class="scroll-marquee-strip">
+            <!-- Content duplicated for seamless infinite scroll effect -->
+            <div class="marquee-group flex items-center space-x-12">
+                <span class="marquee-item"><span class="marquee-icon">🥥</span>COCONUT</span>
+                <span class="marquee-item"><span class="marquee-icon">🌿</span>MUSTARD</span>
+                <span class="marquee-item"><span class="marquee-icon">🥜</span>GROUNDNUT</span>
+                <span class="marquee-item"><span class="marquee-icon">🌱</span>SESAME</span>
+                <span class="marquee-item"><span class="marquee-icon">🌻</span>SUNFLOWER</span>
+                <span class="marquee-item"><span class="marquee-icon">🌰</span>ALMOND</span>
+            </div>
+             <div class="marquee-group flex items-center space-x-12">
+                <span class="marquee-item"><span class="marquee-icon">🥥</span>COCONUT</span>
+                <span class="marquee-item"><span class="marquee-icon">🌿</span>MUSTARD</span>
+                <span class="marquee-item"><span class="marquee-icon">🥜</span>GROUNDNUT</span>
+                <span class="marquee-item"><span class="marquee-icon">🌱</span>SESAME</span>
+                <span class="marquee-item"><span class="marquee-icon">🌻</span>SUNFLOWER</span>
+                <span class="marquee-item"><span class="marquee-icon">🌰</span>ALMOND</span>
+            </div>
+             <div class="marquee-group flex items-center space-x-12">
+                <span class="marquee-item"><span class="marquee-icon">🥥</span>COCONUT</span>
+                <span class="marquee-item"><span class="marquee-icon">🌿</span>MUSTARD</span>
+                <span class="marquee-item"><span class="marquee-icon">🥜</span>GROUNDNUT</span>
+                <span class="marquee-item"><span class="marquee-icon">🌱</span>SESAME</span>
+                <span class="marquee-item"><span class="marquee-icon">🌻</span>SUNFLOWER</span>
+                <span class="marquee-item"><span class="marquee-icon">🌰</span>ALMOND</span>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 4. OUR PROMISE SECTION (New) -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mb-12">
+        <h2 class="text-4xl font-extrabold text-gray-900 text-center mb-12">Our Promise: The DFN Code of Purity</h2>
+        <div class="grid md:grid-cols-3 gap-12 items-center">
+            
+            <!-- Left Side: 6 Circular Promises -->
+            <div class="md:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="promise-icon-circle"><i data-lucide="globe" class="w-8 h-8"></i></div>
+                    <p class="font-semibold text-gray-800">Natural World Ingredients</p>
+                    <p class="text-xs text-gray-500">Sourced from the finest local farms.</p>
+                </div>
+                <div class="text-center">
+                    <div class="promise-icon-circle"><i data-lucide="droplets" class="w-8 h-8"></i></div>
+                    <p class="font-semibold text-gray-800">Lab-Tested For Safety</p>
+                    <p class="text-xs text-gray-500">Rigorous quality checks (FDA style icon).</p>
+                </div>
+                <div class="text-center">
+                    <div class="promise-icon-circle"><i data-lucide="award" class="w-8 h-8"></i></div>
+                    <p class="font-semibold text-gray-800">India FSSAI Approved</p>
+                    <p class="text-xs text-gray-500">Meeting all national food safety standards.</p>
+                </div>
+                <div class="text-center">
+                    <div class="promise-icon-circle"><i data-lucide="flower" class="w-8 h-8"></i></div>
+                    <p class="font-semibold text-gray-800">Vegan & No Animal Testing</p>
+                    <p class="text-xs text-gray-500">Ethically sourced and cruelty-free (PETA style).</p>
+                </div>
+                <div class="text-center">
+                    <div class="promise-icon-circle"><i data-lucide="skull" class="w-8 h-8"></i></div>
+                    <p class="font-semibold text-gray-800">No Toxic Chemicals</p>
+                    <p class="text-xs text-gray-500">Zero hexane, zero artificial preservatives.</p>
+                </div>
+                <div class="text-center">
+                    <div class="promise-icon-circle"><i data-lucide="recycle" class="w-8 h-8"></i></div>
+                    <p class="font-semibold text-gray-800">Eco-Conscious Packaging</p>
+                    <p class="text-xs text-gray-500">Commitment to sustainable packaging.</p>
+                </div>
+            </div>
+
+            <!-- Right Side: Promise Text -->
+            <div class="md:col-span-1 border-l-4 border-[var(--color-dfn-primary)] pl-6 py-4">
+                <h3 class="text-3xl font-extrabold text-gray-900 mb-4">Our Core Promise</h3>
+                <p class="text-gray-700 leading-relaxed">
+                    DFN is "Clean Compatible." Not just <strong>free of harmful and toxic chemicals</strong>, but we use only those ingredients that either enhance the health of your hair & skin or support the effectiveness of your cooking. <strong>Purity is our foundation.</strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 5. DEAL OF THE DAY (URGENCY) -->
+    <section class="bg-[var(--color-dfn-ink)] py-16 mb-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+            <h2 class="text-xs font-bold uppercase tracking-widest text-[var(--color-dfn-sale)] mb-2">Limited Time Offer</h2>
+            <h3 class="text-4xl font-extrabold mb-8">DFN's Weekly Super Saver Deal</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="p-6 bg-[#fff9eb] rounded-xl flex justify-center shadow-2xl">
+                    <img src="12.png" alt="Deal Product" class="max-h-80 object-contain" onerror="this.src='https://placehold.co/150x300/10B981/ffffff?text=Deal+Oil+Bottle'">
+                </div>
+                <div class="text-left">
+                    <p class="text-xl font-semibold mb-2">Sesame Oil (2L Bulk)</p>
+                    <div class="flex items-baseline space-x-3 mb-6">
+                        <span class="text-2xl line-through text-gray-400">₹600.00</span>
+                        <span class="text-5xl font-extrabold text-[var(--color-dfn-sale)]">₹480.00</span>
+                        <span class="bg-[var(--color-dfn-primary)] text-white text-md font-bold px-3 py-1 rounded-full">-20%</span>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4 text-[var(--color-dfn-primary)]">Offer ends in:</h4>
+                    <div id="countdown" class="flex justify-center md:justify-start space-x-3 text-gray-900">
+                        <div class="bg-white p-3 rounded-lg text-center font-bold shadow-md"><span id="hours" class="text-3xl font-mono">00</span><p class="text-xs">HRS</p></div>
+                        <div class="text-4xl text-white font-mono">:</div>
+                        <div class="bg-white p-3 rounded-lg text-center font-bold shadow-md"><span id="minutes" class="text-3xl font-mono">00</span><p class="text-xs">MIN</p></div>
+                        <div class="text-4xl text-white font-mono">:</div>
+                        <div class="bg-white p-3 rounded-lg text-center font-bold shadow-md"><span id="seconds" class="text-3xl font-mono">00</span><p class="text-xs">SEC</p></div>
+                    </div>
+                    <a href="product-detail.html?id=2" class="mt-8 block text-center bg-[var(--color-dfn-primary)] text-white text-xl font-bold py-4 rounded-xl shadow-xl hover:bg-[#946018] transition duration-300">GRAB THE DEAL NOW</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. TOP PRODUCTS SECTION -->
+    <section id="products" class="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 scroll-mt-24">
+        
+        <!-- Products Header and Packaging Tabs -->
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-6 mb-10">
+            <div>
+                <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight">PRODUCTS</h2>
+            </div>
+           
+                <div id="packaging-filters" class="flex flex-wrap items-center gap-3">
+    <button data-packaging="bottle" class="package-icon-btn active font-semibold text-sm border-2 px-4 py-2 rounded-full border-[#c9b482] text-[var(--color-dfn-primary)] hover:border-[var(--color-dfn-ink)] hover:text-[var(--color-dfn-ink)] transition duration-150" aria-label="Bottle Packaging Filter">
+        BOTTLE
+    </button>
+    <button data-packaging="pouch" class="package-icon-btn font-semibold text-sm border-2 px-4 py-2 rounded-full border-[#c9b482] text-[#536258] hover:border-[var(--color-dfn-ink)] hover:text-[var(--color-dfn-ink)] transition duration-150" aria-label="Pouch Packaging Filter">
+        POUCH
+    </button>
+    <button data-packaging="drum" class="package-icon-btn font-semibold text-sm border-2 px-4 py-2 rounded-full border-[#c9b482] text-[#536258] hover:border-[var(--color-dfn-ink)] hover:text-[var(--color-dfn-ink)] transition duration-150" aria-label="Can/Drum Packaging Filter">
+        DRUM
+    </button>
+</div>
+            </div>
+
+        <!-- Products Grid Container -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Product Cards will be rendered here by JavaScript -->
+        </div>
+        
+        <div class="text-center mt-12">
+             <a href="#products" class="border-2 border-[var(--color-dfn-ink)] text-[var(--color-dfn-ink)] text-lg font-bold py-3 px-8 rounded-full hover:bg-[var(--color-dfn-ink)] hover:text-white transition duration-300">VIEW ALL 6 PRODUCTS</a>
+        </div>
+    </section>
+
+    <!-- 7. CUSTOMER TESTIMONIALS -->
+    <section class="bg-[var(--color-dfn-light)] py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-4">Trusted by 10,000+ Customers</h2>
+            <div class="flex justify-center items-center text-[var(--color-dfn-primary)] mb-10">
+                <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                <i data-lucide="star" class="w-6 h-6 fill-current"></i>
+                <i data-lucide="star-half" class="w-6 h-6 fill-current"></i>
+                <span class="text-[#536258] text-xl ml-3 font-semibold">4.8 / 5.0 Rating</span>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-[var(--color-dfn-primary)]">
+                    <i data-lucide="quote" class="w-8 h-8 text-[var(--color-dfn-primary)] mb-3"></i>
+                    <p class="text-gray-700 italic mb-4">"The Groundnut Oil has an amazing, authentic flavour. I feel great knowing I'm cooking with something truly pure. DFN is now my go-to brand."</p>
+                    <p class="font-semibold text-gray-900">- Priya M., Mumbai</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-[var(--color-dfn-primary)]">
+                    <i data-lucide="quote" class="w-8 h-8 text-[var(--color-dfn-primary)] mb-3"></i>
+                    <p class="text-gray-700 italic mb-4">"Superb quality Mustard Oil! The seal was intact, and the packaging was leak-proof. Delivery was quicker than expected."</p>
+                    <p class="font-semibold text-gray-900">- Rajesh S., Bangalore</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border-b-4 border-[var(--color-dfn-primary)]">
+                    <i data-lucide="quote" class="w-8 h-8 text-[var(--color-dfn-primary)] mb-3"></i>
+                    <p class="text-gray-700 italic mb-4">"I appreciate their transparency. Seeing the sediment confirms it's genuinely unfiltered. Highly recommend their Sesame Oil for massage."</p>
+                    <p class="font-semibold text-gray-900">- Anjali K., New Delhi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. FOOTER (Common Footer) -->
+    <footer class="bg-[var(--color-dfn-ink)] text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-b border-gray-700 pb-8">
+                <div class="col-span-2 md:col-span-1">
+                    <span class="text-3xl font-bold tracking-wider flex items-center mb-3">
+                        <span class="text-[var(--color-dfn-primary)] mr-1.5">DFN</span> | <span class="text-sm ml-1 text-gray-400 font-medium">Direct From Nature</span>
+                    </span>
+                    <p class="text-gray-400 text-sm mb-4">Purity guaranteed. Your health, naturally enriched.</p>
+                    <p class="text-sm text-gray-400">
+                        <i data-lucide="mail" class="w-4 h-4 inline mr-2 text-[var(--color-dfn-primary)]"></i> support@dfnoils.com
+                    </p>
+                    <p class="text-sm text-gray-400">
+                        <i data-lucide="phone" class="w-4 h-4 inline mr-2 text-[var(--color-dfn-primary)]"></i> +91 98765 43210
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Shop & Resources</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#products" class="text-gray-400 hover:text-white transition duration-150">Shop All Oils</a></li>
+                        <li><a href="blog.html" class="text-gray-400 hover:text-white transition duration-150">Recipes & Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Wholesale / B2B</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">My Account</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Company & Info</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="about.html" class="text-gray-400 hover:text-white transition duration-150">Our Story</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-150">Quality Process</a></li>
+                        <li><a href="faq.html" class="text-gray-400 hover:text-white transition duration-150">FAQs</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition duration-150">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Policies</h5>
+                    <ul class="space-y-2 text-sm mb-6">
+                        <li><a href="privacy-policy.html" class="text-gray-400 hover:text-white transition duration-150">Privacy Policy</a></li>
+                        <li><a href="shipping-returns.html" class="text-gray-400 hover:text-white transition duration-150">Shipping & Returns</a></li>
+                        <li><a href="terms.html" class="text-gray-400 hover:text-white transition duration-150">Terms of Service</a></li>
+                    </ul>
+                    <h5 class="text-lg font-semibold mb-4 text-[var(--color-dfn-primary)]">Follow Us</h5>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150" aria-label="Facebook"><i data-lucide="facebook" class="w-6 h-6"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150" aria-label="Instagram"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-150" aria-label="Twitter"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 text-center text-sm text-gray-500">&copy; 2025 DFN | Direct From Nature. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script> 
+        lucide.createIcons();
+
+        // -------------------------
+        // COMMON DATA AND STATE
+        // -------------------------
+        let cartItems = {}; 
+        let cartTotal = 0.00;
+        const cartTotalDisplay = document.getElementById('cartTotalDisplay');
+        const cartItemCount = document.getElementById('cartItemCount');
+
+        // Helper function to show notifications (replaces alert/confirm)
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notification-container');
+            if (!container) return;
+
+            const baseClasses = "p-4 rounded-lg shadow-xl text-white font-semibold flex items-center space-x-2";
+            let colorClasses = "";
+            let icon = "";
+
+            if (type === 'success') {
+                colorClasses = "bg-green-500";
+                icon = '<i data-lucide="check-circle" class="w-5 h-5"></i>';
+            } else if (type === 'error') {
+                colorClasses = "bg-red-500";
+                icon = '<i data-lucide="x-circle" class="w-5 h-5"></i>';
+            } else { // info
+                colorClasses = "bg-blue-500";
+                icon = '<i data-lucide="info" class="w-5 h-5"></i>';
+            }
+
+            const notification = document.createElement('div');
+            notification.className = `${baseClasses} ${colorClasses} animate-bounce-in`;
+            notification.innerHTML = `${icon}<span>${message}</span>`;
+            
+            container.appendChild(notification);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                notification.classList.add('opacity-0');
+                notification.classList.add('translate-y-4');
+                notification.addEventListener('transitionend', () => notification.remove());
+            }, 3000);
+        }
+
+        function updateCartDisplay() {
+            let totalItems = 0;
+            let currentTotal = 0.00;
+
+            for (const id in cartItems) {
+                totalItems += cartItems[id].quantity;
+                currentTotal += cartItems[id].quantity * cartItems[id].price;
+            }
+
+            cartTotal = currentTotal;
+            cartItemCount.textContent = totalItems;
+            cartTotalDisplay.textContent = `₹${cartTotal.toFixed(2)}`;
+        }
+
+        function addToCart(productId, quantity, price) {
+            const product = allProductsData.find(p => p.id == productId);
+            if (!product) {
+                showNotification("Product not found.", 'error');
+                return;
+            }
+
+            if (cartItems[productId]) {
+                cartItems[productId].quantity += quantity;
+            } else {
+                cartItems[productId] = {
+                    id: productId,
+                    name: product.name,
+                    price: price,
+                    quantity: quantity
+                };
+            }
+            updateCartDisplay();
+            showNotification(`${product.name} (x${quantity}) added to cart!`, 'success');
+        }
+
+        const allProductsData = [
+            { id: 1, name: "MUSTARD OIL", unit: "1L", price: 200.00, originalPrice: 250.00, subtitle: "Pure & Natural", discount: "-20%", imageSrc: "12.png", packaging: "bottle" },
+            { id: 2, name: "SESAME OIL", unit: "1L", price: 224.00, originalPrice: 280.00, subtitle: "Pure & Natural", discount: "-20%", imageSrc: "12.png", packaging: "bottle" },
+            { id: 3, name: "GROUNDNUT OIL", unit: "500ml", price: 104.00, originalPrice: 130.00, subtitle: "Fresh & Healthy", discount: "-20%", imageSrc: "12.png", packaging: "bottle" },
+            { id: 4, name: "SUNFLOWER OIL", unit: "2L", price: 400.00, originalPrice: 500.00, subtitle: "Cooking Essential", discount: "-20%", imageSrc: "12.png", packaging: "pouch" },
+            { id: 5, name: "COCONUT OIL", unit: "500ml", price: 255.00, originalPrice: 318.75, subtitle: "Pure & Natural", discount: "-20%", imageSrc: "12.png", packaging: "pouch" },
+            { id: 6, name: "ALMOND OIL", unit: "250ml", price: 499.00, originalPrice: 623.75, subtitle: "Pure & Natural", discount: "-20%", imageSrc: "12.png", packaging: "drum" },
+        ];
+        
+        function renderProductCard(product) {
+            // New flip card structure integrated here
+            return `
+                <div class="product-card-wrapper flip-card-container" data-product-id="${product.id}" data-product-price="${product.price}">
+                    <div class="flip-card-inner">
+                        
+                        <!-- FRONT SIDE OF THE CARD -->
+                        <div class="flip-card-front flex flex-col justify-between rounded-xl">
+                            
+                            <!-- Top Header: Unit & Info Icon (Flip Trigger) -->
+                            <div class="flex justify-between items-center w-full">
+                                <span class="text-xl font-semibold text-[var(--color-dfn-ink)]">${product.unit}</span>
+                                <button class="bg-white/80 text-[var(--color-dfn-primary)] w-8 h-8 rounded-full flex items-center justify-center shadow-md hover:bg-[var(--color-dfn-ink)] hover:text-white transition duration-150 flip-trigger" aria-label="Product Information">
+                                    <i data-lucide="info" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Product Image -->
+                            <div class="mt-1 mb-1 flex justify-center items-start product-image-container">
+                                <img 
+                                src="${product.imageSrc}" 
+                                alt="${product.name} Product" 
+                                class="product-image-bottle"
+                                onerror="this.src='https://placehold.co/70x200/D4A33B/ffffff?text=Oil'"
+                                />
+                            </div>
+
+                            <!-- Product Name and Subtitle -->
+                            <div class="mt-0">
+                                <p class="text-sm font-bold text-[var(--color-dfn-primary)] italic tracking-wider" style="font-family: serif;">Premium</p>
+                                <h2 class="text-4xl sm:text-5xl font-normal text-[var(--color-dfn-ink)] uppercase tracking-tight product-name-shadow mt-[-5px]" style="font-family: 'Bebas Neue', sans-serif;">
+                                    ${product.name}
+                                </h2>
+                                <p class="text-xs font-medium text-[#647267] mt-1 min-h-[32px]">${product.subtitle}</p>
+                            </div>
+
+                            <!-- Pricing -->
+                            <div class="flex flex-col items-center mt-2 mb-3.5">
+                                <div class="flex items-center space-x-1.5">
+                                    <p class="text-lg text-[#8a8576] line-through font-semibold">₹${product.originalPrice.toFixed(2)}</p>
+                                    <span class="bg-[var(--color-dfn-sale)] text-xs font-bold px-2 py-0.5 rounded-full text-white">${product.discount}</span>
+                                </div>
+                                <p class="text-3xl font-extrabold text-[var(--color-dfn-ink)] mt-0">₹${product.price.toFixed(2)}</p>
+                            </div>
+
+                            <!-- Bottom Action Bar: Quantity & Cart Button -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <button class="qty-minus text-[var(--color-dfn-ink)] text-xl font-bold hover:text-[var(--color-dfn-primary)] transition duration-150" aria-label="Decrease quantity">-</button>
+                                    <span class="quantity-display font-bold text-lg text-[var(--color-dfn-ink)] w-4 text-center">1</span>
+                                    <button class="qty-plus text-[var(--color-dfn-ink)] text-xl font-bold hover:text-[var(--color-dfn-primary)] transition duration-150" aria-label="Increase quantity">+</button>
+                                </div>
+                                <button class="add-to-cart-button flex-grow ml-4 text-sm font-bold py-2.5 px-5 rounded-full shadow-md transition duration-150 hover:translate-y-[-1px]" style="background-color: var(--color-dfn-ink); color: white;">ADD TO CART</button>
+                            </div>
+
+                        </div>
+                        
+                        <!-- BACK SIDE OF THE CARD -->
+                        <div class="flip-card-back rounded-xl">
+                            
+                            <!-- Top Header: Heading & Close Button (Flip Trigger) -->
+                            <div class="flex justify-between items-center">
+                                <h2 class="text-lg font-extrabold text-[var(--color-dfn-ink)] flex items-center">
+                                    WHY YOU'LL LOVE IT <i data-lucide="heart" class="w-4 h-4 ml-2 text-red-500 fill-current"></i>
+                                </h2>
+                                <button class="text-[#647267] hover:text-[var(--color-dfn-ink)] transition duration-150 p-1 flip-trigger" aria-label="Close information">
+                                    <i data-lucide="x" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+
+                            <!-- Subtitle Text -->
+                            <p class="text-xs text-[#536258] font-medium text-left mt-4">
+                                100% Cold-Pressed ${product.name} - Retains Natural Nutrients.
+                            </p>
+                            
+                            <!-- Main Content Area (Using Lucide icons as placeholders for images) -->
+                            <div class="flex flex-col space-y-3 pt-2 pb-3 flex-grow justify-start">
+                                
+                                <div class="grid grid-cols-3 gap-3 mt-4">
+                                    <div class="text-center">
+                                        <i data-lucide="heart-pulse" class="w-14 h-14 object-contain mx-auto text-[var(--color-dfn-sale)]"></i>
+                                        <p class="text-xs mt-2 font-semibold text-[var(--color-dfn-ink)] leading-tight">Heart<br>Health</p>
+                                        <p class="text-[10px] text-[#647267] leading-tight mt-1">(Omega 3 & 6)</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <i data-lucide="chef-hat" class="w-14 h-14 object-contain mx-auto text-[var(--color-dfn-accent)]"></i>
+                                        <p class="text-xs mt-2 font-semibold text-[var(--color-dfn-ink)] leading-tight">High<br>Smoke Point</p>
+                                        <p class="text-[10px] text-[#647267] leading-tight mt-1">(Ideal for Indian Cooking)</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <i data-lucide="fingerprint" class="w-14 h-14 object-contain mx-auto text-[var(--color-dfn-primary)]"></i>
+                                        <p class="text-xs mt-2 font-semibold text-[var(--color-dfn-ink)] leading-tight">Authentic<br>Flavor</p>
+                                        <p class="text-[10px] text-[#647267] leading-tight mt-1">(Unrefined & Natural)</p>
+                                    </div>
+                                </div>
+                                
+                                <hr class="border-gray-200">
+                                
+                                <!-- Nutrition Info (Placeholder) -->
+                                <div class="flex flex-col">
+                                    <h3 class="font-bold text-sm text-[var(--color-dfn-ink)] mb-1">Nutrition Info (10g)</h3>
+                                    <ul class="text-xs text-[#536258] space-y-0.5">
+                                        <li class="flex justify-between"><span>Calories:</span> <span class="font-medium">90 kcal</span></li>
+                                        <li class="flex justify-between"><span>Fat:</span> <span class="font-medium">10g</span></li>
+                                        <li class="flex justify-between"><span>Vitamin E:</span> <span class="font-medium">30% DV</span></li>
+                                        <li class="flex justify-between"><span>Source:</span> <span class="font-medium">${product.name.split(' ')[0]} Seeds</span></li>
+                                    </ul>
+                                </div>
+
+                                <hr class="border-gray-200">
+
+                            </div>
+                            
+                            <!-- Bottom Action: View Full Details Link -->
+                            <div class="flex flex-col space-y-3">
+                                <div class="flex items-center justify-center bg-green-100 p-1.5 rounded-lg">
+                                    <i data-lucide="truck" class="w-4 h-4 text-green-700 mr-2"></i>
+                                    <p class="text-xs font-semibold text-green-800">Free Delivery Above ₹499!</p>
+                                </div>
+                                <!-- Link is properly set to product-detail.html with product ID -->
+                                <a href="product-detail.html?id=${product.id}" class="w-full block text-center bg-[var(--color-dfn-primary)] text-white font-bold py-2.5 text-sm rounded-full hover:bg-[#946018] transition duration-150 shadow-md">
+                                    VIEW FULL DETAILS
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            `;
+        }
+
+        function filterProducts(packagingType) {
+            const productsGrid = document.getElementById('products-grid');
+            if (!productsGrid) return;
+            
+            // Only take the first 3 products matching the type (or just the first 3 products if they are less)
+            const filteredProducts = allProductsData.filter(p => p.packaging === packagingType).slice(0, 3);
+
+            if (filteredProducts.length === 0 && packagingType === 'bottle') {
+                 // Fallback if the bottle list is empty, just show the first 3 products
+                 productsGrid.innerHTML = allProductsData.slice(0, 3).map(renderProductCard).join('');
+            } else if (filteredProducts.length === 0) {
+                 // Show message for empty sections
+                 productsGrid.innerHTML = `<div class="lg:col-span-3 text-center p-10 bg-gray-50 rounded-xl">
+                    <i data-lucide="package-open" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
+                    <p class="text-xl font-semibold text-gray-700">No ${packagingType.toUpperCase()} products available yet.</p>
+                </div>`;
+            }
+            else {
+                productsGrid.innerHTML = filteredProducts.map(renderProductCard).join('');
+            }
+
+            lucide.createIcons();
+            attachCardEventListeners();
+        }
+
+        function attachCardEventListeners() {
+            document.querySelectorAll('.product-card-wrapper').forEach(card => {
+                const quantityDisplay = card.querySelector('.quantity-display');
+                // Ensure quantity is never less than 1 on load
+                let currentQuantity = parseInt(quantityDisplay?.textContent) || 1; 
+
+                // 1. Quantity Controls
+                card.querySelector('.qty-plus')?.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    currentQuantity = Math.min(99, currentQuantity + 1);
+                    quantityDisplay.textContent = currentQuantity;
+                });
+
+                card.querySelector('.qty-minus')?.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    currentQuantity = Math.max(1, currentQuantity - 1);
+                    quantityDisplay.textContent = currentQuantity;
+                });
+
+                // 2. Add to Cart Button
+                card.querySelector('.add-to-cart-button')?.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const productId = card.getAttribute('data-product-id');
+                    const price = parseFloat(card.getAttribute('data-product-price'));
+                    // Use the quantity value captured in the event listener scope
+                    addToCart(productId, currentQuantity, price); 
+                });
+                
+                // 3. Card Flip Trigger (NEW LOGIC)
+                card.querySelectorAll('.flip-trigger').forEach(trigger => {
+                    trigger.addEventListener('click', (e) => {
+                        e.preventDefault(); 
+                        e.stopPropagation(); 
+                        card.classList.toggle('flipped'); 
+                    });
+                });
+            });
+        }
+
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            if (!countdownElement) return;
+
+            // Set the target date to 24 hours from now
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + 1); // Set to tomorrow
+
+            const updateCountdown = () => {
+                const now = new Date().getTime();
+                const distance = targetDate.getTime() - now;
+
+                if (distance < 0) {
+                    clearInterval(interval);
+                    document.getElementById("hours").textContent = "00";
+                    document.getElementById("minutes").textContent = "00";
+                    document.getElementById("seconds").textContent = "00";
+                    return;
+                }
+
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("hours").textContent = hours.toString().padStart(2, '0');
+                document.getElementById("minutes").textContent = minutes.toString().padStart(2, '0');
+                document.getElementById("seconds").textContent = seconds.toString().padStart(2, '0');
+            }
+
+            updateCountdown();
+            const interval = setInterval(updateCountdown, 1000);
+        }
+        
+        // -------------------------
+        // INITIALIZATION
+        // -------------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartDisplay();
+            startCountdown(); 
+
+            // Initialize product grid with default type ('bottle')
+            filterProducts('bottle');
+            
+            // Attach Filter Button Listeners
+            document.querySelectorAll('.package-icon-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.querySelectorAll('.package-icon-btn').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const packagingType = button.getAttribute('data-packaging');
+                    filterProducts(packagingType);
+                });
+            });
+
+            // Set the default button to active
+            const defaultButton = document.querySelector('.package-icon-btn[data-packaging="bottle"]');
+            if (defaultButton) {
+                defaultButton.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

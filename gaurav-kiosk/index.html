@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaurav Organics - Self Order Kiosk</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --purniq-gold: #D97706;
+            --purniq-dark: #23150C;
+            --purniq-cream: #FFF8EA;
+            --purniq-green: #1F5C37;
+            --purniq-red: #8F1D16;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(255, 214, 122, 0.28), transparent 32%),
+                linear-gradient(135deg, #fff7e6 0%, #f7ead2 52%, #fffdf7 100%);
+            color: var(--purniq-dark);
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            user-select: none;
+        }
+
+        h1, h2, h3, .brand-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .screen {
+            display: none;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        .welcome-bg {
+            background:
+                        linear-gradient(120deg, rgba(35,21,12,0.86), rgba(74,28,12,0.45), rgba(31,92,55,0.35)),
+                        url('../gaurav-organics/lifestyle-indian-kitchen.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .btn-rewards {
+            background-color: var(--purniq-green);
+            color: white;
+        }
+
+        .product-item {
+            background: white;
+            transition: transform 0.1s ease;
+            cursor: pointer;
+        }
+
+        .product-item:active {
+            transform: scale(0.98);
+        }
+
+        .size-btn {
+            border: 2px solid #E5E7EB;
+            transition: all 0.2s;
+        }
+
+        .size-btn.selected {
+            border-color: var(--purniq-gold);
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .category-tab.active {
+            color: var(--purniq-gold);
+            border-bottom: 4px solid var(--purniq-gold);
+        }
+
+        .modal-overlay {
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+
+        .kiosk-card {
+            box-shadow: 0 28px 80px rgba(84, 45, 12, 0.12);
+            border: 1px solid rgba(146, 64, 14, 0.12);
+        }
+
+        .brand-logo {
+            background: rgba(255,255,255,0.92);
+            border: 1px solid rgba(255,255,255,0.45);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+        }
+
+        .product-item {
+            min-height: 156px;
+            border: 1px solid rgba(146, 64, 14, 0.12);
+            box-shadow: 0 14px 35px rgba(84, 45, 12, 0.06);
+        }
+
+        .product-item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(217,119,6,0.45);
+            box-shadow: 0 22px 45px rgba(84, 45, 12, 0.10);
+        }
+
+        .product-photo {
+            background: linear-gradient(145deg, #fff8ea, #f7d991);
+        }
+
+        .trust-pill {
+            background: rgba(255,255,255,0.16);
+            border: 1px solid rgba(255,255,255,0.24);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SCREEN 1: WELCOME SCREEN -->
+    <div id="welcome-screen" class="screen active welcome-bg flex-col items-center justify-between p-12 text-white" onclick="navigateTo('menu-screen')">
+        <div class="w-full flex items-center justify-between">
+            <div class="brand-logo rounded-3xl px-6 py-4 flex items-center gap-4">
+                <img src="../gaurav-organics/gaurav-logo.png" alt="Gaurav Organics" class="h-16 w-auto object-contain">
+                <div class="hidden xl:block text-left">
+                    <p class="text-[10px] uppercase tracking-[0.28em] text-amber-800 font-bold">Self Order Kiosk</p>
+                    <p class="text-sm text-stone-700">Cold-pressed oils and pure spices</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <div id="clock" class="text-5xl font-light">10:54 AM</div>
+                <div id="date" class="text-sm opacity-70 tracking-widest uppercase mt-2">Wed, 08 Jan 2025</div>
+            </div>
+        </div>
+
+        <div class="w-full grid lg:grid-cols-[1fr_520px] gap-12 items-center">
+            <div>
+                <h2 class="text-7xl xl:text-8xl font-bold brand-font leading-[0.9] mb-8">
+                    Order pure<br><span class="text-amber-300 italic">organic staples</span>
+                </h2>
+                <p class="max-w-2xl text-2xl text-white/78 leading-relaxed">
+                    Browse oils, spices, packs, and bulk sizes from the counter. Built for fast in-store ordering.
+                </p>
+                <div class="mt-12 flex items-center gap-5">
+                    <div class="animate-bounce w-20 h-20 rounded-full bg-amber-400 text-stone-950 flex items-center justify-center text-3xl shadow-2xl">
+                        <i class="fas fa-hand-pointer"></i>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-black uppercase tracking-widest">Tap to start</p>
+                        <p class="text-white/60">No account needed. Pay at counter.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative min-h-[520px]">
+                <div class="absolute inset-x-8 bottom-8 h-32 bg-black/30 blur-3xl rounded-full"></div>
+                <img src="../gaurav-organics/mustard-oil-front.png" alt="Gaurav Organics mustard oil" class="relative z-10 mx-auto h-[500px] object-contain drop-shadow-2xl">
+                <div class="absolute top-10 right-0 trust-pill rounded-3xl p-5 max-w-[210px]">
+                    <p class="text-3xl font-black text-amber-200">6+</p>
+                    <p class="text-xs uppercase tracking-widest text-white/72">Retail and bulk pack sizes</p>
+                </div>
+                <div class="absolute bottom-6 left-0 trust-pill rounded-3xl p-5 max-w-[220px]">
+                    <p class="text-sm font-bold">Counter-ready ordering</p>
+                    <p class="text-xs text-white/64 mt-1">Cart, custom amount converter, and receipt flow.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full flex items-center justify-between text-xs uppercase tracking-[0.22em] text-white/62">
+            <span>Mustard Oil</span>
+            <span>Groundnut Oil</span>
+            <span>Sesame Oil</span>
+            <span>Spices</span>
+            <span>Bulk Packs</span>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: ORDERING SCREEN -->
+    <div id="menu-screen" class="screen flex-row p-6 gap-6">
+        
+        <!-- Left Section: Categories & Products -->
+        <div class="flex-1 bg-white/95 rounded-[32px] kiosk-card flex flex-col overflow-hidden">
+            <!-- Header -->
+            <div class="p-8 flex justify-between items-center border-b border-amber-100">
+                <div class="flex items-center gap-4">
+                    <button onclick="navigateTo('welcome-screen')" class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center hover:bg-amber-100">
+                        <i class="fas fa-times text-amber-800"></i>
+                    </button>
+                    <div>
+                        <h2 class="text-3xl font-bold brand-font">Choose Products</h2>
+                        <p class="text-xs uppercase tracking-[0.22em] text-stone-400 mt-1">Retail and B2B packs</p>
+                    </div>
+                </div>
+                <div class="flex gap-8">
+                    <button onclick="setCategory('oil')" id="tab-oil" class="category-tab active pb-2 font-bold text-xl uppercase tracking-wider">Oils</button>
+                    <button onclick="setCategory('spices')" id="tab-spices" class="category-tab pb-2 font-bold text-xl uppercase tracking-wider text-gray-400">Spices</button>
+                </div>
+                <button class="btn-rewards px-8 py-3 rounded-xl font-bold shadow-lg">Loyalty</button>
+            </div>
+
+            <!-- Scrollable Product Grid -->
+            <div id="product-grid" class="flex-1 overflow-y-auto p-8 grid grid-cols-2 gap-6 no-scrollbar">
+                <!-- Products injected by JS -->
+            </div>
+        </div>
+
+        <!-- Right Section: Cart Summary -->
+        <div class="w-[420px] bg-white/95 rounded-[32px] kiosk-card flex flex-col overflow-hidden">
+            <div class="p-8 border-b border-amber-100 flex justify-between items-center">
+                <div>
+                    <h3 class="text-xl font-bold brand-font">Your order</h3>
+                    <p class="text-xs uppercase tracking-widest text-stone-400 mt-1">Review before payment</p>
+                </div>
+                <button onclick="clearCart()" class="text-gray-400 text-sm font-medium">Clear</button>
+            </div>
+
+            <div id="cart-items" class="flex-1 overflow-y-auto p-8 flex flex-col gap-4 no-scrollbar">
+                <!-- Cart items injected by JS -->
+                <div class="flex flex-col items-center justify-center h-full text-gray-300 opacity-60">
+                    <i class="fas fa-shopping-basket text-6xl mb-4"></i>
+                    <p class="text-lg">0 Items</p>
+                </div>
+            </div>
+
+            <div class="p-8 bg-amber-50/70 border-t border-amber-100">
+                <div class="flex justify-between items-center mb-8">
+                    <span class="text-xl font-semibold text-gray-500">Total</span>
+                    <span id="cart-total" class="text-2xl font-bold">₹0</span>
+                </div>
+                <button id="pay-button" onclick="showPayment()" disabled class="w-full bg-gray-200 text-gray-400 py-6 rounded-3xl text-4xl font-bold transition-all">
+                    Pay
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: SIZE PICKER -->
+    <div id="size-modal" class="modal-overlay fixed inset-0 z-50 hidden flex items-center justify-center p-6">
+        <div class="bg-white rounded-[40px] w-full max-w-2xl overflow-hidden shadow-2xl">
+            <div class="p-10 border-b flex justify-between items-center">
+                <div>
+                    <h3 id="modal-product-name" class="text-3xl font-bold brand-font">Select Quantity</h3>
+                    <p class="text-gray-500" id="modal-subtitle">Choose your preferred size</p>
+                </div>
+                <button onclick="closeSizeModal()" class="text-gray-400 text-2xl"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="p-10">
+                <div id="size-options-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <!-- Options for Oil or Spices will be injected here -->
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-2xl border border-dashed border-gray-300">
+                    <div class="flex justify-between items-center mb-3">
+                        <label class="block text-sm font-bold text-gray-500 uppercase tracking-wide">Custom Amount Converter</label>
+                        <span id="conversion-preview" class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded hidden"></span>
+                    </div>
+                    
+                    <div class="flex gap-2">
+                        <input type="number" id="custom-size-input" placeholder="Enter amount" 
+                               oninput="handleConverterChange()"
+                               class="flex-1 bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-amber-500 outline-none text-xl font-bold">
+                        
+                        <select id="custom-unit-select" onchange="handleConverterChange()"
+                                class="bg-white border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-amber-500 outline-none font-bold text-gray-700">
+                            <!-- Units injected based on category -->
+                        </select>
+
+                        <button onclick="applyCustomConversion()" class="bg-gray-800 text-white px-8 rounded-xl font-bold hover:bg-gray-900 active:scale-95 transition-all">Set</button>
+                    </div>
+                    <p class="text-[10px] text-gray-400 mt-2 italic">* Conversion: For Oils, 1kg is approximately 1.1 Liters.</p>
+                </div>
+            </div>
+
+            <div class="p-10 bg-gray-50 flex gap-4">
+                <button onclick="closeSizeModal()" class="flex-1 py-5 rounded-2xl font-bold text-gray-500 bg-white border border-gray-200">Cancel</button>
+                <button onclick="confirmAddToCart()" id="confirm-add-btn" disabled class="flex-1 py-5 rounded-2xl font-bold text-white bg-amber-600 opacity-50">Add to Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: PAYMENT SUCCESS -->
+    <div id="payment-modal" class="modal-overlay fixed inset-0 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-[40px] p-16 text-center shadow-2xl">
+            <div class="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3 class="text-4xl font-bold brand-font mb-2">Order Placed!</h3>
+            <p class="text-gray-500 text-lg mb-10">Your transaction was successful.</p>
+            <button onclick="resetApp()" class="w-full bg-amber-600 text-white py-5 rounded-2xl font-bold text-xl">Finish</button>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            // Oils (Base price per Liter)
+            { id: 1, name: "Yellow Mustard Oil", basePrice: 190, category: "oil", badge: "Kachi Ghani", desc: "Cold pressed for daily cooking", image: "../gaurav-organics/yellow mustard.png" },
+            { id: 2, name: "Groundnut Oil", basePrice: 240, category: "oil", badge: "Premium", desc: "Nutty, clean and high-heat friendly", image: "../gaurav-organics/mustard-oil-front.png" },
+            { id: 3, name: "White Sesame Oil", basePrice: 420, category: "oil", badge: "Wood pressed", desc: "Rich aroma for traditional recipes", image: "../gaurav-organics/white sesame.png" },
+            { id: 4, name: "Bulk Oil Tin", basePrice: 215, category: "oil", badge: "B2B pack", desc: "Great for hotels and restaurants", image: "../gaurav-organics/15ltr tin can.png" },
+            
+            // Spices (Base price per 100g)
+            { id: 5, name: "Mustard Seeds", basePrice: 60, category: "spices", badge: "Pure spice", desc: "Clean seed for tadka and pickles", image: "../gaurav-organics/ingredient-mustard-seeds.png" },
+            { id: 6, name: "Guntur Red Chilli", basePrice: 85, category: "spices", badge: "Bold heat", desc: "Deep color and strong aroma", image: "../gaurav-organics/ingredient-red-chilli.png" },
+            { id: 7, name: "Raw Peanuts", basePrice: 55, category: "spices", badge: "Fresh batch", desc: "For chutney, snacks and oil pressing", image: "../gaurav-organics/ingredient-peanuts.png" },
+            { id: 8, name: "Sesame Seeds", basePrice: 95, category: "spices", badge: "Whole seed", desc: "Cleaned and ready for kitchens", image: "../gaurav-organics/ingredient-sesame-seeds.png" }
+        ];
+
+        let cart = [];
+        let currentCategory = 'oil';
+        let tempSelection = { product: null, sizeLabel: '', multiplier: 0, displayVal: 0 };
+        
+        // Oil density factor (Standard is roughly 0.91 kg per liter)
+        // 1 kg = 1 / 0.91 = 1.098 Liters. We'll use 1.1 for simplicity or exact 1.0989
+        const OIL_DENSITY_FACTOR = 1.0989; 
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+            document.getElementById('date').textContent = now.toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function navigateTo(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            if (screenId === 'menu-screen') renderProducts();
+        }
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active', 'text-gray-400'));
+            document.getElementById('tab-' + cat).classList.add('active');
+            const inactive = cat === 'oil' ? 'spices' : 'oil';
+            document.getElementById('tab-' + inactive).classList.add('text-gray-400');
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            const filtered = products.filter(p => p.category === currentCategory);
+            grid.innerHTML = filtered.map(p => `
+                <div class="product-item p-5 rounded-[28px] flex items-center gap-6" onclick="openSizeModal(${p.id})">
+                    <div class="product-photo w-32 h-32 rounded-3xl overflow-hidden flex-shrink-0 flex items-center justify-center">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-contain p-3">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-widest mb-3">${p.badge}</div>
+                        <h4 class="text-2xl font-bold mb-2 leading-tight brand-font">${p.name}</h4>
+                        <p class="text-sm text-stone-500 mb-3">${p.desc}</p>
+                        <p class="text-amber-700 font-black text-base">₹${p.basePrice}${p.category === 'oil' ? '/L' : '/100g'}</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-stone-950 flex items-center justify-center text-white shadow-lg">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openSizeModal(productId) {
+            const product = products.find(p => p.id === productId);
+            tempSelection = { product, sizeLabel: '', multiplier: 0, displayVal: 0 };
+            
+            document.getElementById('modal-product-name').innerText = product.name;
+            const optionsGrid = document.getElementById('size-options-grid');
+            const unitSelect = document.getElementById('custom-unit-select');
+            
+            if (product.category === 'oil') {
+                optionsGrid.innerHTML = `
+                    <button onclick="selectSize('1L', 1)" class="size-option size-btn p-6 rounded-2xl flex flex-col items-center gap-2">
+                        <span class="text-2xl font-bold">1L</span>
+                    </button>
+                    <button onclick="selectSize('2L', 2)" class="size-option size-btn p-6 rounded-2xl flex flex-col items-center gap-2">
+                        <span class="text-2xl font-bold">2L</span>
+                    </button>
+                    <button onclick="selectSize('5L', 5)" class="size-option size-btn p-6 rounded-2xl flex flex-col items-center gap-2">
+                        <span class="text-2xl font-bold">5L</span>
+                    </button>
+                    <button onclick="selectSize('15L', 15)" class="size-option size-btn p-6 rounded-2xl flex flex-col items-center gap-2">
+                        <span class="text-2xl font-bold">15L</span>
+                    </button>
+                `;
+                unitSelect.innerHTML = `
+                    <option value="L">Liters (L)</option>
+                    <option value="ml">Milliliters (ml)</option>
+                    <option value="kg">Kilograms (kg)</option>
+                    <option value="g">Grams (g)</option>
+                `;
+            } else {
+                optionsGrid.innerHTML = `
+                    <button onclick="selectSize('100g', 1)" class="size-option size-btn p-6 rounded-2xl flex flex-col items-center gap-2">
+                        <span class="text-2xl font-bold">100g</span>
+                    </button>
+                    <button onclick="selectSize('250g', 2.5)" class="size-option size-btn p-6 rounded-2xl flex flex-col items-center gap-2">
+                        <span class="text-2xl font-bold">250g</span>
+                    </button>
+                    <button onclick="selectSize('500g', 5)" class="size-option size-btn p-6 rounded-2xl flex flex-col items-center gap-2">
+                        <span class="text-2xl font-bold">500g</span>
+                    </button>
+                    <button onclick="selectSize('1kg', 10)" class="size-option size-btn p-6 rounded-2xl flex flex-col items-center gap-2">
+                        <span class="text-2xl font-bold">1kg</span>
+                    </button>
+                `;
+                unitSelect.innerHTML = `
+                    <option value="g">Grams (g)</option>
+                    <option value="kg">Kilograms (kg)</option>
+                `;
+            }
+
+            document.getElementById('size-modal').classList.remove('hidden');
+            document.getElementById('confirm-add-btn').disabled = true;
+            document.getElementById('confirm-add-btn').classList.add('opacity-50');
+            document.getElementById('custom-size-input').value = '';
+            document.getElementById('conversion-preview').classList.add('hidden');
+        }
+
+        function closeSizeModal() {
+            document.getElementById('size-modal').classList.add('hidden');
+        }
+
+        function selectSize(label, multiplier) {
+            tempSelection.sizeLabel = label;
+            tempSelection.multiplier = multiplier;
+            document.querySelectorAll('.size-option').forEach(b => {
+                b.classList.remove('selected');
+                if (b.innerText === label) b.classList.add('selected');
+            });
+            document.getElementById('conversion-preview').classList.add('hidden');
+            enableConfirm();
+        }
+
+        function handleConverterChange() {
+            const val = parseFloat(document.getElementById('custom-size-input').value);
+            const unit = document.getElementById('custom-unit-select').value;
+            const preview = document.getElementById('conversion-preview');
+
+            if (!val || val <= 0) {
+                preview.classList.add('hidden');
+                return;
+            }
+
+            let convertedVal = 0;
+            let targetUnit = "";
+
+            if (tempSelection.product.category === 'oil') {
+                targetUnit = "Liters";
+                if (unit === 'L') convertedVal = val;
+                else if (unit === 'ml') convertedVal = val / 1000;
+                else if (unit === 'kg') convertedVal = val * OIL_DENSITY_FACTOR;
+                else if (unit === 'g') convertedVal = (val / 1000) * OIL_DENSITY_FACTOR;
+                
+                preview.innerText = `≈ ${convertedVal.toFixed(2)} L`;
+            } else {
+                targetUnit = "100g units";
+                if (unit === 'g') convertedVal = val / 100;
+                else if (unit === 'kg') convertedVal = (val * 1000) / 100;
+                
+                preview.innerText = `≈ ${(convertedVal * 100).toFixed(0)} g`;
+            }
+
+            preview.classList.remove('hidden');
+        }
+
+        function applyCustomConversion() {
+            const val = parseFloat(document.getElementById('custom-size-input').value);
+            const unit = document.getElementById('custom-unit-select').value;
+            
+            if (!val || val <= 0) return;
+
+            let multiplier = 0;
+            let finalLabel = `${val}${unit}`;
+
+            if (tempSelection.product.category === 'oil') {
+                if (unit === 'L') multiplier = val;
+                else if (unit === 'ml') multiplier = val / 1000;
+                else if (unit === 'kg') multiplier = val * OIL_DENSITY_FACTOR;
+                else if (unit === 'g') multiplier = (val / 1000) * OIL_DENSITY_FACTOR;
+            } else {
+                if (unit === 'g') multiplier = val / 100;
+                else if (unit === 'kg') multiplier = (val * 1000) / 100;
+            }
+
+            tempSelection.sizeLabel = finalLabel;
+            tempSelection.multiplier = multiplier;
+            
+            document.querySelectorAll('.size-option').forEach(b => b.classList.remove('selected'));
+            enableConfirm();
+        }
+
+        function enableConfirm() {
+            const btn = document.getElementById('confirm-add-btn');
+            btn.disabled = false;
+            btn.classList.remove('opacity-50');
+        }
+
+        function confirmAddToCart() {
+            const finalPrice = Math.round(tempSelection.product.basePrice * tempSelection.multiplier);
+            cart.push({
+                ...tempSelection.product,
+                sizeLabel: tempSelection.sizeLabel,
+                totalPrice: finalPrice,
+                cartId: Date.now()
+            });
+            updateCartUI();
+            closeSizeModal();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            const payBtn = document.getElementById('pay-button');
+            const totalDisplay = document.getElementById('cart-total');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `<div class="flex flex-col items-center justify-center h-full text-gray-300 opacity-60">
+                    <i class="fas fa-shopping-basket text-6xl mb-4"></i>
+                    <p class="text-lg">0 Items</p>
+                </div>`;
+                payBtn.disabled = true;
+                payBtn.className = "w-full bg-gray-100 text-gray-300 py-6 rounded-3xl text-4xl font-bold";
+                totalDisplay.innerText = "₹0";
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                <div class="bg-gray-50 p-4 rounded-2xl flex justify-between items-center border border-gray-100">
+                    <div>
+                        <h5 class="font-bold text-sm">${item.name}</h5>
+                        <p class="text-xs text-gray-400">Qty: ${item.sizeLabel}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-bold text-amber-800">₹${item.totalPrice}</p>
+                        <button onclick="removeFromCart(${item.cartId})" class="text-[10px] text-rose-500 uppercase font-bold">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + item.totalPrice, 0);
+            totalDisplay.innerText = `₹${total}`;
+            payBtn.disabled = false;
+            payBtn.className = "w-full bg-amber-600 text-white py-6 rounded-3xl text-4xl font-bold shadow-xl shadow-amber-100 transform active:scale-95 transition-all";
+            payBtn.innerText = "Pay";
+        }
+
+        function removeFromCart(cartId) {
+            cart = cart.filter(i => i.cartId !== cartId);
+            updateCartUI();
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCartUI();
+        }
+
+        function showPayment() {
+            document.getElementById('payment-modal').classList.remove('hidden');
+        }
+
+        function resetApp() {
+            cart = [];
+            updateCartUI();
+            document.getElementById('payment-modal').classList.add('hidden');
+            navigateTo('welcome-screen');
+        }
+    </script>
+</body>
+</html>
