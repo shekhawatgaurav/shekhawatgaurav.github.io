@@ -389,7 +389,7 @@ const ProjectDetail = () => {
                 <h3 className="font-display text-3xl mb-3 text-terracotta">Access Required</h3>
                 <div className="text-muted-foreground mb-8 leading-relaxed space-y-3">
                   <p>Demo credentials are required to enter the app.</p>
-                  <p>Please contact <strong>Sandman</strong> to request an ID and Password for evaluation.</p>
+                  <p>Please contact <strong>Gaurav</strong> to request an ID and Password for evaluation.</p>
                 </div>
                 <div className="flex flex-wrap justify-end gap-3">
                   <button
